@@ -69,7 +69,7 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in list_of_address_tags():
             return True
     if is_settlement(tags):
-        if key in ['place', 'population', 'postal_code', 'name', 'loc_name', 'alt_name']:
+        if key in ['place', 'population', 'postal_code', 'name', 'loc_name', 'alt_name', 'is_in']:
             return True
         for lang in all_iso_639_1_language_codes():
             if "name:" + lang == key:
