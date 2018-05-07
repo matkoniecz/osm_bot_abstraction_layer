@@ -34,9 +34,10 @@ class ChangesetBuilder:
             "comment": comment,
             "automatic": self.automatic_status,
             "source_code": "https://github.com/matkoniecz/OSM-wikipedia-tag-validator.git",
-            "source": self.source,
             "cases_where_human_help_is_required": 'https://matkoniecz.github.io/OSM-wikipedia-tag-validator-reports/',
             }
+        if self.source != None:
+            changeset_description["source"] = self.source
         if self.discussion_url != None:
             changeset_description["discussion_before_edits"] = self.discussion_url
         api.ChangesetCreate(changeset_description)
