@@ -86,13 +86,14 @@ def output_full_comment_get_comment_within_limit(affected_objects_description, c
     print(full_comment)
     return comment
 
-def make_edit(affected_objects_description, comment, automatic_status, discussion_url, type, data, source):
+def make_edit(affected_objects_description, comment, automatic_status, discussion_url, type, data, source, sleeping_time=60):
     api = get_correct_api(automatic_status, discussion_url)
     builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, source)
     builder.create_changeset(api)
     update_element(api, type, data)
     api.ChangesetClose()
-    sleep(60)
+    if sleeping_time != 0:
+        sleep(sleeping_time)
 
 def get_and_verify_data(osm_object_url, prerequisites, failure_callback=None):
     type = osm_object_url.split("/")[3]
