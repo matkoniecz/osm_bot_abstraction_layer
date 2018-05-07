@@ -60,6 +60,9 @@ def all_iso_639_1_language_codes():
             'tr', 'tk', 'tw', 'ug', 'uk', 'ur', 'ug', 'uz', 'ca', 've', 'vi',
             'vo', 'wa', 'cy', 'fy', 'wo', 'xh', 'yi', 'yo', 'za', 'zu']
 
+def name_tags():
+    return ['name', 'loc_name', 'alt_name', 'old_name']
+
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
@@ -69,11 +72,16 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in list_of_address_tags():
             return True
     if is_settlement(tags):
-        if key in ['place', 'population', 'postal_code', 'name', 'loc_name', 'alt_name', 'is_in']:
+        if key in name_tags():
+            return True
+        if key in ['place', 'population', 'postal_code', 'is_in', 'wikipedia',
+                    #regional
+                   'import_ref', 'region_id', 'city_id', 'city_type']:
             return True
         for lang in all_iso_639_1_language_codes():
-            if "name:" + lang == key:
-                return True
+            for name_tag in name_tags():
+                if name_tag + ":" + lang == key:
+                    return True
     if key in ["ele"]:
         return True
     sourced_tag = re.match('source:(.*)', key)
