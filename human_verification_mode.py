@@ -110,7 +110,7 @@ def is_expected_tag(key, value, tags, special_expected):
     return False
 
 def smart_print_tag_dictionary(tags, special_expected):
-    for key, value in tags.items():
+    for key, value in sorted(tags.items()):
         text = key + "=" + value
         if is_expected_tag(key, value, tags, special_expected):
             print(text)
