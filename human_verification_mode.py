@@ -8,7 +8,9 @@ def is_human_confirming():
     return False
 
 def list_of_address_tags():
-    return ['addr:city', 'addr:town', 'addr:place', 'addr:street', 'addr:housenumber', 'addr:postcode']
+    return ['addr:city', 'addr:town', 'addr:place', 'addr:street',
+            'addr:housenumber', 'addr:postcode', 'addr:unit', 'addr:state',
+            'phone', 'contact:phone', 'addr:country', 'addr:suburb']
 
 def is_shop(tags):
     # list from https://github.com/gravitystorm/openstreetmap-carto/blob/master/project.mml#L1485
@@ -33,7 +35,7 @@ def is_shop(tags):
     return False
 
 def is_settlement(tags):
-    if tags.get('place') in ['hamlet', 'town', 'city']:
+    if tags.get('place') in ['hamlet', 'village', 'town', 'city']:
         return True
     return False
 
@@ -61,22 +63,37 @@ def all_iso_639_1_language_codes():
             'vo', 'wa', 'cy', 'fy', 'wo', 'xh', 'yi', 'yo', 'za', 'zu']
 
 def name_tags():
-    return ['name', 'loc_name', 'alt_name', 'old_name']
+    return ['name', 'loc_name', 'alt_name', 'old_name', 'reg_name']
+
+def payment_tags():
+    return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
+            'payment:maestro', 'payment:notes', 'payment:v_pay']
 
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
+    if key in ['source']:
+        return True
     if is_shop(tags):
-        if key in ['opening_hours', 'website']:
+        if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
+                    'brand:wikidata', 'brand:wikipedia', 'wheelchair', 'brand']:
             return True
         if key in list_of_address_tags():
+            return True
+        if key in payment_tags():
+            return True
+    if tags.get('shop') == "clothes":
+        if key == 'clothes':
             return True
     if is_settlement(tags):
         if key in name_tags():
             return True
-        if key in ['place', 'population', 'postal_code', 'is_in', 'wikipedia',
-                    #regional
-                   'import_ref', 'region_id', 'city_id', 'city_type']:
+        if key in ['place', 'population', 'postal_code', 'is_in', 'wikipedia', 'wikidata',
+                    #regional - Slovakia
+                   'import_ref', 'region_id', 'city_id', 'city_type',
+                   #regional - Poland
+                   'teryt:simc', 'teryt:updated_by',
+                   ]:
             return True
         for lang in all_iso_639_1_language_codes():
             for name_tag in name_tags():
