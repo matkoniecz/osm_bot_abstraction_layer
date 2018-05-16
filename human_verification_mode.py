@@ -39,6 +39,23 @@ def is_settlement(tags):
         return True
     return False
 
+def is_fuel_station(tags):
+    if tags.get('amenity') == "fuel":
+        return True
+    return False
+
+def is_indoor_poi(tags):
+    if is_shop(tags):
+        return True
+    if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant"]:
+        return True
+    return False
+
+def is_food_place(tags):
+    if tags.get("amenity") in ["cafe", "fast_food", "restaurant"]:
+        return True
+    return False
+
 def all_iso_639_1_language_codes():
     #based on https://www.loc.gov/standards/iso639-2/php/English_list.php
     return ['ab', 'aa', 'af', 'ak', 'sq', 'am', 'ar', 'an', 'hy', 'as', 'av',
@@ -67,23 +84,36 @@ def name_tags():
 
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
-            'payment:maestro', 'payment:notes', 'payment:v_pay']
+            'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards']
+
+def get_text_before_first_colon(text):
+    parsed_link = re.match('([^:]*):(.*)', text)
+    if parsed_link is None:
+        return None
+    return parsed_link.group(1)
 
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
     if key in ['source']:
         return True
-    if is_shop(tags):
+    if is_indoor_poi(tags):
         if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
-                    'brand:wikidata', 'brand:wikipedia', 'wheelchair', 'brand']:
+                    'brand:wikidata', 'brand:wikipedia', 'wheelchair', 'brand', 'wifi']:
             return True
         if key in list_of_address_tags():
             return True
+    if is_shop(tags) or is_fuel_station(tags):
         if key in payment_tags():
+            return True
+    if is_fuel_station(tags):
+        if get_text_before_first_colon(key) == "fuel":
             return True
     if tags.get('shop') == "clothes":
         if key == 'clothes':
+            return True
+    if is_food_place(tags):
+        if key in ['cuisine', 'smoking']:
             return True
     if is_settlement(tags):
         if key in name_tags():
