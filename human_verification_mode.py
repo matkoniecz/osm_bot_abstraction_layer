@@ -10,7 +10,8 @@ def is_human_confirming():
 def list_of_address_tags():
     return ['addr:city', 'addr:town', 'addr:place', 'addr:street',
             'addr:housenumber', 'addr:postcode', 'addr:unit', 'addr:state',
-            'phone', 'contact:phone', 'addr:country', 'addr:suburb']
+            'phone', 'contact:phone', 'addr:country', 'addr:suburb',
+            'addr:neighbourhood', 'addr:district', 'contact:fax']
 
 def is_shop(tags):
     # list from https://github.com/gravitystorm/openstreetmap-carto/blob/master/project.mml#L1485
@@ -84,7 +85,8 @@ def name_tags():
 
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
-            'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards']
+            'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards',
+            'payment:cash', 'payment:credit_cards']
 
 def get_text_before_first_colon(text):
     parsed_link = re.match('([^:]*):(.*)', text)
