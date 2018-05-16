@@ -21,26 +21,19 @@ def character_limit_of_description():
     return 255
  
 class ChangesetBuilder:
-    def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, source):
-        self.affected_objects_description = affected_objects_description
-        self.comment = comment
-        self.automatic_status = automatic_status
-        self.discussion_url = discussion_url
-        self.source = source
+    def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, source, other_tags_dict = {}):
+        self.changeset_description = other_tags_dict
+        self.changeset_description['automatic'] = automatic_status
+        self.changeset_description['source_code'] = "https://github.com/matkoniecz/OSM-wikipedia-tag-validator.git"
+        self.changeset_description['cases_where_human_help_is_required'] = 'https://matkoniecz.github.io/OSM-wikipedia-tag-validator-reports/'
+        if source != None:
+            self.changeset_description["source"] = source
+        if discussion_url != None:
+            self.changeset_description["discussion_before_edits"] = discussion_url
+        self.changeset_description['comment'] = output_full_comment_get_comment_within_limit(affected_objects_description, comment)
 
     def create_changeset(self, api):
-        comment = output_full_comment_get_comment_within_limit(self.affected_objects_description, self.comment)
-        changeset_description = {
-            "comment": comment,
-            "automatic": self.automatic_status,
-            "source_code": "https://github.com/matkoniecz/OSM-wikipedia-tag-validator.git",
-            "cases_where_human_help_is_required": 'https://matkoniecz.github.io/OSM-wikipedia-tag-validator-reports/',
-            }
-        if self.source != None:
-            changeset_description["source"] = self.source
-        if self.discussion_url != None:
-            changeset_description["discussion_before_edits"] = self.discussion_url
-        api.ChangesetCreate(changeset_description)
+        api.ChangesetCreate(self.changeset_description)
 
 def get_data(id, type):
     print("downloading", id, type)
@@ -87,9 +80,9 @@ def output_full_comment_get_comment_within_limit(affected_objects_description, c
     print(full_comment)
     return comment
 
-def make_edit(affected_objects_description, comment, automatic_status, discussion_url, type, data, source, sleeping_time=60):
+def make_edit(affected_objects_description, comment, automatic_status, discussion_url, type, data, source, sleeping_time=60, other_tags_dict={}):
     api = get_correct_api(automatic_status, discussion_url)
-    builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, source)
+    builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, source, other_tags_dict)
     builder.create_changeset(api)
     update_element(api, type, data)
     api.ChangesetClose()
