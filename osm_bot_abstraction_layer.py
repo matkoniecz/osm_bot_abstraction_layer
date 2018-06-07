@@ -24,6 +24,8 @@ class ChangesetBuilder:
     def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, source, other_tags_dict = {}):
         self.changeset_description = other_tags_dict
         self.changeset_description['automatic'] = automatic_status
+        if automatic_status == fully_automated_description():
+            self.changeset_description['bot'] = 'yes' # recommended on https://wiki.openstreetmap.org/wiki/Automated_Edits_code_of_conduct
         self.changeset_description['source_code'] = "https://github.com/matkoniecz/OSM-wikipedia-tag-validator.git"
         self.changeset_description['cases_where_human_help_is_required'] = 'https://matkoniecz.github.io/OSM-wikipedia-tag-validator-reports/'
         if source != None:
