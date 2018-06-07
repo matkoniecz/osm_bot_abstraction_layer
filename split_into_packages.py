@@ -12,6 +12,13 @@ class Package:
         self.max_count = max_count
         self.max_bbox_size_in_degrees = max_bbox_size_in_degrees
 
+    def is_too_big(self, min_lat, max_lat, min_lon, max_lon):
+        if (max_lat - min_lat) > self.max_bbox_size_in_degrees:
+            return True
+        if (max_lon - min_lon) > self.max_bbox_size_in_degrees:
+            return True
+        return False
+
     def try_adding(self, new_element):
         if self.bbox == None:
             return False
@@ -25,9 +32,7 @@ class Package:
         max_lat = max([self.bbox['max_lat'], bbox_of_new_element['max_lat']])
         min_lon = min([self.bbox['min_lon'], bbox_of_new_element['min_lon']])
         max_lon = max([self.bbox['max_lon'], bbox_of_new_element['max_lon']])
-        if (max_lat - min_lat) > self.max_bbox_size_in_degrees:
-            return False
-        if (max_lon - min_lon) > self.max_bbox_size_in_degrees:
+        if self.is_too_big(min_lat, max_lat, min_lon, max_lon):
             return False
         self.list.append(new_element)
         self.bbox = {'min_lat': min_lat, 'min_lon': min_lon, 'max_lat': max_lat, 'max_lon': max_lon}
