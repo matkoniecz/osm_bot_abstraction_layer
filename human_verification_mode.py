@@ -13,9 +13,9 @@ def list_of_address_tags():
             'phone', 'contact:phone', 'addr:country', 'addr:suburb',
             'addr:neighbourhood', 'addr:district', 'contact:fax']
 
-def is_shop(tags):
+def shop_tag_listing():
     # list from https://github.com/gravitystorm/openstreetmap-carto/blob/master/project.mml#L1485
-    if tags.get('shop') in ['supermarket', 'bag', 'bakery', 'beauty', 'bed',
+    return {'shop': ['supermarket', 'bag', 'bakery', 'beauty', 'bed',
                 'books', 'butcher', 'clothes', 'computer', 'confectionery',
                 'fashion', 'convenience', 'department_store',
                 'doityourself', 'hardware', 'fishmonger', 'florist',
@@ -31,9 +31,10 @@ def is_shop(tags):
                 'cosmetics', 'variety_store', 'wine', 'outdoor',
                 'copyshop', 'sports', 'deli', 'tobacco', 'art',
                 'tea', 'coffee', 'tyres', 'pastry', 'chocolate',
-                'music', 'medical_supply', 'dairy', 'video_games']:
-        return True
-    return False
+                'music', 'medical_supply', 'dairy', 'video_games']}
+
+def is_shop(tags):
+    return is_any_matching_with_tag_listing(tags, shop_tag_listing())
 
 def is_settlement(tags):
     if tags.get('place') in ['hamlet', 'village', 'town', 'city']:
@@ -48,12 +49,44 @@ def is_fuel_station(tags):
 def is_indoor_poi(tags):
     if is_shop(tags):
         return True
+    if is_healthcare(tags):
+        return True
     if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant"]:
+        return True
+    if tags.get("tourism") in ["museum"]:
         return True
     return False
 
+def food_place_tag_listing():
+    return {'amenity': ["cafe", "fast_food", "restaurant", "pub"]}
+
 def is_food_place(tags):
-    if tags.get("amenity") in ["cafe", "fast_food", "restaurant"]:
+    return is_any_matching_with_tag_listing(tags, food_place_tag_listing())
+
+def healthcare_tag_listing():
+    return {'amenity': ["dentist", "clinic", "doctors"]}
+
+def is_healthcare(tags):
+    return is_any_matching_with_tag_listing(tags, healthcare_tag_listing())
+
+def is_good_main_tag(key, value):
+    if check_potential_main_key(key, value, food_place_tag_listing()):
+        return True
+    if check_potential_main_key(key, value, shop_tag_listing()):
+        return True
+    if check_potential_main_key(key, value, healthcare_tag_listing()):
+        return True
+    return False
+
+def is_any_matching_with_tag_listing(tags, tag_info):
+    for key, value_list in tag_info.items():
+        if tags.get(key) in value_list:
+            return True
+    return False
+
+def check_potential_main_key(key, value, tag_list):
+    values = tag_list.get(key)
+    if values != None and value in values:
         return True
     return False
 
@@ -97,11 +130,14 @@ def get_text_before_first_colon(text):
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
+    if is_good_main_tag(key, value):
+        return True
     if key in ['source']:
         return True
     if is_indoor_poi(tags):
         if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
-                    'brand:wikidata', 'brand:wikipedia', 'wheelchair', 'brand', 'wifi']:
+                    'brand:wikidata', 'brand:wikipedia', 'wheelchair', 'brand', 'wifi',
+                    "opening_hours:signed"]:
             return True
         if key in list_of_address_tags():
             return True
@@ -117,6 +153,7 @@ def is_expected_tag(key, value, tags, special_expected):
     if is_food_place(tags):
         if key in ['cuisine', 'smoking']:
             return True
+
     if is_settlement(tags):
         if key in name_tags():
             return True
