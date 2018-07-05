@@ -1,6 +1,6 @@
 This projects contains code expected to be reusable between OSM bots.
 
-Parts built upon [osmapi](https://github.com/metaodi/osmapi) and provide additional abstraction layer. This part was initial and was source of the project name.
+Parts built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
 
 It also provides some python code generally useful for bots editing OSM database.
 
