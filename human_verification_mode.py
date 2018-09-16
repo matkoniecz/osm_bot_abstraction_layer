@@ -119,7 +119,9 @@ def name_tags():
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
             'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards',
-            'payment:cash', 'payment:credit_cards']
+            'payment:cash', 'payment:credit_cards', 'payment:cryptocurrencies',
+            'payment:visa_debit', 'payment:american_express', 'payment:diners_club',
+            'payment:bitcoin']
 
 def get_text_before_first_colon(text):
     parsed_link = re.match('([^:]*):(.*)', text)
@@ -136,9 +138,11 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if is_indoor_poi(tags):
         if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
-                    'brand:wikidata', 'brand:wikipedia', 'wheelchair', 'brand', 'wifi',
-                    "opening_hours:signed"]:
+                    'brand:wikidata', 'brand:wikipedia', 'brand']:
             return True
+        if key in ["opening_hours:signed", "toilets", 'wifi', 'wheelchair']:
+            if value in ["yes", "no"]:
+                return True
         if key in list_of_address_tags():
             return True
     if is_shop(tags) or is_fuel_station(tags):
@@ -150,6 +154,10 @@ def is_expected_tag(key, value, tags, special_expected):
     if tags.get('shop') == "clothes":
         if key == 'clothes':
             return True
+    if tags.get('amenity') == "bank":
+        if key == 'atm':
+            if value in ["yes", "no"]:
+                return True
     if is_food_place(tags):
         if key in ['cuisine', 'smoking']:
             return True
