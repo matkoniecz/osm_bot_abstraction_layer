@@ -151,7 +151,7 @@ def is_expected_tag(key, value, tags, special_expected):
                 return True
         if key in list_of_address_tags():
             return True
-    if is_shop(tags) or is_fuel_station(tags):
+    if is_shop(tags) or is_fuel_station(tags) or is_food_place(tags):
         if key in payment_tags():
             return True
     if is_fuel_station(tags):
