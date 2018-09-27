@@ -140,8 +140,14 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
                     'brand:wikidata', 'brand:wikipedia', 'brand']:
             return True
-        if key in ["opening_hours:signed", "toilets", 'wifi', 'wheelchair']:
+        if key in ["opening_hours:signed", "toilets", 'wifi']:
             if value in ["yes", "no"]:
+                return True
+        if key in ['wheelchair']:
+            if value in ["yes", "no", "limited"]:
+                return True
+        if key in ['building']:
+            if value in ["yes"]:
                 return True
         if key in list_of_address_tags():
             return True
