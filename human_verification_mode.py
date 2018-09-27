@@ -49,7 +49,7 @@ def is_fuel_station(tags):
 def is_indoor_poi(tags):
     if is_shop(tags):
         return True
-    if is_healthcare(tags):
+    if is_doctor(tags):
         return True
     if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant", "pharmacy"]:
         return True
@@ -63,18 +63,18 @@ def food_place_tag_listing():
 def is_food_place(tags):
     return is_any_matching_with_tag_listing(tags, food_place_tag_listing())
 
-def healthcare_tag_listing():
+def doctor_tag_listing():
     return {'amenity': ["dentist", "clinic", "doctors"]}
 
-def is_healthcare(tags):
-    return is_any_matching_with_tag_listing(tags, healthcare_tag_listing())
+def is_doctor(tags):
+    return is_any_matching_with_tag_listing(tags, doctor_tag_listing())
 
 def is_good_main_tag(key, value):
     if check_potential_main_key(key, value, food_place_tag_listing()):
         return True
     if check_potential_main_key(key, value, shop_tag_listing()):
         return True
-    if check_potential_main_key(key, value, healthcare_tag_listing()):
+    if check_potential_main_key(key, value, doctor_tag_listing()):
         return True
     return False
 
