@@ -150,7 +150,7 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
                     'brand:wikidata', 'brand:wikipedia', 'brand']:
             return True
-        if key in ["opening_hours:signed", "toilets", 'wifi']:
+        if key in ["opening_hours:signed", "toilets", 'wifi', 'drive_through']:
             if value in ["yes", "no"]:
                 return True
         if key in ['wheelchair']:
@@ -161,6 +161,10 @@ def is_expected_tag(key, value, tags, special_expected):
                 return True
         if key in list_of_address_tags():
             return True
+    if is_food_place(tags):
+        if key in ['takeaway', 'delivery', 'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
+            if value in ["yes", "no"]:
+                return True
     if is_shop(tags) or is_fuel_station(tags) or is_food_place(tags):
         if key in payment_tags():
             return True
@@ -172,6 +176,10 @@ def is_expected_tag(key, value, tags, special_expected):
             return True
     if tags.get('amenity') == "bank":
         if key == 'atm':
+            if value in ["yes", "no"]:
+                return True
+    if is_pharmacy(tags):
+        if key == 'dispensing':
             if value in ["yes", "no"]:
                 return True
     if is_food_place(tags):
