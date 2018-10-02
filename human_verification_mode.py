@@ -34,6 +34,8 @@ def shop_tag_listing():
                 'music', 'medical_supply', 'dairy', 'video_games']}
 
 def is_shop(tags):
+    if is_pharmacy(tags):
+        return True
     return is_any_matching_with_tag_listing(tags, shop_tag_listing())
 
 def is_settlement(tags):
@@ -51,9 +53,16 @@ def is_indoor_poi(tags):
         return True
     if is_doctor(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant", "pharmacy"]:
+    if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant"]:
         return True
     if tags.get("tourism") in ["museum"]:
+        return True
+    return False
+
+def is_pharmacy(tags):
+    if tags.get("amenity") in ["pharmacy"]:
+        return True
+    if tags.get("shop") in ["chemist"]:
         return True
     return False
 
