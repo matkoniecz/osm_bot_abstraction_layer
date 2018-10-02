@@ -128,9 +128,10 @@ def name_tags():
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
             'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards',
-            'payment:cash', 'payment:credit_cards', 'payment:cryptocurrencies',
-            'payment:visa_debit', 'payment:american_express', 'payment:diners_club',
-            'payment:bitcoin']
+            'payment:cash', 'payment:credit_cards',
+            'payment:visa_debit', 'payment:american_express', 'payment:amex',
+            'payment:diners_club', 'payment:discover_card',
+            'payment:cryptocurrencies', 'payment:bitcoin']
 
 def get_text_before_first_colon(text):
     parsed_link = re.match('([^:]*):(.*)', text)
