@@ -1,8 +1,18 @@
-OSM bot abstraction layer building upon osmapi, to make easier to automate edits without error.
+OSM bot abstraction layer is building upon osmapi library. This tool intends to make easier to automate OSM edits without causing problems.
 
 This projects contains code expected to be reusable between OSM bots.
 
-Parts built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
+# Reminder about OSM rules
+
+Note that automated must not be done without consultation or agreement of a community.
+
+See the [Import/Guidelines](http://wiki.openstreetmap.org/wiki/Import/Guidelines) and [Automated Edits/Code of Conduct](http://wiki.openstreetmap.org/wiki/Automated_Edits/Code_of_Conduct) for more information.
+
+Note that automated edits violating rules mentioned above are routinely undone. Undiscussed automatic edits may be reverted by anybody, without any consultation.
+
+# OSM bot abstraction layer
+
+Parts of the project built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
 
 It also provides some python code generally useful for bots editing OSM database.
 
