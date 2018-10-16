@@ -38,7 +38,7 @@ class ChangesetBuilder:
         api.ChangesetCreate(self.changeset_description)
 
 def get_data(id, type):
-    print("downloading", id, type)
+    print("downloading https://www.openstreetmap.org/" + type + "/" + str(id))
     api = get_api(manual_username())
     try:
         if type == 'node':
