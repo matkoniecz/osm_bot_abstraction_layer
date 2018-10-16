@@ -85,6 +85,8 @@ def is_good_main_tag(key, value):
         return True
     if check_potential_main_key(key, value, doctor_tag_listing()):
         return True
+    if key == "building" and value in expected_building_values():
+        return True
     return False
 
 def is_any_matching_with_tag_listing(tags, tag_info):
@@ -133,6 +135,18 @@ def payment_tags():
             'payment:diners_club', 'payment:discover_card',
             'payment:cryptocurrencies', 'payment:bitcoin']
 
+def expected_building_values():
+    return ['yes', 'house', 'residential', 'garage', 'apartments', 'hut',
+    'detached', 'industrial', 'shed', 'roof', 'commercial', 'terrace',
+    'garages', 'school', 'construction', 'retail', 'greenhouse', 'barn',
+    'farm_auxiliary', 'church', 'warehouse', 'service', 'cabin', 'farm',
+    'civic', 'manufacture', 'static_caravan', 'university', 'office',
+    'hospital', 'house', 'bungalow', 'hangar', 'kindergarten', 'mosque',
+    'storage_tank', 'dormitory', 'train_station', 'stable', 'transportation',
+    'transformer_tower', 'bunker', 'houseboat', 'slurry_tank', 'silo',
+    'shop', 'cowshed', 'carport', 'supermarket', 'temple', 'toilets', 'kiosk',
+    'factory', 'boathouse']
+
 def get_text_before_first_colon(text):
     parsed_link = re.match('([^:]*):(.*)', text)
     if parsed_link is None:
@@ -146,6 +160,13 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if key in ['source']:
         return True
+    if tags.get("building") in expected_building_values():
+        if key == "building:levels":
+            if value in [str(i) for i in range(1, 20+1)]:
+                return True
+        if key == "roof:levels":
+            if value in ["0", "1", "2"]:
+                return True
     if is_indoor_poi(tags):
         if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
                     'brand:wikidata', 'brand:wikipedia', 'brand']:
@@ -202,6 +223,10 @@ def is_expected_tag(key, value, tags, special_expected):
                     return True
     if key in ["ele"]:
         return True
+    if tags.get("internet_access") in ["wlan", "yes", "wifi", "wired"]:
+        if key == "internet_access:fee":
+            if value in ["yes", "no"]:
+                return True
     sourced_tag = re.match('source:(.*)', key)
     if sourced_tag != None:
         sourced_tag = sourced_tag.group(1)
