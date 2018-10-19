@@ -1,4 +1,0 @@
-osmapi==1.0.2 
-termcolor=1.1.0
-urllib=1.13.1
-osm_iterator=0.0.5
