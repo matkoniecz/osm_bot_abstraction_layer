@@ -10,6 +10,12 @@ See the [Import/Guidelines](http://wiki.openstreetmap.org/wiki/Import/Guidelines
 
 Note that automated edits violating rules mentioned above are routinely undone. Undiscussed automatic edits may be reverted by anybody, without any consultation.
 
+Note that whoever runs automated edits is responsible for all problems that appear, including ones caused bugs in external libraries like this one. Please test your script before running them, monitor bot as it makes edit.
+
+# Help
+
+Reports about how documentation can be improved, bug reports, pull requests are welcomed!
+
 # OSM bot abstraction layer
 
 Parts of the project built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
@@ -21,3 +27,7 @@ For example this project includes function for splitting list of objects into ch
 Documentation is currently mostly missing - please, open an issue if it would be useful for you (pull requests are also welcomed).
 
 Note that code is currently not directly usable by people other than me. For example bot_username() function returns hardcoded value. If someone would be interested in using this code - please open an issue. It would make far more likely that I will refactor this code to make it usable for others out of the box.
+
+# Project location
+
+This project resides at [https://github.com/matkoniecz/osm_bot_abstraction_layer](https://github.com/matkoniecz/osm_bot_abstraction_layer)

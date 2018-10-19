@@ -12,7 +12,7 @@ def splitter_generator(is_element_editable_function):
             list_of_elements.append(element)
     return splitter_generated # returns a callback function
 
-def build_changeset(is_in_manual_mode, changeset_comment, discussion_url):
+def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page):
     automatic_status = osm_bot_abstraction_layer.manually_reviewed_description()
     if is_in_manual_mode == False:
         automatic_status = osm_bot_abstraction_layer.fully_automated_description()
@@ -20,12 +20,12 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url):
     source = None
     api = osm_bot_abstraction_layer.get_correct_api(automatic_status, discussion_url)
     affected_objects_description = ""
-    builder = osm_bot_abstraction_layer.ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, source)
+    builder = osm_bot_abstraction_layer.ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source)
     builder.create_changeset(api)
     return api
 
-def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, edit_element_function):
-    api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url)
+def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
+    api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
         prerequisites = {}
         data = osm_bot_abstraction_layer.get_and_verify_data(element.get_link(), prerequisites)
@@ -47,7 +47,7 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
 
 def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to_consider_query,
     objects_to_consider_query_storage_file, is_in_manual_mode,
-    changeset_comment, discussion_url, is_element_editable_checker_function,
+    changeset_comment, discussion_url, osm_wiki_documentation_page, is_element_editable_checker_function,
     edit_element_function):
     overpass_downloader.download_overpass_query(objects_to_consider_query, objects_to_consider_query_storage_file)
 
@@ -63,6 +63,6 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     for package in returned:
         for element in package.list:
             print(element.get_link())
-        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, edit_element_function)
+        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function)
         print()
         print()

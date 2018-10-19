@@ -21,17 +21,19 @@ def character_limit_of_description():
     return 255
  
 class ChangesetBuilder:
-    def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, source, other_tags_dict = {}):
+    def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict = {}):
         self.changeset_description = other_tags_dict
         self.changeset_description['automatic'] = automatic_status
         if automatic_status == fully_automated_description():
+            if osm_wiki_documentation_page == None or discussion_url == None:
+                raise "missing links to the automatic edit documentation!"
             self.changeset_description['bot'] = 'yes' # recommended on https://wiki.openstreetmap.org/wiki/Automated_Edits_code_of_conduct
-        self.changeset_description['source_code'] = "https://github.com/matkoniecz/OSM-wikipedia-tag-validator.git"
+            self.changeset_description["discussion_before_edits"] = discussion_url
+            self.changeset_description["osm_wiki_documentation_page"] = osm_wiki_documentation_page
+        self.changeset_description['created_by_library'] = "https://github.com/matkoniecz/osm_bot_abstraction_layer"
         self.changeset_description['cases_where_human_help_is_required'] = 'https://matkoniecz.github.io/OSM-wikipedia-tag-validator-reports/'
         if source != None:
             self.changeset_description["source"] = source
-        if discussion_url != None:
-            self.changeset_description["discussion_before_edits"] = discussion_url
         self.changeset_description['comment'] = output_full_comment_get_comment_within_limit(affected_objects_description, comment)
 
     def create_changeset(self, api):
@@ -82,9 +84,9 @@ def output_full_comment_get_comment_within_limit(affected_objects_description, c
     print(full_comment)
     return comment
 
-def make_edit(affected_objects_description, comment, automatic_status, discussion_url, type, data, source, sleeping_time=60, other_tags_dict={}):
+def make_edit(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, type, data, source, sleeping_time=60, other_tags_dict={}):
     api = get_correct_api(automatic_status, discussion_url)
-    builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, source, other_tags_dict)
+    builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict)
     builder.create_changeset(api)
     update_element(api, type, data)
     api.ChangesetClose()
