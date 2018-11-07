@@ -56,11 +56,12 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
 
     osm = Data(objects_to_consider_query_storage_file)
     osm.iterate_over_data(splitter_generator(is_element_editable_checker_function))
-    #print(len(list_of_elements))
-    #list_of_elements = list_of_elements[:2000]
-    #print(len(list_of_elements))
-    returned = Package.split_into_packages(list_of_elements, max_count_of_elements_in_one_changeset)
-    for package in returned:
+
+    packages = Package.split_into_packages(list_of_elements, max_count_of_elements_in_one_changeset)
+    print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
+    if human_verification_mode.is_human_confirming() == False:
+        return
+    for package in packages:
         for element in package.list:
             print(element.get_link())
         process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function)
