@@ -8,6 +8,8 @@ its purpose is to group nearby elements to reduce number of edits made to change
 class Package:
     def __init__(self, element, max_count=5, max_bbox_size_in_degrees=0.1):
         self.bbox = element.get_bbox()
+        if self.bbox == None:
+            print("warning: element " + element.get_link() + " has no known bounding box!")
         self.list = [element]
         self.max_count = max_count
         self.max_bbox_size_in_degrees = max_bbox_size_in_degrees
@@ -21,6 +23,7 @@ class Package:
 
     def try_adding(self, new_element):
         if self.bbox == None:
+            print("warning: package has no boundix box specified! It will contain only one element!")
             return False
         if len(self.list) >= self.max_count:
             return False
