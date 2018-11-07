@@ -51,7 +51,7 @@ class Package:
             if not Package.try_adding_to_existing_package(packages, element):
                 packages.append(Package(element, max_count, max_bbox_size_in_degrees))
             full_packages = [e for e in packages if len(e.list) >= max_count]
-            packages_with_space = [e for e in packages if len(e.list) < max_count]
-            packages = packages_with_space
+            packages_with_remaining_space = [e for e in packages if len(e.list) < max_count]
+            packages = packages_with_remaining_space
             returned += full_packages
         return returned + packages
