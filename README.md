@@ -2,6 +2,16 @@ OSM bot abstraction layer is building upon osmapi library. This tool intends to 
 
 This projects contains code expected to be reusable between OSM bots.
 
+This tool is for people who are at once
+
+- programmers
+- experienced OSM editors
+- following OSM rules
+
+Anyone who runs automated edits is responsible for all problems that appear, including ones caused bugs in external libraries like this one.
+
+I eliminated all bugs that I noticed, after all I am using this code myself, but some are still lurking. Reports and pull requests are welcomed! Pull requests with new features making easier to confirm what is happening are also warmly welcomed!
+
 # Reminder about OSM rules
 
 Note that automated must not be done without consultation or agreement of a community.
@@ -10,11 +20,13 @@ See the [Import/Guidelines](http://wiki.openstreetmap.org/wiki/Import/Guidelines
 
 Note that automated edits violating rules mentioned above are routinely undone. Undiscussed automatic edits may be reverted by anybody, without any consultation.
 
-Note that whoever runs automated edits is responsible for all problems that appear, including ones caused bugs in external libraries like this one. Please test your script before running them, monitor bot as it makes edit.
+And yes, it means that some automated edits that would save time and make perfect sense were rejected and should not be made. It is still preferable over unrestricted automateed edits.
 
 # Help
 
 Reports about how documentation can be improved, bug reports, pull requests are welcomed!
+
+Pull requests are welcomed from smallest typo to big new features - though in case of huge changes it is always a good idea to start from opening an issue.
 
 # OSM bot abstraction layer
 
