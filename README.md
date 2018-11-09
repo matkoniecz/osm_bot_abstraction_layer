@@ -22,6 +22,23 @@ Note that automated edits violating rules mentioned above are routinely undone. 
 
 And yes, it means that some automated edits that would save time and make perfect sense were rejected and should not be made. It is still preferable over unrestricted automateed edits.
 
+# Configuration
+
+Create `secret.json` file with content like this:
+
+```
+{
+	"bot_account": {
+		"username": "Your OSM username for a bot account",
+		"password": "?6ofGZm=qr*skR?C,a,1E#k9g8:kE7"
+	},
+	"human_account": {
+		"username": "Your OSM username for a human operated account",
+		"password": "t?\q~,?m;2l?Dd$cKc`?n9PeSDBjj/"
+	}
+}
+```
+
 # Help
 
 Reports about how documentation can be improved, bug reports, pull requests are welcomed!
