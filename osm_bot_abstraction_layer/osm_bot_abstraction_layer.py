@@ -1,12 +1,7 @@
 # docs: http://osmapi.metaodi.ch/
 import osmapi
 import time
-
-def bot_username():
-    return "Mateusz Konieczny - bot account"
-
-def manual_username():
-    return "Mateusz Konieczny"
+import json
 
 def fully_automated_description():
     return "yes"
@@ -14,8 +9,12 @@ def fully_automated_description():
 def manually_reviewed_description():
     return "no, it is a manually reviewed edit"
 
-def get_api(username):
-    return osmapi.OsmApi(username = username, passwordfile = "password.secret")
+def get_api(account_type):
+    with open('secret.json') as f:
+        data = json.load(f)
+        username = data[account_type]['username']
+        password = data[account_type]['password']
+        return osmapi.OsmApi(username = username, password = password)
 
 def character_limit_of_description():
     return 255
@@ -41,7 +40,7 @@ class ChangesetBuilder:
 
 def get_data(id, type):
     print("downloading https://www.openstreetmap.org/" + type + "/" + str(id))
-    api = get_api(manual_username())
+    api = get_api('bot_account')
     try:
         if type == 'node':
             return api.NodeGet(id)
@@ -68,10 +67,10 @@ def sleep(time_in_s):
 
 def get_correct_api(automatic_status, discussion_url):
     if automatic_status == manually_reviewed_description():
-        return get_api(manual_username())
+        return get_api('human_account')
     elif automatic_status == fully_automated_description():
         assert(discussion_url != None)
-        return get_api(bot_username())
+        return get_api('bot_account')
     else:
         assert(False)
 
