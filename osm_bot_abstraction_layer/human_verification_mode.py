@@ -66,6 +66,18 @@ def is_pharmacy(tags):
         return True
     return False
 
+def is_plant(tags):
+    if tags.get("natural") in ["tree", "hedge", "wood"]:
+        return True
+    if tags.get("landuse") in ["forest"]:
+        return True
+    return False
+
+def is_taggable_with_species(tags):
+    if is_plant(tags):
+        return True
+    return False
+
 def food_place_tag_listing():
     return {'amenity': ["cafe", "fast_food", "restaurant", "pub"]}
 
@@ -226,6 +238,12 @@ def is_expected_tag(key, value, tags, special_expected):
     if tags.get("internet_access") in ["wlan", "yes", "wifi", "wired"]:
         if key == "internet_access:fee":
             if value in ["yes", "no"]:
+                return True
+    if is_taggable_with_species(tags):
+        if key in ["species", "species:wikidata", "species:wikipedia"]:
+            return True
+        for language_code in all_iso_639_1_language_codes():
+            if key == "species:" + language_code:
                 return True
     sourced_tag = re.match('source:(.*)', key)
     if sourced_tag != None:
