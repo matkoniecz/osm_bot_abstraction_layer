@@ -1,6 +1,10 @@
 OSM bot abstraction layer is building upon osmapi library. This tool intends to make easier to automate OSM edits without causing problems.
 
-This projects contains code expected to be reusable between OSM bots.
+This projects contains code shared between OSM bots, to avoid writing the same functionality more than once.
+
+For example, automated edit may change many objects across large area. In that case it is preferable to split it into multiple edits to avoid country-sized bounding boxes. This logic is may be written in way reusable between different automated edits.
+
+# Purpose
 
 This tool is for people who are at once
 
@@ -10,7 +14,7 @@ This tool is for people who are at once
 
 Anyone who runs automated edits is responsible for all problems that appear, including ones caused bugs in external libraries like this one.
 
-I eliminated all bugs that I noticed, after all I am using this code myself, but some are still lurking. Reports and pull requests are welcomed! Pull requests with new features making easier to confirm what is happening are also warmly welcomed!
+I eliminated all bugs that I noticed, after all I am using this code myself, but some are still lurking. Issue reports and pull requests are welcomed!
 
 # Reminder about OSM rules
 
