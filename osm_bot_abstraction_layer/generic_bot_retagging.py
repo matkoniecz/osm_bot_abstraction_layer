@@ -27,19 +27,25 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
 def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
     api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
-        prerequisites = {}
-        data = osm_bot_abstraction_layer.get_and_verify_data(element.get_link(), prerequisites)
+        data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
 
-        human_verification_mode.smart_print_tag_dictionary(data['tag'])
-        data['tag'] = edit_element_function(data['tag'])
-        print()
-        human_verification_mode.smart_print_tag_dictionary(data['tag'])
-       
         if is_in_manual_mode == False or human_verification_mode.is_human_confirming():
             osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
         print()
         print()
     api.ChangesetClose()
+    sleep_after_edit(is_in_manual_mode)
+
+def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function):
+    prerequisites = {}
+    data = osm_bot_abstraction_layer.get_and_verify_data(osm_link_to_object, prerequisites)
+    human_verification_mode.smart_print_tag_dictionary(data['tag'])
+    data['tag'] = edit_element_function(data['tag'])
+    print()
+    human_verification_mode.smart_print_tag_dictionary(data['tag'])
+    return data
+
+def sleep_after_edit(is_in_manual_mode):
     if is_in_manual_mode:
         time.sleep(60)
     else:
