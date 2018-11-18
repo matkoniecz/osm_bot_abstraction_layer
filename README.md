@@ -4,6 +4,14 @@ This projects contains code shared between OSM bots, to avoid writing the same f
 
 For example, automated edit may change many objects across large area. In that case it is preferable to split it into multiple edits to avoid country-sized bounding boxes. This logic is may be written in way reusable between different automated edits.
 
+# Contributing
+
+First contact with any project is crucial, so please report any and all issues in this readme. If you needed tool like this but decided to not use it for some fixable reason - please open an issue!
+
+Reports about how documentation can be improved, bug reports, pull requests are welcomed!
+
+Pull requests are welcomed from smallest typo to big new features - though in case of huge changes it is always a good idea to start from opening an issue.
+
 # Purpose
 
 This tool is for people who are at once
@@ -42,12 +50,6 @@ Create `secret.json` file with content like this:
 	}
 }
 ```
-
-# Help
-
-Reports about how documentation can be improved, bug reports, pull requests are welcomed!
-
-Pull requests are welcomed from smallest typo to big new features - though in case of huge changes it is always a good idea to start from opening an issue.
 
 # OSM bot abstraction layer
 
