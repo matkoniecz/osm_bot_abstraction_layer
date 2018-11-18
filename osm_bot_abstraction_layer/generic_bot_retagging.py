@@ -28,13 +28,17 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
     api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
-
-        if is_in_manual_mode == False or human_verification_mode.is_human_confirming():
+        if is_edit_allowed(is_in_manual_mode):
             osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
         print()
         print()
     api.ChangesetClose()
     sleep_after_edit(is_in_manual_mode)
+
+def is_edit_allowed(is_in_manual_mode):
+    if is_in_manual_mode == False:
+        return True
+    return human_verification_mode.is_human_confirming():
 
 def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function):
     prerequisites = {}
