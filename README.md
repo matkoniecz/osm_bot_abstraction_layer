@@ -51,17 +51,76 @@ Create `secret.json` file with content like this:
 }
 ```
 
-# OSM bot abstraction layer
+# Usage example
 
-Parts of the project built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
+Following is example based on a real automated edit, following [guidelines for the automatic edits](https://wiki.openstreetmap.org/wiki/Automated_Edits_code_of_conduct).
 
-It also provides some python code generally useful for bots editing OSM database.
+  1. Relevant community was asked. In this case it affected Polish mappers, so thread appeared [in Polish section of forum.openstreetmap.org](https://forum.openstreetmap.org/viewtopic.php?id=64421). Note that different communities may use different forums or mailing lists as their communication channels.
+  1. In addition [Page documenting the automated edit was created at OSM wiki](https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/moving_%27name:botanical%27%3D%27Platanus_%C3%97_hispanica%27_to_species%3D%27Platanus_%C3%97_hispanica%27_for_natural%3Dtree_in_Poland).
+  1. OSM community accepted the edit.
+  1. Following code was created using `run_simple_retagging_task` component. Running this script will result in:
+  	- downloading OSM data using Overpass Turbo as specified in `objects_to_consider_query` parameter
+  	- iterate over all and objects, ignoring ones where function passed as parameter `is_element_editable_checker_function` returns false
+  	- for all other `edit_element_function` is applied
+  	- changes are automatically split in multiple changesets (if necessary) to avoid too large bounding boxes or too many objects in one edit
+  	- `changeset_comment`, `discussion_url`, `osm_wiki_documentation_page` parameter values are used to apply correct changeset tags
+  1. Running this code resulted in two edits: [#64628901](https://www.openstreetmap.org/changeset/64628901) and [#64628951](https://www.openstreetmap.org/changeset/64628951)
 
-For example this project includes function for splitting list of objects into changesets that attempt to fit withing limited bounding boxes to avoid continent-spanning edits (attempt as lower bound for bbox size is size of elements).
+```
+from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
+
+def is_element_editable(element):
+    if element.get_tag_value('natural') != "tree":
+        return False
+    if element.get_tag_value('name:botanical') != "Platanus × hispanica":
+        return False
+    if element.get_tag_value('species') == None:
+        return True
+    return element.get_tag_value('species') == element.get_tag_value('name:botanical')
+
+def edit_element(tags):
+    tags['species'] = tags['name:botanical']
+    tags.pop('name:botanical', None)
+    return tags
+    # 
+    #tags.get('wikipedia') != None
+    #tags['wikipedia'] = expected_wikipedia
+    #tags.pop('L_KOND_POD', None)
+
+def main():
+    run_simple_retagging_task(
+        max_count_of_elements_in_one_changeset = 500,
+        objects_to_consider_query = """
+[out:xml][timeout:25];
+area[name='Polska']->.searchArea;
+(
+  node["name:botanical"="Platanus × hispanica"](area.searchArea);
+  way["name:botanical"="Platanus × hispanica"](area.searchArea);
+  relation["name:botanical"="Platanus × hispanica"](area.searchArea);
+);
+out body;
+>;
+out skel qt;
+""",
+        objects_to_consider_query_storage_file = '/media/mateusz/5bfa9dfc-ed86-4d19-ac36-78df1060707c/OSM-cache/overpass/tags_for_retagging.osm',
+        is_in_manual_mode = False,
+        changeset_comment = 'migrating name:botanical tag to species tag',
+        discussion_url = 'https://forum.openstreetmap.org/viewtopic.php?id=64421',
+        osm_wiki_documentation_page = 'https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/moving_%27name:botanical%27%3D%27Platanus_%C3%97_hispanica%27_to_species%3D%27Platanus_%C3%97_hispanica%27_for_natural%3Dtree_in_Poland',
+        is_element_editable_checker_function = is_element_editable,
+        edit_element_function = edit_element,
+        )
+
+main()
+```
+
+# Further documentation
 
 Documentation is currently mostly missing - please, open an issue if it would be useful for you (pull requests are also welcomed).
 
-Note that code is currently not directly usable by people other than me. For example bot_username() function returns hardcoded value. If someone would be interested in using this code - please open an issue. It would make far more likely that I will refactor this code to make it usable for others out of the box.
+# History and etymology
+
+Parts of the project built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
 
 # Project location
 
