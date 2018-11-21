@@ -1,8 +1,14 @@
-OSM bot abstraction layer is building upon osmapi library. This tool intends to make easier to automate OSM edits without causing problems.
+OSM bot abstraction layer is a python package making easier to automate OSM edits without causing problems.
 
 This projects contains code shared between OSM bots, to avoid writing the same functionality more than once.
 
-For example, automated edit may change many objects across large area. In that case it is preferable to split it into multiple edits to avoid country-sized bounding boxes. This logic is may be written in way reusable between different automated edits.
+For example, automated edit may change many objects across large area. In that case it is preferable to split it into multiple edits to avoid country-sized bounding boxes. This logic is available as one of tools included in this project.
+
+# Installation
+
+`pip install osm-bot-abstraction-layer`
+
+[![PyPI version](https://badge.fury.io/py/osm-bot-abstraction-layer.svg)](https://badge.fury.io/py/osm-bot-abstraction-layer)
 
 # Contributing
 
