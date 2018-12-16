@@ -165,6 +165,17 @@ def get_text_before_first_colon(text):
         return None
     return parsed_link.group(1)
 
+def is_place_of_payment(tags):
+    if is_shop(tags):
+        return True
+    if is_fuel_station(tags):
+        return True
+    if is_food_place(tags):
+        return True
+    if tags.get("amenity") in ["post_office"]:
+        return True
+    return False
+
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
@@ -198,7 +209,7 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in ['takeaway', 'delivery', 'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
             if value in ["yes", "no"]:
                 return True
-    if is_shop(tags) or is_fuel_station(tags) or is_food_place(tags):
+    if is_place_of_payment(tags):
         if key in payment_tags():
             return True
     if is_fuel_station(tags):
