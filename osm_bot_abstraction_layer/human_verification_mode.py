@@ -53,7 +53,7 @@ def is_indoor_poi(tags):
         return True
     if is_doctor(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant"]:
+    if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant", "post_office"]:
         return True
     if tags.get("tourism") in ["museum", "hotel"]:
         return True
