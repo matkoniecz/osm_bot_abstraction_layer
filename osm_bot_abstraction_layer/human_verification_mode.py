@@ -53,7 +53,9 @@ def is_indoor_poi(tags):
         return True
     if is_doctor(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "cafe", "fast_food", "restaurant", "post_office"]:
+    if is_food_place(tags):
+        return True
+    if tags.get("amenity") in ["bank", "fuel", "post_office"]:
         return True
     if tags.get("tourism") in ["museum", "hotel"]:
         return True
@@ -79,7 +81,7 @@ def is_taggable_with_species(tags):
     return False
 
 def food_place_tag_listing():
-    return {'amenity': ["cafe", "fast_food", "restaurant", "pub"]}
+    return {'amenity': ["cafe", "fast_food", "restaurant", "pub", "ice_cream"]}
 
 def is_food_place(tags):
     return is_any_matching_with_tag_listing(tags, food_place_tag_listing())
