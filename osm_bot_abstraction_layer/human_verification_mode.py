@@ -208,7 +208,8 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in list_of_address_tags():
             return True
     if is_food_place(tags):
-        if key in ['takeaway', 'delivery', 'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
+        if key in ['outdoor_seating', 'takeaway', 'delivery',
+                   'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
             if value in ["yes", "no"]:
                 return True
     if is_place_of_payment(tags):
