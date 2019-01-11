@@ -159,7 +159,7 @@ def expected_building_values():
     'storage_tank', 'dormitory', 'train_station', 'stable', 'transportation',
     'transformer_tower', 'bunker', 'houseboat', 'slurry_tank', 'silo',
     'shop', 'cowshed', 'carport', 'supermarket', 'temple', 'toilets', 'kiosk',
-    'factory', 'boathouse']
+    'factory', 'boathouse', 'hotel']
 
 def get_text_before_first_colon(text):
     parsed_link = re.match('([^:]*):(.*)', text)
@@ -207,6 +207,9 @@ def is_expected_tag(key, value, tags, special_expected):
                 return True
         if key in list_of_address_tags():
             return True
+        if key == "internet_access":
+            if value in ["wlan", "yes", "wifi", "wired"]:
+                return True
     if is_food_place(tags):
         if key in ['outdoor_seating', 'takeaway', 'delivery',
                    'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
