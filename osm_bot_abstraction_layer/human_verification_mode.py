@@ -178,6 +178,42 @@ def is_place_of_payment(tags):
         return True
     return False
 
+def is_tag_expected_for_indoor_poi(key, value, tags):
+    if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
+                'brand:wikidata', 'brand:wikipedia', 'brand']:
+        return True
+    if key in ["opening_hours:signed", "toilets", 'wifi', 'drive_through']:
+        if value in ["yes", "no"]:
+            return True
+    if key in ['wheelchair']:
+        if value in ["yes", "no", "limited"]:
+            return True
+    if key in ['building']:
+        if value in ["yes"]:
+            return True
+    if key in list_of_address_tags():
+        return True
+    return False
+
+def is_building(tags):
+    return tags.get("building") in expected_building_values()
+
+def is_tag_expected_for_building(key, value, tags):
+    if key == "building:levels":
+        if value in [str(i) for i in range(1, 20+1)]:
+            return True
+    if key == "roof:levels":
+        if value in ["0", "1", "2"]:
+            return True
+    return False
+
+def is_tag_expected_for_food_place(key, value, tags):
+    if key in ['outdoor_seating', 'takeaway', 'delivery',
+               'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
+        if value in ["yes", "no"]:
+            return True
+    return False
+
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
@@ -185,36 +221,18 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if key in ['source']:
         return True
-    if tags.get("building") in expected_building_values():
-        if key == "building:levels":
-            if value in [str(i) for i in range(1, 20+1)]:
-                return True
-        if key == "roof:levels":
-            if value in ["0", "1", "2"]:
-                return True
+    if key == "internet_access":
+        if value in ["wlan", "yes", "wifi", "wired"]:
+            return True
+    if is_building(tags):
+        if is_tag_expected_for_building(key, value, tags):
+            return True
     if is_indoor_poi(tags):
-        if key in ['opening_hours', 'website', 'contact:website', 'level', 'operator',
-                    'brand:wikidata', 'brand:wikipedia', 'brand']:
+        if is_tag_expected_for_indoor_poi(key, value, tags):
             return True
-        if key in ["opening_hours:signed", "toilets", 'wifi', 'drive_through']:
-            if value in ["yes", "no"]:
-                return True
-        if key in ['wheelchair']:
-            if value in ["yes", "no", "limited"]:
-                return True
-        if key in ['building']:
-            if value in ["yes"]:
-                return True
-        if key in list_of_address_tags():
-            return True
-        if key == "internet_access":
-            if value in ["wlan", "yes", "wifi", "wired"]:
-                return True
     if is_food_place(tags):
-        if key in ['outdoor_seating', 'takeaway', 'delivery',
-                   'diet:vegan', 'diet:vegetarian', 'diet:gluten_free']:
-            if value in ["yes", "no"]:
-                return True
+        if is_tag_expected_for_food_place(key, value, tags):
+            return True
     if is_place_of_payment(tags):
         if key in payment_tags():
             return True
