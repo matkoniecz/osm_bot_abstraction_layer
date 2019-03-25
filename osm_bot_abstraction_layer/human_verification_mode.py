@@ -78,6 +78,8 @@ def is_plant(tags):
 def is_taggable_with_species(tags):
     if is_plant(tags):
         return True
+    if tags.get("attraction") in ["enclosure", "animal"]:
+        return True
     return False
 
 def food_place_tag_listing():
