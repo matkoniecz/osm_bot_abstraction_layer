@@ -38,7 +38,7 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
 def is_edit_allowed(is_in_manual_mode):
     if is_in_manual_mode == False:
         return True
-    return human_verification_mode.is_human_confirming():
+    return human_verification_mode.is_human_confirming()
 
 def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function):
     prerequisites = {}
