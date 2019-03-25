@@ -291,7 +291,7 @@ def is_expected_tag(key, value, tags, special_expected):
         if key in name_tags():
             return True
         if key in ['place', 'population', 'postal_code', 'is_in', 'wikipedia', 'wikidata',
-                    #regional - Slovakia
+                   #regional - Slovakia
                    'import_ref', 'region_id', 'city_id', 'city_type',
                    #regional - Poland
                    'teryt:simc', 'teryt:updated_by',
