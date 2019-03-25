@@ -214,6 +214,15 @@ def is_tag_expected_for_food_place(key, value, tags):
             return True
     return False
 
+def is_acceptable_source_tag(key, value, tags):
+    sourced_tag = re.match('source:(.*)', key)
+    if sourced_tag != None:
+        sourced_tag = sourced_tag.group(1)
+    if sourced_tag != None:
+        if tags.get(sourced_tag) != None:
+            return True
+    return False
+
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
@@ -280,12 +289,15 @@ def is_expected_tag(key, value, tags, special_expected):
         for language_code in all_iso_639_1_language_codes():
             if key == "species:" + language_code:
                 return True
-    sourced_tag = re.match('source:(.*)', key)
-    if sourced_tag != None:
-        sourced_tag = sourced_tag.group(1)
-    if sourced_tag != None:
-        if tags.get(sourced_tag) != None:
+    if tags.get('abandoned:man_made') == "mineshaft":
+        if key in ["former_operator:wikidata", "former_operator:wikipedia"]:
             return True
+    if tags.get('abandoned:man_made') == "mineshaft" or tags.get('man_made') == "mineshaft":
+        if key == "resource":
+            if value in ["coal"]:
+                return True
+    if is_acceptable_source_tag(key, value, tags):
+        return True
     return False
 
 def smart_print_tag_dictionary(tags, special_expected={}):
