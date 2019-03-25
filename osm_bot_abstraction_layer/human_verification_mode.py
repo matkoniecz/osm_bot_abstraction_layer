@@ -225,6 +225,21 @@ def is_acceptable_source_tag(key, value, tags):
             return True
     return False
 
+def unpaved_road_surfaces():
+    return ["unpaved","compacted","gravel","fine_gravel","pebblestone","grass_paver",
+        "ground","earth","dirt","grass","sand","mud","ice","salt","snow","woodchips"]
+
+def paved_road_surfaces():
+    return ["paved", "asphalt", "cobblestone", "cobblestone:flattened", "sett",
+			"concrete", "concrete:lanes", "concrete:plates", "paving_stones",
+            "metal", "wood", "unhewn_cobblestone"]
+
+def road_types():
+    return ["motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link",
+		"secondary", "secondary_link", "tertiary", "tertiary_link",
+		"unclassified", "residential", "living_street", "pedestrian",
+        "service", "track", "road"]
+
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
@@ -232,6 +247,10 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if key in ['source']:
         return True
+    if key == "surface":
+        if tags.get('highway') in road_types():
+            if value in (unpaved_road_surfaces() + paved_road_surfaces()):
+                return True
     if key == "internet_access":
         if value in ["wlan", "yes", "wifi", "wired"]:
             return True
