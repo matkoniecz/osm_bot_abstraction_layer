@@ -269,6 +269,9 @@ def is_expected_tag(key, value, tags, special_expected):
     if is_fuel_station(tags):
         if get_text_before_first_colon(key) == "fuel":
             return True
+    if tags.get('attraction') in ['animal', 'enclosure']:
+        if key == 'tourism' and value == 'attraction':
+            return True
     if tags.get('shop') == "clothes":
         if key == 'clothes':
             return True
