@@ -23,7 +23,7 @@ class Package:
 
     def try_adding(self, new_element):
         if self.bbox == None:
-            print("warning: package has no boundix box specified! It will contain only one element!")
+            print("warning: package has no bounding box specified! It will contain only one element!")
             return False
         if len(self.list) >= self.max_count:
             return False
