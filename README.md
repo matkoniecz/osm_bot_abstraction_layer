@@ -75,47 +75,39 @@ Following is example based on a real automated edit, following [guidelines for t
 ```
 from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
 
-def is_element_editable(element):
-    if element.get_tag_value('natural') != "tree":
-        return False
-    if element.get_tag_value('name:botanical') != "Platanus × hispanica":
-        return False
-    if element.get_tag_value('species') == None:
+def is_element_editable(tag_dictionary, identifier):
+    if tag_dictionary.get('name') == ("bankomat"):
         return True
-    return element.get_tag_value('species') == element.get_tag_value('name:botanical')
+    if tag_dictionary.get('name') == ("Bankomat"):
+        return True
+    return False
 
 def edit_element(tags):
-    tags['species'] = tags['name:botanical']
-    tags.pop('name:botanical', None)
+    tags.pop('name', None)
     return tags
-    # 
-    #tags.get('wikipedia') != None
-    #tags['wikipedia'] = expected_wikipedia
-    #tags.pop('L_KOND_POD', None)
 
 def main():
     run_simple_retagging_task(
-        max_count_of_elements_in_one_changeset = 500,
-        objects_to_consider_query = """
-[out:xml][timeout:25];
-area[name='Polska']->.searchArea;
+        max_count_of_elements_in_one_changeset=500,
+        objects_to_consider_query="""
+[out:xml][timeout:25000];
+area[name="Polska"]->.a;
 (
-  node["name:botanical"="Platanus × hispanica"](area.searchArea);
-  way["name:botanical"="Platanus × hispanica"](area.searchArea);
-  relation["name:botanical"="Platanus × hispanica"](area.searchArea);
+  nwr[amenity='atm'][name='Bankomat'](area.a);
+  nwr[amenity='atm'][name='bankomat'](area.a);
 );
 out body;
 >;
 out skel qt;
 """,
-        objects_to_consider_query_storage_file = '/media/mateusz/5bfa9dfc-ed86-4d19-ac36-78df1060707c/OSM-cache/overpass/tags_for_retagging.osm',
-        is_in_manual_mode = False,
-        changeset_comment = 'migrating name:botanical tag to species tag',
-        discussion_url = 'https://forum.openstreetmap.org/viewtopic.php?id=64421',
-        osm_wiki_documentation_page = 'https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/moving_%27name:botanical%27%3D%27Platanus_%C3%97_hispanica%27_to_species%3D%27Platanus_%C3%97_hispanica%27_for_natural%3Dtree_in_Poland',
-        is_element_editable_checker_function = is_element_editable,
-        edit_element_function = edit_element,
-        )
+        objects_to_consider_query_storage_file='/media/mateusz/5bfa9dfc-ed86-4d19-ac36-78df1060707c/OSM-cache/overpass/tags_for_retagging_descriptive_atm.osm',
+        is_in_manual_mode=False,
+        changeset_comment='usuwanie nazw opisowych z bankomatów (name="bankomat" i name="Bankomat")',
+        discussion_url='https://forum.openstreetmap.org/viewtopic.php?id=66038',
+        osm_wiki_documentation_page='https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/fix_descriptive_name_on_ATMs_in_Poland',
+        is_element_editable_checker_function=is_element_editable,
+        edit_element_function=edit_element,
+    )
 
 main()
 ```
