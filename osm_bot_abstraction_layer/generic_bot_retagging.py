@@ -54,9 +54,8 @@ def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_functi
 
 def sleep_after_edit(is_in_manual_mode):
     if is_in_manual_mode:
-        time.sleep(60)
-    else:
-        time.sleep(5)
+        return
+    time.sleep(60)
 
 def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to_consider_query,
     objects_to_consider_query_storage_file, is_in_manual_mode,
