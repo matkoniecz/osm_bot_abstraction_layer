@@ -8,7 +8,7 @@ import time
 def splitter_generator(is_element_editable_function):
     def splitter_generated(element):
         global list_of_elements
-        if is_element_editable_function(element):
+        if is_element_editable_function(element.get_tag_dictionary(), element.get_link()):
             list_of_elements.append(element)
     return splitter_generated # returns a callback function
 
@@ -24,15 +24,12 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     builder.create_changeset(api)
     return api
 
-def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function):
+def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_function):
     api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
-        data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
+        data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function, is_element_editable_function)
         if is_edit_allowed(is_in_manual_mode):
-            # may be not editable in case of lags in Overpass API database
-            # or concurrent edits 
-            if is_element_editable_checker_function(element):
-                osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
+            osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
         print()
         print()
     api.ChangesetClose()
@@ -43,10 +40,19 @@ def is_edit_allowed(is_in_manual_mode):
         return True
     return human_verification_mode.is_human_confirming()
 
-def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function):
+def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function, is_element_editable_function):
     prerequisites = {}
     data = osm_bot_abstraction_layer.get_and_verify_data(osm_link_to_object, prerequisites)
+
     human_verification_mode.smart_print_tag_dictionary(data['tag'])
+
+    if not is_element_editable_function(data['tag'], "test before edit"):
+        # may be not editable in case of lags in Overpass API database
+        # or concurrent edits 
+        print("Element has new version no longer eligible for an edit!")
+        print("Probably Overpass returned outdated data! There is a concurrent edit!")
+        raise RuntimeError
+
     data['tag'] = edit_element_function(data['tag'])
     print()
     human_verification_mode.smart_print_tag_dictionary(data['tag'])
