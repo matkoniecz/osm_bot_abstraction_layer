@@ -24,12 +24,15 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     builder.create_changeset(api)
     return api
 
-def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
+def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function):
     api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
         if is_edit_allowed(is_in_manual_mode):
-            osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
+            # may be not editable in case of lags in Overpass API database
+            # or concurrent edits 
+            if is_element_editable_checker_function(element):
+                osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
         print()
         print()
     api.ChangesetClose()
@@ -74,6 +77,6 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     for package in packages:
         for element in package.list:
             print(element.get_link())
-        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function)
+        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function)
         print()
         print()
