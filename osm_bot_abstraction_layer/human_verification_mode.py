@@ -94,6 +94,12 @@ def doctor_tag_listing():
 def is_doctor(tags):
     return is_any_matching_with_tag_listing(tags, doctor_tag_listing())
 
+def brandable_tag_listing():
+    return {'amenity': ["atm"]}
+
+def is_brandable(tags):
+    return is_any_matching_with_tag_listing(tags, brandable_tag_listing())
+
 def is_good_main_tag(key, value):
     if check_potential_main_key(key, value, food_place_tag_listing()):
         return True
@@ -285,6 +291,10 @@ def is_expected_tag(key, value, tags, special_expected):
                 return True
     if is_food_place(tags):
         if key in ['cuisine', 'smoking']:
+            return True
+    
+    if is_brandable(tags):
+        if key in ['brand', 'brand:wikidata', 'brand:wikipedia']:
             return True
 
     if is_settlement(tags):
