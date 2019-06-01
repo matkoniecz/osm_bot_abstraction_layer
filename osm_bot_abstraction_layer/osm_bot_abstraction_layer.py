@@ -36,6 +36,7 @@ class ChangesetBuilder:
         self.changeset_description['comment'] = output_full_comment_get_comment_within_limit(affected_objects_description, comment)
 
     def create_changeset(self, api):
+        print("opening changeset", json.dumps(self.changeset_description, sort_keys=True, indent=4))
         api.ChangesetCreate(self.changeset_description)
 
 def get_data(id, type):
