@@ -54,13 +54,30 @@ def get_data(id, type):
     assert(False)
 
 def update_element(api, type, data):
-    if type == 'node':
-        return api.NodeUpdate(data)
-    if type == 'way':
-        return api.WayUpdate(data)
-    if type == 'relation':
-        return api.RelationUpdate(data)
-    assert False, str(type) + " type as not recognised"
+    try:
+        if type == 'node':
+            return api.NodeUpdate(data)
+        if type == 'way':
+            return api.WayUpdate(data)
+        if type == 'relation':
+            return api.RelationUpdate(data)
+        assert False, str(type) + " type as not recognised"
+    except osmapi.ApiError as e:
+        print(e)
+        raise e
+
+def delete_element(api, type, data):
+    try:
+        if type == 'node':
+            return api.NodeDelete(data)
+        if type == 'way':
+            return api.WayDelete(data)
+        if type == 'relation':
+            return api.RelationDelete(data)
+        assert False, str(type) + " type as not recognised"
+    except osmapi.ApiError as e:
+        print(e)
+        raise e
 
 def sleep(time_in_s):
     print("Sleeping")
