@@ -76,6 +76,9 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     osm.iterate_over_data(splitter_generator(is_element_editable_checker_function))
 
     packages = Package.split_into_packages(list_of_elements, max_count_of_elements_in_one_changeset)
+    if len(list_of_elements) == 0:
+        print("no elements found, skipping!")
+        return
     print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
     if human_verification_mode.is_human_confirming() == False:
         return
