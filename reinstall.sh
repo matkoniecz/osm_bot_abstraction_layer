@@ -4,5 +4,5 @@ cd dist
 pip3 uninstall osm_bot_abstraction_layer -y
 pip3 install --user *.whl
 cd ..
-nosetests3
+python3 -m "nose"
 # twine upload dist/* # to upload to PyPi
