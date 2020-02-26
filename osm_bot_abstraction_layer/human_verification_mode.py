@@ -55,11 +55,27 @@ def is_indoor_poi(tags):
         return True
     if is_food_place(tags):
         return True
+    if is_indoor_rentable_sleeping_place(tags):
+        return True
     if tags.get("amenity") in ["bank", "fuel", "post_office"]:
         return True
-    if tags.get("tourism") in ["museum", "hotel", "motel"]:
+    if tags.get("tourism") in ["museum"]:
         return True
     return False
+
+def is_rentable_sleeping_place(tags):
+    if is_indoor_rentable_sleeping_place(tags):
+        return True
+    if tags.get("tourism") in ["camp_site", "caravan_site"]:
+        return True
+    return False
+
+def is_indoor_rentable_sleeping_place(tags):
+    if tags.get("tourism") in ["hotel", "motel", "chalet", "guest_house", "apartment", "alpine_hut"]:
+        return True
+    return False
+
+
 
 def is_pharmacy(tags):
     if tags.get("amenity") in ["pharmacy"]:
@@ -181,6 +197,8 @@ def is_place_of_payment(tags):
     if is_fuel_station(tags):
         return True
     if is_food_place(tags):
+        return True
+    if is_rentable_sleeping_place(tags):
         return True
     if tags.get("amenity") in ["post_office"]:
         return True
