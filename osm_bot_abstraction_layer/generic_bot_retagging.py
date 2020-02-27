@@ -77,7 +77,7 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
 
     packages = Package.split_into_packages(list_of_elements, max_count_of_elements_in_one_changeset)
     if len(list_of_elements) == 0:
-        print("no elements found, skipping!")
+        print("no elements found for editing among checked items, skipping!")
         return
     for package in packages:
         for element in package.list:
