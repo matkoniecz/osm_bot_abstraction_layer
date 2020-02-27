@@ -2,6 +2,7 @@ from termcolor import colored
 import re
 
 def is_human_confirming():
+    print("y + enter to confirm, anything else to reject")
     choice = input().lower()
     if choice == "y":
         return True
