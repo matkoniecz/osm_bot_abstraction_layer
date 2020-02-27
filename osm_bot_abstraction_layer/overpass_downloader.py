@@ -13,8 +13,10 @@ def overpass_download(url):
     while True:
         try:
             print("downloading " + url)
-            resource = urllib.request.urlopen(url)
-            return resource.read().decode('utf-8')
+            request = urllib.request.Request(url,headers={'User-Agent': 'overpass downloader for OSM bot'})
+            response = urllib.request.urlopen(request, timeout=25000)
+            print("succeded with", response.getcode(), "http code")
+            return response.read().decode('utf-8')
         except urllib.error.HTTPError as e:
             print(e.getcode())
             if e.getcode() == 429 or e.getcode() == 503:
