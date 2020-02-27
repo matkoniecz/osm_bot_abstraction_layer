@@ -3,7 +3,9 @@ import time
 
 def download_overpass_query(query, filepath):
     query = urllib.parse.quote(query)
-    url = "http://overpass-api.de/api/interpreter?data=" + query
+    #url = "http://overpass-api.de/api/interpreter?data=" + query
+    url = "https://lz4.overpass-api.de/api/interpreter?data=" + query # force faster server
+    # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
     with open(filepath, 'w+') as file:
         file.write(overpass_download(url))
 
