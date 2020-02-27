@@ -16,7 +16,7 @@ def overpass_download(url):
         except urllib.error.HTTPError as e:
             print(e.getcode())
             if e.getcode() == 429 or e.getcode() == 503:
-                print("sleeping before retry due to ", e.getcode(), "error code")
+                print("sleeping before retry due to", e.getcode(), "error code")
                 time.sleep(60)
                 print("retrying")
                 continue
