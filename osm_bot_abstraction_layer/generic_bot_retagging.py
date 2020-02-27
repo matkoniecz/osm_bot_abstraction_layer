@@ -79,6 +79,11 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     if len(list_of_elements) == 0:
         print("no elements found, skipping!")
         return
+    for package in packages:
+        for element in package.list:
+            print(element.get_link())
+        print()
+        print()
     print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
     if human_verification_mode.is_human_confirming() == False:
         return
