@@ -67,16 +67,25 @@ def is_indoor_poi(tags):
 def is_rentable_sleeping_place(tags):
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("tourism") in ["camp_site", "caravan_site"]:
+    if is_outdoor_rentable_sleeping_place(tags):
         return True
     return False
 
 def is_indoor_rentable_sleeping_place(tags):
-    if tags.get("tourism") in ["hotel", "motel", "chalet", "guest_house", "apartment", "alpine_hut"]:
+    if is_any_matching_with_tag_listing(tags, indoor_rentable_sleeping_place_tag_listing()):
         return True
     return False
 
+def is_outdoor_rentable_sleeping_place(tags):
+    if is_any_matching_with_tag_listing(tags, outdoor_rentable_sleeping_place_tag_listing()):
+        return True
+    return False
 
+def indoor_rentable_sleeping_place_tag_listing():
+    return {'tourism': ["hotel", "motel", "chalet", "guest_house", "apartment", "alpine_hut"]}
+
+def outdoor_rentable_sleeping_place_tag_listing():
+    return {'tourism': ["camp_site", "caravan_site"]}
 
 def is_pharmacy(tags):
     if tags.get("amenity") in ["pharmacy"]:
@@ -123,6 +132,12 @@ def is_good_main_tag(key, value):
     if check_potential_main_key(key, value, shop_tag_listing()):
         return True
     if check_potential_main_key(key, value, doctor_tag_listing()):
+        return True
+    if check_potential_main_key(key, value, indoor_rentable_sleeping_place_tag_listing()):
+        return True
+    if check_potential_main_key(key, value, outdoor_rentable_sleeping_place_tag_listing()):
+        return True
+    if key == "highway" and value in road_types():
         return True
     if key == "building" and value in expected_building_values():
         return True
@@ -172,7 +187,7 @@ def payment_tags():
             'payment:cash', 'payment:credit_cards',
             'payment:visa_debit', 'payment:american_express', 'payment:amex',
             'payment:diners_club', 'payment:discover_card',
-            'payment:cryptocurrencies', 'payment:bitcoin']
+            'payment:cryptocurrencies', 'payment:bitcoin', 'payment:cheque']
 
 def expected_building_values():
     return ['yes', 'house', 'residential', 'garage', 'apartments', 'hut',
@@ -212,14 +227,24 @@ def is_tag_expected_for_indoor_poi(key, value, tags):
     if key in ["opening_hours:signed", "toilets", 'wifi', 'drive_through']:
         if value in ["yes", "no"]:
             return True
-    if key in ['wheelchair']:
-        if value in ["yes", "no", "limited"]:
-            return True
+    if is_valid_wheelchair_tag(key, value):
+        return True
     if key in ['building']:
         if value in ["yes"]:
             return True
+    if is_valid_address_tag(key, value, tags):
+        return True
+    return False
+
+def is_valid_address_tag(key, value, tags):
     if key in list_of_address_tags():
         return True
+    return False
+
+def is_valid_wheelchair_tag(key, value):
+    if key in ['wheelchair']:
+        if value in ["yes", "no", "limited"]:
+            return True
     return False
 
 def is_building(tags):
@@ -231,6 +256,10 @@ def is_tag_expected_for_building(key, value, tags):
             return True
     if key == "roof:levels":
         if value in ["0", "1", "2"]:
+            return True
+    if key == "roof:shape":
+        # https://taginfo.openstreetmap.org/keys/roof%3Ashape#values
+        if value in ["flat", "gabled", "hipped", "pyramidal", "skillion", "half-hipped"]:
             return True
     return False
 
@@ -265,6 +294,35 @@ def road_types():
 		"unclassified", "residential", "living_street", "pedestrian",
         "service", "track", "road"]
 
+def is_lit_tag_expected(tags):
+    if tags.get('highway') in road_types():
+        return True
+
+def is_always_named_object(tags):
+    if is_settlement(tags):
+        return True
+    return False
+
+def is_frequently_named_object(tags):
+    if tags.get('highway') in road_types():
+        return True
+    return False
+
+def is_name_tag(key, value):
+    if key in name_tags():
+        return True
+    for lang in all_iso_639_1_language_codes():
+        for name_tag in name_tags():
+            if name_tag + ":" + lang == key:
+                return True
+    return False
+
+def is_expected_name_tag(key, value, tags):
+    if is_always_named_object(tags) or is_frequently_named_object(tags):
+        if is_name_tag(key, value):
+            return True
+    return False
+
 def is_expected_tag(key, value, tags, special_expected):
     if special_expected.get(key) == value:
         return True
@@ -272,9 +330,34 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if key in ['source']:
         return True
+    if is_expected_name_tag(key, value, tags):
+        return True
     if key == "surface":
         if tags.get('highway') in road_types():
             if value in (unpaved_road_surfaces() + paved_road_surfaces()):
+                return True
+            if key == "oneway" and value == "yes":
+                return True
+            if key == "lanes" and value == "2":
+                return True
+            if tags.get("oneway") == "yes" and tags.get("highway") != "motorway":
+                return True
+            if key == "bridge" and value in ["yes", "viaduct", "no"]:
+                return True
+            if key == "tunnel" and value in ["yes", "no"]:
+                return True
+    if key == "construction":
+        if tags.get("building") == "construction":
+            if value in expected_building_values():
+                if value != "construction":
+                    return True
+        if tags.get("highway") == "construction":
+            if value in road_types():
+                if value != "construction":
+                    return True
+    if is_lit_tag_expected(tags):
+        if key == "lit":
+            if lit in ["yes", "no"]:
                 return True
     if key == "internet_access":
         if value in ["wlan", "yes", "wifi", "wired"]:
@@ -285,11 +368,20 @@ def is_expected_tag(key, value, tags, special_expected):
     if is_indoor_poi(tags):
         if is_tag_expected_for_indoor_poi(key, value, tags):
             return True
+    if is_indoor_rentable_sleeping_place(tags):
+        if key == "stars" and value in ["1", "2", "3", "4", "5"]:
+            return True
+    if is_outdoor_rentable_sleeping_place(tags):
+        if is_valid_address_tag(key, value, tags):
+            return True
     if is_food_place(tags):
         if is_tag_expected_for_food_place(key, value, tags):
             return True
     if is_place_of_payment(tags):
         if key in payment_tags():
+            return True
+    if tags.get('amenity') == "atm":
+        if is_valid_wheelchair_tag(key, value):
             return True
     if is_fuel_station(tags):
         if get_text_before_first_colon(key) == "fuel":
@@ -317,8 +409,6 @@ def is_expected_tag(key, value, tags, special_expected):
             return True
 
     if is_settlement(tags):
-        if key in name_tags():
-            return True
         if key in ['place', 'population', 'postal_code', 'is_in', 'wikipedia', 'wikidata',
                    #regional - Slovakia
                    'import_ref', 'region_id', 'city_id', 'city_type',
@@ -326,10 +416,6 @@ def is_expected_tag(key, value, tags, special_expected):
                    'teryt:simc', 'teryt:updated_by',
                    ]:
             return True
-        for lang in all_iso_639_1_language_codes():
-            for name_tag in name_tags():
-                if name_tag + ":" + lang == key:
-                    return True
     if key in ["ele"]:
         return True
     if tags.get("internet_access") in ["wlan", "yes", "wifi", "wired"]:
