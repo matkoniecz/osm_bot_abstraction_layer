@@ -63,6 +63,28 @@ def sleep_after_edit(is_in_manual_mode):
         return
     time.sleep(60)
 
+def show_planned_edits(packages, edit_element_function):
+    for package in packages:
+        for element in package.list:
+            print(element.get_link())
+            before = element.get_tag_dictionary()
+            after = edit_element_function(element.get_tag_dictionary())
+            print("BEFORE")
+            print(before)
+            print("AFTER")
+            print(after)
+            print()
+        print()
+        print()
+
+def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function):
+    for package in packages:
+        for element in package.list:
+            print(element.get_link())
+        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function)
+        print()
+        print()
+
 def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to_consider_query,
     objects_to_consider_query_storage_file, is_in_manual_mode,
     changeset_comment, discussion_url, osm_wiki_documentation_page, is_element_editable_checker_function,
@@ -79,17 +101,8 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     if len(list_of_elements) == 0:
         print("no elements found for editing among checked items, skipping!")
         return
-    for package in packages:
-        for element in package.list:
-            print(element.get_link())
-        print()
-        print()
+    show_planned_edits(packages, edit_element_function)
     print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
     if human_verification_mode.is_human_confirming() == False:
         return
-    for package in packages:
-        for element in package.list:
-            print(element.get_link())
-        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function)
-        print()
-        print()
+    run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function)
