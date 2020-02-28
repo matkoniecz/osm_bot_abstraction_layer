@@ -29,3 +29,4 @@ def overpass_download(url):
             print(("URLError for url " + url))
             print(e)
             return
+    print("overpass query failed!")
