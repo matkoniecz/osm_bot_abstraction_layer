@@ -8,6 +8,8 @@ import time
 def splitter_generator(is_element_editable_function):
     def splitter_generated(element):
         global list_of_elements
+        global checked_element_count
+        checked_element_count += 1
         if is_element_editable_function(element.get_tag_dictionary(), element.get_link()):
             list_of_elements.append(element)
     return splitter_generated # returns a callback function
@@ -92,14 +94,16 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     overpass_downloader.download_overpass_query(objects_to_consider_query, objects_to_consider_query_storage_file)
 
     global list_of_elements
+    global checked_element_count
     list_of_elements = []
+    checked_element_count = 0
 
     osm = Data(objects_to_consider_query_storage_file)
     osm.iterate_over_data(splitter_generator(is_element_editable_checker_function))
 
     packages = Package.split_into_packages(list_of_elements, max_count_of_elements_in_one_changeset)
     if len(list_of_elements) == 0:
-        print("no elements found for editing among checked items, skipping!")
+        print("no elements found for editing among", checked_element_count, "checked items, skipping!")
         return
     show_planned_edits(packages, edit_element_function)
     print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
