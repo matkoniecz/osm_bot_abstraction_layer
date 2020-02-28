@@ -68,16 +68,20 @@ def sleep_after_edit(is_in_manual_mode):
 def show_planned_edits(packages, edit_element_function):
     for package in packages:
         for element in package.list:
-            print(element.get_link())
+            print("#", element.get_link())
             before = element.get_tag_dictionary()
             after = edit_element_function(element.get_tag_dictionary())
-            print("BEFORE")
-            print(before)
-            print("AFTER")
-            print(after)
+            for key in before.keys():
+                if key not in after:
+                    print("#* removed:", key,"=", before[key])
+                elif before[key] != after[key]:
+                    print("#* changed:", key)
+                    print("#** before:", key,"=", before[key])
+                    print("#** after_:", key,"=", after[key])
+            for key in after.keys():
+                if key not in before:
+                    print("#* added_:", key,"=", before[key])
             print()
-        print()
-        print()
 
 def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function):
     for package in packages:
