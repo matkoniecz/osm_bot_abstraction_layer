@@ -80,7 +80,7 @@ def show_planned_edits(packages, edit_element_function):
                     print("#** after_:", key,"=", after[key])
             for key in after.keys():
                 if key not in before:
-                    print("#* added_:", key,"=", before[key])
+                    print("#* added_:", key,"=", after[key])
             print()
 
 def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, is_element_editable_checker_function):
