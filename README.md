@@ -75,15 +75,13 @@ Following is example based on a real automated edit, following [guidelines for t
 ```
 from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
 
-def is_element_editable(tag_dictionary, identifier):
-    if tag_dictionary.get('name') == ("bankomat"):
-        return True
-    if tag_dictionary.get('name') == ("Bankomat"):
-        return True
-    return False
-
 def edit_element(tags):
-    tags.pop('name', None)
+    if tags.get('amenity') != ("atm"):
+        return tags
+    if tags.get('name') == ("bankomat"):
+        tags.pop('name', None)
+    if tags.get('name') == ("Bankomat"):
+        tags.pop('name', None)
     return tags
 
 def main():
@@ -105,7 +103,6 @@ out skel qt;
         changeset_comment='usuwanie nazw opisowych z bankomatów (name="bankomat" i name="Bankomat")',
         discussion_url='https://forum.openstreetmap.org/viewtopic.php?id=66038',
         osm_wiki_documentation_page='https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/fix_descriptive_name_on_ATMs_in_Poland',
-        is_element_editable_checker_function=is_element_editable,
         edit_element_function=edit_element,
     )
 
