@@ -58,7 +58,7 @@ def is_indoor_poi(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "post_office"]:
+    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema"]:
         return True
     if tags.get("tourism") in ["museum"]:
         return True
