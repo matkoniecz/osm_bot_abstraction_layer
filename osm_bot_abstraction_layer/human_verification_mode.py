@@ -141,6 +141,8 @@ def is_good_main_tag(key, value):
         return True
     if key == "building" and value in expected_building_values():
         return True
+    if key == "building:part" and value == "yes":
+        return True
     return False
 
 def is_any_matching_with_tag_listing(tags, tag_info):
@@ -230,7 +232,7 @@ def is_tag_expected_for_indoor_poi(key, value, tags):
     if is_valid_wheelchair_tag(key, value):
         return True
     if key in ['building']:
-        if value in ["yes"]:
+        if value in expected_building_values():
             return True
     if is_valid_address_tag(key, value, tags):
         return True
@@ -247,10 +249,14 @@ def is_valid_wheelchair_tag(key, value):
             return True
     return False
 
-def is_building(tags):
-    return tags.get("building") in expected_building_values()
+def is_building_or_building_part(tags):
+    if tags.get("building:part") in expected_building_values():
+        return True
+    if tags.get("building") in expected_building_values():
+        return True
+    return False
 
-def is_tag_expected_for_building(key, value, tags):
+def is_tag_expected_for_building_or_building_part(key, value, tags):
     if key == "building:levels":
         if value in [str(i) for i in range(1, 20+1)]:
             return True
@@ -362,8 +368,8 @@ def is_expected_tag(key, value, tags, special_expected):
     if key == "internet_access":
         if value in ["wlan", "yes", "wifi", "wired"]:
             return True
-    if is_building(tags):
-        if is_tag_expected_for_building(key, value, tags):
+    if is_building_or_building_part(tags):
+        if is_tag_expected_for_building_or_building_part(key, value, tags):
             return True
     if is_indoor_poi(tags):
         if is_tag_expected_for_indoor_poi(key, value, tags):
