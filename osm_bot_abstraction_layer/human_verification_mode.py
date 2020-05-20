@@ -332,20 +332,20 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if is_expected_name_tag(key, value, tags):
         return True
-    if key == "surface":
-        if tags.get('highway') in road_types():
+    if tags.get('highway') in road_types():
+        if key == "surface":
             if value in (unpaved_road_surfaces() + paved_road_surfaces()):
                 return True
-            if key == "oneway" and value == "yes":
-                return True
-            if key == "lanes" and value == "2":
-                return True
-            if tags.get("oneway") == "yes" and tags.get("highway") != "motorway":
-                return True
-            if key == "bridge" and value in ["yes", "viaduct", "no"]:
-                return True
-            if key == "tunnel" and value in ["yes", "no"]:
-                return True
+        if key == "oneway" and value == "yes":
+            return True
+        if key == "lanes" and value == "2":
+            return True
+        if tags.get("oneway") == "yes" and tags.get("highway") != "motorway":
+            return True
+        if key == "bridge" and value in ["yes", "viaduct", "no"]:
+            return True
+        if key == "tunnel" and value in ["yes", "no"]:
+            return True
     if key == "construction":
         if tags.get("building") == "construction":
             if value in expected_building_values():
@@ -357,7 +357,7 @@ def is_expected_tag(key, value, tags, special_expected):
                     return True
     if is_lit_tag_expected(tags):
         if key == "lit":
-            if lit in ["yes", "no"]:
+            if value in ["yes", "no"]:
                 return True
     if key == "internet_access":
         if value in ["wlan", "yes", "wifi", "wired"]:

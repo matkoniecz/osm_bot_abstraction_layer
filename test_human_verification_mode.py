@@ -12,5 +12,13 @@ class Tests(unittest.TestCase):
         tags = {"building": "hotel", "tourism": "motel"}
         self.assertEqual(True, human_verification_mode.is_expected_tag("building", "hotel", tags, {}))
 
+    def test_roads_may_have_bridges(self):
+        tags = {"highway": "tertiary", "bridge": "yes"}
+        self.assertEqual(True, human_verification_mode.is_expected_tag("bridge", "yes", tags, {}))
+
+    def test_roads_may_have_lit_bridges(self):
+        tags = {"highway": "tertiary", "bridge": "yes", "lit": "yes"}
+        self.assertEqual(True, human_verification_mode.is_expected_tag("lit", "yes", tags, {}))
+
 if __name__ == '__main__':
     unittest.main()
