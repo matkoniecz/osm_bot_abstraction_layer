@@ -110,21 +110,21 @@ def make_edit(affected_objects_description, comment, automatic_status, discussio
     if sleeping_time != 0:
         sleep(sleeping_time)
 
-def get_and_verify_data(osm_object_url, prerequisites, failure_callback=None):
+def get_and_verify_data(osm_object_url, prerequisites, prerequisite_failure_callback=None):
     type = osm_object_url.split("/")[3]
     id = osm_object_url.split("/")[4]
     data = get_data(id, type)
     if data == None:
         return None
-    failure = prerequisite_failure_reason(osm_object_url, prerequisites, data, failure_callback)
+    failure = prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisite_failure_callback)
     if failure != None:
         print(failure)
         return None
     return data
 
-def prerequisite_failure_reason(osm_object_url, prerequisites, data, failure_callback=None):
-    if failure_callback != None:
-        failure_reason = failure_callback(data)
+def prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisite_failure_callback=None):
+    if prerequisite_failure_callback != None:
+        failure_reason = prerequisite_failure_callback(data)
         if failure_reason != None:
             return osm_object_url + " failed with " + failure_reason
 
