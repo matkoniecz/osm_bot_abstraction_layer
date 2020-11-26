@@ -18,6 +18,7 @@ setuptools.setup(
         'termcolor>=1.1.0, <2.0',
         'urllib3>=1.13.1, <2.0',
         'osm_iterator>=1.1.0, <2.0',
+        'tqdm>4.47.0, <5.0',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

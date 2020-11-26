@@ -1,5 +1,10 @@
 import urllib.request, urllib.error, urllib.parse
 import time
+from tqdm import tqdm
+
+def sleep(time_in_s):
+    for i in tqdm(range(time_in_s*10), ascii=True):
+        time.sleep(0.1)
 
 def download_overpass_query(query, filepath):
     query = urllib.parse.quote(query)
@@ -10,6 +15,8 @@ def download_overpass_query(query, filepath):
         file.write(overpass_download(url))
 
 def overpass_download(url):
+    print("sleeping before download")
+    sleep(20)
     while True:
         try:
             print("downloading " + url)
@@ -21,7 +28,7 @@ def overpass_download(url):
             print(e.getcode())
             if e.getcode() == 429 or e.getcode() == 503:
                 print("sleeping before retry due to", e.getcode(), "error code")
-                time.sleep(60)
+                sleep(100)
                 print("retrying")
                 continue
             raise e
