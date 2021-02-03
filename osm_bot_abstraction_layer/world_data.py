@@ -18,9 +18,7 @@ def list_of_area_divisions_query(iso_tag, area_iso_code, admin_level_of_split):
   area
     ['""" + iso_tag + """'='""" + area_iso_code + """'] -> .parent_area;
   (
-    rel
-      (area.parent_area)
-      [admin_level=""" + str(admin_level_of_split) + """][boundary=administrative];
+    relation["admin_level"=""" + str(admin_level_of_split) + """]["boundary"="administrative"](area.parent_area);
   );
   out tags;"""
 
