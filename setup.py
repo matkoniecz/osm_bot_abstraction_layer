@@ -19,6 +19,7 @@ setuptools.setup(
         'urllib3>=1.13.1, <2.0',
         'osm_iterator>=1.1.0, <2.0',
         'tqdm>4.47.0, <5.0',
+        # webbrowser is  part of stdlib https://stackoverflow.com/a/47926698
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

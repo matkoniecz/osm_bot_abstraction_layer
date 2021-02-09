@@ -1,7 +1,10 @@
 from termcolor import colored
+import webbrowser
 import re
 
-def is_human_confirming():
+def is_human_confirming(link):
+    if link != None:
+        webbrowser.open(link, new=2)
     print("y + enter to confirm, anything else to reject")
     choice = input().lower()
     if choice == "y":

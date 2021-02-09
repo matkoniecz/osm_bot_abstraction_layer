@@ -33,17 +33,17 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
     api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
-        if is_edit_allowed(is_in_manual_mode):
+        if is_edit_allowed(is_in_manual_mode, element.get_link()):
             osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
         print()
         print()
     api.ChangesetClose()
     sleep_after_edit(is_in_manual_mode)
 
-def is_edit_allowed(is_in_manual_mode):
+def is_edit_allowed(is_in_manual_mode, link):
     if is_in_manual_mode == False:
         return True
-    return human_verification_mode.is_human_confirming()
+    return human_verification_mode.is_human_confirming(link)
 
 def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function):
     prerequisites = {}
@@ -114,6 +114,6 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
         return
     show_planned_edits(packages, edit_element_function)
     print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
-    if human_verification_mode.is_human_confirming() == False:
+    if human_verification_mode.is_human_confirming(link=None) == False:
         return
     run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function)
