@@ -37,7 +37,13 @@ class ChangesetBuilder:
 
     def create_changeset(self, api):
         print("opening changeset", json.dumps(self.changeset_description, sort_keys=True, indent=4))
-        api.ChangesetCreate(self.changeset_description)
+        try:
+            api.ChangesetCreate(self.changeset_description)
+        except osmapi.OsmApi.ApiError as e:
+            print(e.payload)
+            print(e.reason)
+            print(e.status_code)
+            raise
 
 def get_data(id, type):
     print("downloading https://www.openstreetmap.org/" + type + "/" + str(id))
