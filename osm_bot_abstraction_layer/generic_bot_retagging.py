@@ -74,6 +74,8 @@ def show_planned_edits(packages, edit_element_function):
             print("#", element.get_link())
             before = element.get_tag_dictionary()
             after = edit_element_function(element.get_tag_dictionary())
+            if after == None:
+                raise ValueError("edit_element_function returned None, it must return dictionary representing tags")
             for key in before.keys():
                 if key not in after:
                     print("#* removed:", key,"=", before[key])
