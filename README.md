@@ -62,6 +62,7 @@ Create `secret.json` file with content like this:
 ```
 
 # Usage example
+## Bot edit
 
 Following is example based on a real automated edit, following [guidelines for the automatic edits](https://wiki.openstreetmap.org/wiki/Automated_Edits_code_of_conduct).
 
@@ -112,6 +113,20 @@ out skel qt;
 
 main()
 ```
+## Downloading data
+```
+from osm_bot_abstraction_layer.overpass_downloader import download_overpass_query
+
+vienna_download = """
+  [timeout:250];
+  (
+    nwr(48.10,16.26,48.26,16.51);
+  );
+  out meta;
+"""
+download_overpass_query(vienna_download, '/tmp/vienna.osm')
+```
+
 
 # Further documentation
 
