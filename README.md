@@ -122,7 +122,9 @@ vienna_download = """
   (
     nwr(48.10,16.26,48.26,16.51);
   );
-  out meta;
+out body;
+>;
+out skel qt;
 """
 download_overpass_query(vienna_download, '/tmp/vienna.osm')
 ```
