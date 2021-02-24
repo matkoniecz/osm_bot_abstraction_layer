@@ -135,6 +135,7 @@ download_overpass_query(vienna_download, '/tmp/vienna.osm')
 Documentation is currently mostly missing - please, open an issue if it would be useful for you (pull requests are also welcomed).
 
 # History and etymology
+I created this library as part of writing [bot editing OpenStreetMap](https://www.openstreetmap.org/user/Mateusz Konieczny - bot account/history).
 
 Parts of the project built upon [osmapi](https://github.com/metaodi/osmapi) and provide an additional abstraction layer. This part was initial and was source of the project name.
 
