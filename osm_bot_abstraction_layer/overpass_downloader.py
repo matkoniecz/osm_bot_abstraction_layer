@@ -1,4 +1,5 @@
-import urllib.request, urllib.error, urllib.parse
+import requests
+import requests.exceptions
 import time
 from tqdm import tqdm
 import random
@@ -16,31 +17,29 @@ def download_overpass_query(query, filepath):
         file.write(get_reponse_from_overpass_server(server, query))
 
 def get_reponse_from_overpass_server(api_url, query):
-    print("sleeping before download")
-    sleep(20)
+    #print("sleeping before download")
+    #sleep(20)
     while True:
         try:
             response = single_query_run(api_url, query)
-            return response.read().decode('utf-8')
-        except urllib.error.HTTPError as e:
-            print(e.getcode())
-            if e.getcode() == 429 or e.getcode() == 503:
-                print("sleeping before retry due to", e.getcode(), "error code")
+            return response.content.decode('utf-8')
+        except requests.exceptions.HTTPError as e:
+            print(e.response.status_code)
+            if e.response.status_code == 429 or e.response.status_code == 503:
+                print("sleeping before retry due to", e.response.status_code, "error code")
                 sleep(100)
                 print("retrying")
                 continue
             raise e
-        except urllib.error.URLError as e:
-            print(("URLError for url " + url))
-            print(e)
-            return
     print("overpass query failed!")
 
 def single_query_run(api_url, query):
-    query = urllib.parse.quote(query)
-    url = api_url +"?data=" + query
-    print("downloading " + url)
-    request = urllib.request.Request(url,headers={'User-Agent': 'overpass downloader for OSM bot'})
-    response = urllib.request.urlopen(request, timeout=25000)
-    print("succeded with", response.getcode(), "http code")
+    print("downloading " + query)
+    response = requests.post(
+        api_url,
+        data={'data': query},
+        timeout=25000,
+        headers={'User-Agent': 'overpass downloader for OSM bot'} #{"Accept-Charset": "utf-8;q=0.7,*;q=0.7"},
+    )
+    print("succeded with", response.status_code, "http code")
     return response
