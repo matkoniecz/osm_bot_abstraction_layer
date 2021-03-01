@@ -1,6 +1,6 @@
 OSM bot abstraction layer is a python package making easier to automate OpenStreetMap edits without causing problems.
 
-This projects contains code shared between OpbnStreetMap bots, to avoid writing the same functionality more than once.
+This projects contains code shared between OpenStreetMap bots, to avoid writing the same functionality more than once.
 
 For example, automated edit may change many objects across large area. In that case it is preferable to split it into multiple edits to avoid country-sized bounding boxes. This logic is available as one of tools included in this project.
 
