@@ -14,9 +14,9 @@ def download_overpass_query(query, filepath):
     alt_server = "http://z.overpass-api.de/api/interpreter"
     server = random.choice([faster_server, alt_server])
     with open(filepath, 'w+') as file:
-        file.write(get_reponse_from_overpass_server(server, query))
+        file.write(get_response_from_overpass_server(server, query))
 
-def get_reponse_from_overpass_server(api_url, query):
+def get_response_from_overpass_server(api_url, query):
     #print("sleeping before download")
     #sleep(20)
     while True:
