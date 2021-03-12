@@ -3,6 +3,7 @@ import requests.exceptions
 import time
 from tqdm import tqdm
 import random
+from datetime import datetime
 
 def sleep(time_in_s):
     for i in tqdm(range(time_in_s*10), ascii=True):
@@ -19,7 +20,7 @@ def download_overpass_query(query, filepath, timeout=1500, user_agent='overpass 
 def sleep_before_retry(error_summary):
     print("sleeping before retry due to", error_summary)
     sleep(100)
-    print("retrying")
+    print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
 def get_response_from_overpass_server(api_url, query, timeout, user_agent):
     #print("sleeping before download")
