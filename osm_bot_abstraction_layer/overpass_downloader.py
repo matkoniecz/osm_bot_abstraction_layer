@@ -17,8 +17,12 @@ def download_overpass_query(query, filepath, timeout=1500, user_agent='overpass 
     with open(filepath, 'w+') as file:
         file.write(get_response_from_overpass_server(server, query, timeout, user_agent))
 
-def sleep_before_retry(error_summary):
+def sleep_before_retry(error_summary, api_url):
     print("sleeping before retry due to", error_summary)
+    status_url = api_url.replace("/interpreter", "/status")
+    r = requests.get(status_url)
+    print(r)
+    print(r.text)
     sleep(100)
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
@@ -28,22 +32,24 @@ def get_response_from_overpass_server(api_url, query, timeout, user_agent):
     while True:
         try:
             response = single_query_run(api_url, query, timeout, user_agent)
-            if response.status_code != 429 and response.status_code != 503:
+            # 429 and 503 indicate rate limiting
+            # 504 appears to be a bug https://github.com/drolbr/Overpass-API/issues/220
+            if response.status_code not in [429, 503, 504]:
                 return response.content.decode('utf-8')
-            sleep_before_retry(str(response.status_code) + " error code (response received)")
+            sleep_before_retry(str(response.status_code) + " error code (response received)", api_url)
             continue
         except requests.exceptions.ConnectionError as e:
             print(e)
-            sleep_before_retry("requests.exceptions.ConnectionError")
+            sleep_before_retry("requests.exceptions.ConnectionError", api_url)
             continue
         except requests.exceptions.HTTPError as e:
             print(e.response.status_code)
             if e.response.status_code == 429 or e.response.status_code == 503:
-                sleep_before_retry(e.response.status_code + " error code (HTTPError thrown)")
+                sleep_before_retry(e.response.status_code + " error code (HTTPError thrown)", api_url)
                 continue
             raise e
         except requests.exceptions.ReadTimeout as e:
-            sleep_before_retry("timeout")
+            sleep_before_retry("timeout", api_url)
             continue
     print("overpass query failed!")
 
