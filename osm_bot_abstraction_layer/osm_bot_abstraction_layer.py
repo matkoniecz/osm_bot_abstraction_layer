@@ -107,19 +107,19 @@ def output_full_comment_get_comment_within_limit(affected_objects_description, c
     print(full_comment)
     return comment
 
-def make_edit(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, type, data, source, sleeping_time=60, other_tags_dict={}):
+def make_edit(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, element_type, data, source, sleeping_time=60, other_changeset_tags_dict={}):
     api = get_correct_api(automatic_status, discussion_url)
-    builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict)
+    builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_changeset_tags_dict)
     builder.create_changeset(api)
-    update_element(api, type, data)
+    update_element(api, element_type, data)
     api.ChangesetClose()
     if sleeping_time != 0:
         sleep(sleeping_time)
 
 def get_and_verify_data(osm_object_url, prerequisites, prerequisite_failure_callback=None):
-    type = osm_object_url.split("/")[3]
+    element_type = osm_object_url.split("/")[3]
     id = osm_object_url.split("/")[4]
-    data = get_data(id, type)
+    data = get_data(id, element_type)
     if data == None:
         return None
     failure = prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisite_failure_callback)
