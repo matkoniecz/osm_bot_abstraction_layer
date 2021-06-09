@@ -20,11 +20,13 @@ def download_overpass_query(query, filepath, timeout=1500, user_agent='overpass 
 
 def sleep_before_retry(error_summary, api_url):
     print("sleeping before retry due to", error_summary)
+    print()
+    print("info from /status endpoint about our quota:")
     status_url = api_url.replace("/interpreter", "/status")
     r = requests.get(status_url)
-    print(r)
     print(r.text)
     sleep(100)
+    print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
 def get_response_from_overpass_server(api_url, query, timeout, user_agent):
