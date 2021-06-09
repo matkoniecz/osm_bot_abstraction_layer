@@ -4,6 +4,7 @@ import time
 from tqdm import tqdm
 import random
 from datetime import datetime
+import lxml.etree # https://stackoverflow.com/questions/41066480/lxml-error-on-windows-attributeerror-module-lxml-has-no-attribute-etree#50529460
 
 def sleep(time_in_s):
     for i in tqdm(range(time_in_s*10), ascii=True):
@@ -32,6 +33,41 @@ def get_response_from_overpass_server(api_url, query, timeout, user_agent):
     while True:
         try:
             response = single_query_run(api_url, query, timeout, user_agent)
+            # response that may be still a failure such as timeout, see https://github.com/drolbr/Overpass-API/issues/577
+            # following response should be treated as a failure
+            """
+            <?xml version="1.0" encoding="UTF-8"?>
+            <osm version="0.6" generator="Overpass API 0.7.56.9 76e5016d">
+            <note>The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.</note>
+            <meta osm_base="2021-06-09T08:22:58Z"/>
+
+            <remark> runtime error: Query timed out in "query" at line 4 after 2 seconds. </remark>
+
+            </osm>
+            """
+            if response.status_code == 200:
+                if "[out:json]" in query:
+                    raise unhandled
+                response_length = len(response.content.decode('utf-8'))
+                print("response length:", response_length)
+                # very long indicates that data was returned, some may be some massive that parsing would be outrageously expensive
+                if response_length < 10_000:
+                    """"
+                    print("==================================================================")
+                    print("================RESPONSE==========================================")
+                    print(response.content.decode('utf-8'))
+                    print("==================================================================")
+                    print("================REMARK============================================")
+                    print(parsed.find('remark'))
+                    print("==================================================================")
+                    print("================NOT EXISTING=======================================")
+                    print(parsed.find('remarad0ddadsjjdasjadadsjdahadhadk'))
+                    """
+                    parsed = lxml.etree.fromstring(response.content) # yes, without .decode('utf-8')
+                    if parsed.find('remark') != None:
+                        raise Exception('timeout in query or other failure!' + query)
+
+
             # 429 and 503 indicate rate limiting
             # 504 appears to be a bug https://github.com/drolbr/Overpass-API/issues/220
             if response.status_code not in [429, 503, 504]:
