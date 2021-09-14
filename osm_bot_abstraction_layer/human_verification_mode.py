@@ -392,6 +392,12 @@ def is_expected_tag(key, value, tags, special_expected):
     if tags.get('amenity') == "atm":
         if is_valid_wheelchair_tag(key, value):
             return True
+        if key == "opening_hours" and value == "24/7":
+            return True
+        if key == "operator" and value in ["Euronet"]:
+            return True
+        if key == "cash_in" and value in ["yes", "no"]:
+            return True
     if is_fuel_station(tags):
         if get_text_before_first_colon(key) == "fuel":
             return True
