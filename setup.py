@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="osm_bot_abstraction_layer",
-    version="0.0.10",
+    version="0.0.11",
     author="Mateusz Konieczny",
     author_email="matkoniecz@gmail.com",
     description="A tool for easier automation of OSM edits without causing problems.",
