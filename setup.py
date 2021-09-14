@@ -20,6 +20,7 @@ setuptools.setup(
         'osm_iterator>=1.1.0, <2.0',
         'tqdm>4.47.0, <5.0',
         'lxml>=3.5.0',
+        'urllib3>=1.25.8',
         # webbrowser is  part of stdlib https://stackoverflow.com/a/47926698
     ],
     classifiers=[

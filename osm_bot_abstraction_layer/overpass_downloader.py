@@ -5,18 +5,15 @@ from tqdm import tqdm
 import random
 from datetime import datetime
 import lxml.etree # https://stackoverflow.com/questions/41066480/lxml-error-on-windows-attributeerror-module-lxml-has-no-attribute-etree#50529460
+import urllib3
 
 def sleep(time_in_s):
     for i in tqdm(range(time_in_s*10), ascii=True):
         time.sleep(0.1)
 
-def download_overpass_query(query, filepath, timeout=1500, user_agent='overpass downloader for OSM bot (if it is overusing resources, please block it and contact matkoniecz@gmail.com)'):
-    # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
-    faster_server ="https://lz4.overpass-api.de/api/interpreter"
-    alt_server = "http://z.overpass-api.de/api/interpreter"
-    server = random.choice([faster_server, alt_server])
+def download_overpass_query(query, filepath, timeout=None, user_agent='overpass downloader for OSM bot (if it is overusing resources, please block it and contact matkoniecz@gmail.com)'):
     with open(filepath, 'w+') as file:
-        file.write(get_response_from_overpass_server(server, query, timeout, user_agent))
+        file.write(get_response_from_overpass_server(query, timeout, user_agent))
 
 def sleep_before_retry(error_summary, api_url):
     print("sleeping before retry due to", error_summary)
@@ -29,11 +26,28 @@ def sleep_before_retry(error_summary, api_url):
     print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
-def get_response_from_overpass_server(api_url, query, timeout, user_agent):
+def get_response_from_overpass_server(query, timeout, user_agent):
     #print("sleeping before download")
     #sleep(20)
+    time_of_query_start = None
     while True:
         try:
+            # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
+            faster_server ="https://lz4.overpass-api.de/api/interpreter"
+            alt_server = "http://z.overpass-api.de/api/interpreter"
+            french_server = "https://overpass.openstreetmap.fr/api/interpreter"
+            api_url = random.choice([faster_server, alt_server, french_server])
+            print("using", api_url)
+            if "is_closed" in query:
+                if api_url == french_server:
+                    print("skipping as french server is not supporting is_closed (as of 2021-07-20) - new server will be randomised - note that this check is dumb and will skip also when it is in comment/tag/etc. see https://github.com/osm-fr/infrastructure/issues/323 ")
+                    continue
+            if "nwr(" in query or "nwr[" in query:
+                if api_url == french_server:
+                    print("skipping as french server is not supporting nwr shortcut (as of 2021-08-27) - new server will be randomised - note that this check is dumb and will skip also when it is in comment/tag/etc, see https://github.com/osm-fr/infrastructure/issues/323")
+                    continue
+
+            time_of_query_start = time.time()
             response = single_query_run(api_url, query, timeout, user_agent)
             # response that may be still a failure such as timeout, see https://github.com/drolbr/Overpass-API/issues/577
             # following response should be treated as a failure
@@ -72,7 +86,8 @@ def get_response_from_overpass_server(api_url, query, timeout, user_agent):
 
             # 429 and 503 indicate rate limiting
             # 504 appears to be a bug https://github.com/drolbr/Overpass-API/issues/220
-            if response.status_code not in [429, 503, 504]:
+            # 400 returned on syntax error
+            if response.status_code == 200:
                 return response.content.decode('utf-8')
             sleep_before_retry(str(response.status_code) + " error code (response received)", api_url)
             continue
@@ -87,11 +102,63 @@ def get_response_from_overpass_server(api_url, query, timeout, user_agent):
                 continue
             raise e
         except requests.exceptions.ReadTimeout as e:
-            sleep_before_retry("timeout", api_url)
+            time_now = time.time()
+            time_used_for_query_in_s = time_of_query_start - time_now
+            failure_explanation = "timeout (after " + str(time_used_for_query_in_s) + ", timeout passed to query was " + str(timeout) + " - if it is None then it defaulted to some value)"
+            sleep_before_retry(failure_explanation, api_url)
             continue
+        except requests.exceptions.ChunkedEncodingError as e:
+            print(e)
+            sleep_before_retry("requests.exceptions.ChunkedEncodingError", api_url)
+            continue
+        except urllib3.exceptions.ProtocolError as e:
+            print(e)
+            sleep_before_retry("urllib3.exceptions.ProtocolError", api_url)
+            continue
+
     print("overpass query failed!")
 
+def parse_overpass_query_to_get_timeout(query):
+    if ";" not in query:
+        print("no ; in query so also no config header...")
+        return
+    query = query.split(";")[0]
+    # [out:xml][timeout:1000];
+
+    if "timeout" not in query:
+        print("no timeout in query so also no timeout config")
+        return
+    query = query[query.find("timeout"):]
+    print("snipped query:", query)
+    # timeout:1000];
+    if ":" not in query:
+        return
+    query = query.split(":")[1]
+    # 1000];
+    print("snipped query:", query)
+    if "]" not in query:
+        return
+    query = query.split("]")[0]
+    # 1000
+    print("snipped query:", query)
+    print("timeout:", int(query))
+    return int(query)
+
 def single_query_run(api_url, query, timeout, user_agent):
+    if timeout == None:
+        print("Timeout in osm_bot_abstraction_layer.overpass_downloader.single_query_run was not specified! Trying to parse the query text to obtain it")
+        print("query")
+        print(query)
+        print()
+        print("parsing attempt")
+        timeout = parse_overpass_query_to_get_timeout(query)
+        if timeout == None:
+            print("parsing failed, defaulting to 60 seconds")
+            timeout = 60
+        print(timeout)
+        print()
+        print()
+        print()
     print("downloading " + query)
     response = requests.post(
         api_url,
