@@ -63,7 +63,7 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             """
             if response.status_code == 200:
                 if "[out:json]" in query:
-                    raise unhandled
+                    raise "json format reponse is unhandled - do you really need json?"
                 response_length = len(response.content.decode('utf-8'))
                 print("response length:", response_length)
                 # very long indicates that data was returned, some may be some massive that parsing would be outrageously expensive
