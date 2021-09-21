@@ -124,7 +124,7 @@ def is_doctor(tags):
     return is_any_matching_with_tag_listing(tags, doctor_tag_listing())
 
 def brandable_tag_listing():
-    return {'amenity': ["atm"]}
+    return {'amenity': ["atm", "motorcycle_rental"]}
 
 def is_brandable(tags):
     return is_any_matching_with_tag_listing(tags, brandable_tag_listing())
