@@ -34,3 +34,24 @@ def list_of_area_divisions(area_iso_code, admin_level_of_split, temporary_storag
       if names.collected_names() != []:
         return names.collected_names()
     raise area_iso_code + " not found"
+
+def countries_of_a_world(temporary_storage_file):
+    """returns names of counties
+    Note that it includes for example
+    - miniareas with extreme autonomy
+      - Falklands/Faroe Islands https://www.openstreetmap.org/relation/2185374 https://www.openstreetmap.org/relation/52939
+    - countries disliked by some powers and with their existence denied
+      - Taiwan/Western Sahara
+    - tagging mistakes
+
+    coordinate with tag_analysis_ruby/tag_analysis.rb project
+    """
+    query = '[out:xml];relation["admin_level"="2"][boundary=administrative][type!=multilinestring];out tags;'
+    overpass_downloader.download_overpass_query(query, temporary_storage_file)
+    osm = Data(temporary_storage_file)
+    names = NameCollector()
+    osm.iterate_over_data(names)
+    if names.collected_names() != []:
+      return names.collected_names()
+    else:
+      raise
