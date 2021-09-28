@@ -104,7 +104,7 @@ def is_plant(tags):
         return True
     return False
 
-def is_taggable_with_species(tags):
+def is_taggable_with_taxon(tags):
     if is_plant(tags):
         return True
     if tags.get("attraction") in ["enclosure", "animal"]:
@@ -437,11 +437,31 @@ def is_expected_tag(key, value, tags, special_expected):
         if key == "internet_access:fee":
             if value in ["yes", "no"]:
                 return True
-    if is_taggable_with_species(tags):
-        if key in ["species", "species:wikidata", "species:wikipedia"]:
+    if is_taggable_with_taxon(tags):
+        if key in ["species", "species:wikidata", "species:wikipedia",
+                   "genus", "genus:wikidata", "genus:wikipedia",
+                   "taxon", "taxon:wikidata", "taxon:wikipedia"]:
             return True
         for language_code in all_iso_639_1_language_codes():
             if key == "species:" + language_code:
+                return True
+    if tags and tags.get("natural") == "tree":
+        if key == "leaf_type":
+            if value in ["broadleaved", "needleleaved", "palm"]:
+                return True
+        if key == "leaf_cycle":
+            if value in ["deciduous", "evergreen", "semi_deciduous"]:
+                return True
+        if key == "denotation":
+            # https://taginfo.openstreetmap.org/keys/denotation#values
+            if value in ["natural_monument", "landmark", "urban", "avenue", "agricultural"]:
+                return True
+    elif is_plant(tags):
+        if key == "leaf_type":
+            if value in ["broadleaved", "needleleaved", "palm", "mixed"]:
+                return True
+        if key == "leaf_cycle":
+            if value in ["deciduous", "evergreen", "semi_deciduous", "mixed"]:
                 return True
     if tags.get('abandoned:man_made') == "mineshaft":
         if key in ["former_operator:wikidata", "former_operator:wikipedia"]:
