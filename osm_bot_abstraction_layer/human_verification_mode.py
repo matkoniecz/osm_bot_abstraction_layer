@@ -42,6 +42,34 @@ def is_shop(tags):
         return True
     return is_any_matching_with_tag_listing(tags, shop_tag_listing())
 
+def is_tag_expected_for_recycling_place(key, value, tags):
+    expected_tags = {
+        # https://taginfo.openstreetmap.org/search?q=recycling%3A
+        'recycling_type': {'centre', 'container'},
+        'recycling:glass_bottles': {'yes'},
+        'recycling:paper': {'yes'},
+        'recycling:glass': {'yes'},
+        'recycling:clothes': {'yes'},
+        'recycling:cans': {'yes'},
+        'recycling:plastic': {'yes'},
+        'recycling:plastic_bottles': {'yes'},
+        'recycling:plastic_packaging': {'yes'},
+        'recycling:cardboard': {'yes'},
+        'recycling:shoes': {'yes'},
+        'recycling:batteries': {'yes'},
+        'recycling:scrap_metal': {'yes'},
+        'recycling:green_waste': {'yes'},
+        'recycling:paper_packaging': {'yes'},
+    }
+    if key in expected_tags:
+        if value in expected_tags.get(key):
+            return True
+    if key == "operator":
+        if value == "Polski Czerwony Krzyż":
+            if tags['recycling:clothes'] == 'yes':
+                return True
+    return False
+
 def is_settlement(tags):
     if tags.get('place') in ['hamlet', 'village', 'town', 'city']:
         return True
@@ -472,6 +500,9 @@ def is_expected_tag(key, value, tags, special_expected):
                 return True
     if is_acceptable_source_tag(key, value, tags):
         return True
+    if tags.get("amenity") == "recycling":
+        if is_tag_expected_for_recycling_place(key, value, tags):
+            return True
     return False
 
 def smart_print_tag_dictionary(tags, special_expected={}):
