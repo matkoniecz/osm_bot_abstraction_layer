@@ -4,6 +4,7 @@ import osm_bot_abstraction_layer.human_verification_mode as human_verification_m
 from osm_bot_abstraction_layer.split_into_packages import Package
 from osm_iterator.osm_iterator import Data
 import time
+import osmapi
 
 def splitter_generator(edit_element):
     def splitter_generated(element):
@@ -30,15 +31,44 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     return api
 
 def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
-    api = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
+    changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
     for element in package.list:
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
         if is_edit_allowed(is_in_manual_mode, element.get_link()):
-            osm_bot_abstraction_layer.update_element(api, element.element.tag, data)
+            retry_remaining_attempts = 5
+            while retry_remaining_attempts > 0:
+                retry_remaining_attempts -= 1
+                try:
+                    osm_bot_abstraction_layer.update_element(changeset, element.element.tag, data)
+                    break # completed succesfully, no need to repeat
+                except osmapi.ApiError as e:
+                    if is_exception_about_already_closed_changeset(e):
+                        changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
+                        continue # ugly but... https://stackoverflow.com/a/2083996/4130619
+                    else:
+                        print("error! Paused for review. Press enter to continue.")
+                        input()
+                except Exception as e:
+                    print("some other exception happened")
         print()
         print()
-    api.ChangesetClose()
+    try:
+      changeset.ChangesetClose()
+    except osmapi.ApiError as e:
+      if is_exception_about_already_closed_changeset(e):
+        pass
+      else:
+        raise e
     sleep_after_edit(is_in_manual_mode)
+
+def is_exception_about_already_closed_changeset(exception):
+    print(str(exception))
+    print("was closed at" in str(exception))
+    print("******")
+    if "was closed at" in str(exception): # there is no more specific exception... https://github.com/metaodi/osmapi/issues/115
+      return True
+    else:
+      return False
 
 def is_edit_allowed(is_in_manual_mode, link):
     if is_in_manual_mode == False:
