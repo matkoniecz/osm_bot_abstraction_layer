@@ -130,6 +130,16 @@ out skel qt;
 download_overpass_query(vienna_download, '/tmp/vienna.osm')
 ```
 
+## Show internal administrative division of Iran
+
+See [docs at OSM Wiki](https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative#admin_level.3D.2A_Country_specific_values) how internal administrative structure is tagged
+
+```
+import osm_bot_abstraction_layer.world_data as world_data
+print(world_data.list_of_area_divisions('IR', 4, '/tmp/boundary_data.osm'))
+```
+
+Returns array of names (from `name` tag, so should contain local ones).
 
 # Further documentation
 
