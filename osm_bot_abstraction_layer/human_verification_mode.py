@@ -93,6 +93,8 @@ def is_indoor_poi(tags):
         return True
     if tags.get("tourism") in ["museum"]:
         return True
+    if tags.get('office') in valid_office_values():
+        return True
     return False
 
 def is_rentable_sleeping_place(tags):
@@ -152,7 +154,10 @@ def is_doctor(tags):
     return is_any_matching_with_tag_listing(tags, doctor_tag_listing())
 
 def brandable_tag_listing():
-    return {'amenity': ["atm", "motorcycle_rental"]}
+    return {'amenity': ["atm", "motorcycle_rental"], 'office': valid_office_values()}
+
+def valid_office_values():
+    return ['insurance']
 
 def is_brandable(tags):
     return is_any_matching_with_tag_listing(tags, brandable_tag_listing())
