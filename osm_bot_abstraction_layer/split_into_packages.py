@@ -7,6 +7,7 @@ its purpose is to group nearby elements to reduce number of edits made to change
 
 class Package:
     def __init__(self, element, max_count=5, max_bbox_size_in_degrees=0.1):
+        """element is object provided by osm_iterator"""
         self.bbox = element.get_bbox()
         if self.bbox == None:
             print("warning: element " + element.get_link() + " has no known bounding box!")
