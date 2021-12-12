@@ -140,6 +140,7 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     osm = Data(objects_to_consider_query_storage_file)
     osm.iterate_over_data(splitter_generator(edit_element_function))
 
+    # list_of_elements is filled with above function, elements are osm_iterator.Element objects
     packages = Package.split_into_packages(list_of_elements, max_count_of_elements_in_one_changeset)
     if len(list_of_elements) == 0:
         print("no elements found for editing among", checked_element_count, "checked items, skipping!")
