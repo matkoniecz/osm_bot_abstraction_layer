@@ -56,7 +56,7 @@ Create `secret.json` file with content like this:
 	},
 	"human_account": {
 		"username": "Your OSM username for a human operated account",
-		"password": "t?\q~,?m;2l?Dd$cKc`?n9PeSDBjj/"
+		"password": "t?\\q~,?m;2l?Dd$cKc`?n9PeSDBjj/"
 	}
 }
 ```
