@@ -35,8 +35,8 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
             faster_server ="https://lz4.overpass-api.de/api/interpreter"
             alt_server = "http://z.overpass-api.de/api/interpreter"
-            french_server = "https://overpass.openstreetmap.fr/api/interpreter"
-            api_url = random.choice([faster_server, alt_server, french_server])
+            french_server = "https://overpass.openstreetmap.fr/api/interpreter" # dead as of 2022-02-17
+            api_url = random.choice([faster_server, alt_server])
             print("using", api_url)
             if "is_closed" in query:
                 if api_url == french_server:
