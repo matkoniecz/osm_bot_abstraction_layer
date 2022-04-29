@@ -60,6 +60,27 @@ def get_data(id, type):
     assert(False)
 
 def update_element(api, type, data):
+    """
+    Updates object with the supplied data dict.
+
+    For nodes:
+        #!python
+        {
+            'id': id of node,
+            'lat': latitude of node,
+            'lon': longitude of node,
+            'tag': {},
+            'version': version number of node,
+        }
+
+    https://github.com/metaodi/osmapi/blob/master/osmapi/OsmApi.py#L308
+    https://github.com/metaodi/osmapi/blob/dccb636e1e07b56c936a454997bc2763fb1d8031/osmapi/OsmApi.py#L308
+
+    For ways?:
+
+    For relations?:
+    """
+
     try:
         if type == 'node':
             return api.NodeUpdate(data)
