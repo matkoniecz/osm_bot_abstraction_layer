@@ -66,7 +66,7 @@ def is_tag_expected_for_recycling_place(key, value, tags):
             return True
     if key == "operator":
         if value == "Polski Czerwony Krzyż":
-            if tags['recycling:clothes'] == 'yes':
+            if tags.get("recycling:clothes") == "yes":
                 return True
     return False
 
