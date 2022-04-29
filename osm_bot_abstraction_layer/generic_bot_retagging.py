@@ -31,7 +31,7 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     return api
 
 def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
-    changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
+    changeset = None
     for element in package.list:
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
         if is_edit_allowed(is_in_manual_mode, element.get_link()):
@@ -39,11 +39,13 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
             while retry_remaining_attempts > 0:
                 retry_remaining_attempts -= 1
                 try:
+                    if changeset == None:
+                        changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
                     osm_bot_abstraction_layer.update_element(changeset, element.element.tag, data)
                     break # completed succesfully, no need to repeat
                 except osmapi.ApiError as e:
                     if is_exception_about_already_closed_changeset(e):
-                        changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
+                        changeset = None
                         continue # ugly but... https://stackoverflow.com/a/2083996/4130619
                     else:
                         print("error! Paused for review. Press enter to continue.")
