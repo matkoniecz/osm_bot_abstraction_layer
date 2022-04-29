@@ -26,10 +26,17 @@ def sleep_before_retry(error_summary, api_url):
     print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
+def show_retry_number(retry_count):
+    if retry_count>0:
+        print("retry number " + str(retry_count))
+    else:
+        print("the first attempt")
+
 def get_response_from_overpass_server(query, timeout, user_agent):
     #print("sleeping before download")
     #sleep(20)
     time_of_query_start = None
+    retry_count = 0
     while True:
         try:
             # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
@@ -48,7 +55,11 @@ def get_response_from_overpass_server(query, timeout, user_agent):
                     continue
 
             time_of_query_start = time.time()
-            response = single_query_run(api_url, query, timeout, user_agent)
+            if retry_count>0:
+                response = single_query_run(api_url, query, timeout, user_agent, "retry number " + str(retry_count))
+            else:
+                response = single_query_run(api_url, query, timeout, user_agent, "the first attempt")
+            show_retry_number(retry_count)
             # response that may be still a failure such as timeout, see https://github.com/drolbr/Overpass-API/issues/577
             # following response should be treated as a failure
             """
@@ -89,15 +100,18 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             # 400 returned on syntax error
             if response.status_code == 200:
                 return response.content.decode('utf-8')
+            show_retry_number(retry_count)
             sleep_before_retry(str(response.status_code) + " error code (response received)", api_url)
             continue
         except requests.exceptions.ConnectionError as e:
             print(e)
+            show_retry_number(retry_count)
             sleep_before_retry("requests.exceptions.ConnectionError", api_url)
             continue
         except requests.exceptions.HTTPError as e:
             print(e.response.status_code)
             if e.response.status_code == 429 or e.response.status_code == 503:
+                show_retry_number(retry_count)
                 sleep_before_retry(e.response.status_code + " error code (HTTPError thrown)", api_url)
                 continue
             raise e
@@ -105,17 +119,20 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             time_now = time.time()
             time_used_for_query_in_s = time_of_query_start - time_now
             failure_explanation = "timeout (after " + str(time_used_for_query_in_s) + ", timeout passed to query was " + str(timeout) + " - if it is None then it defaulted to some value)"
+            show_retry_number(retry_count)
             sleep_before_retry(failure_explanation, api_url)
             continue
         except requests.exceptions.ChunkedEncodingError as e:
             print(e)
+            show_retry_number(retry_count)
             sleep_before_retry("requests.exceptions.ChunkedEncodingError", api_url)
             continue
         except urllib3.exceptions.ProtocolError as e:
             print(e)
+            show_retry_number(retry_count)
             sleep_before_retry("urllib3.exceptions.ProtocolError", api_url)
             continue
-
+        retry_count += 1
     print("overpass query failed!")
 
 def parse_overpass_query_to_get_timeout(query):
