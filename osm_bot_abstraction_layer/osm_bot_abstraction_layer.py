@@ -55,9 +55,15 @@ def get_data(id, type):
             return api.WayGet(id)
         if type == 'relation':
             return api.RelationGet(id)
+        if type == 'note':
+            return api.NoteGet(id)
     except osmapi.ElementDeletedApiError:
         return None
     assert(False)
+
+def close_note(noteId, comment):
+    api = get_api('bot_account')
+    api.NoteClose(noteId, comment)
 
 def update_element(api, type, data):
     """

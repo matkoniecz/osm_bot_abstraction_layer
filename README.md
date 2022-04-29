@@ -130,6 +130,29 @@ out skel qt;
 download_overpass_query(vienna_download, '/tmp/vienna.osm')
 ```
 
+## Handling note spam
+
+```
+from osm_bot_abstraction_layer import osm_bot_abstraction_layer
+import osmapi
+
+for id in range(3158344, 3158710):
+	print(id)
+	data = osm_bot_abstraction_layer.get_data(id, "note")
+	text = data['comments'][0]['text']
+	print("----")
+	print(text)
+	print("----")
+	if text in ["tf"]:
+		try:
+			osm_bot_abstraction_layer.close_note(id, "Bot goes brrrrrrr. Spam cleanup.")
+		except osmapi.ApiError as e:
+			if "was closed at" in str(e):
+				pass
+			else:
+				raise
+```
+
 ## Show internal administrative division of Iran
 
 See [docs at OSM Wiki](https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative#admin_level.3D.2A_Country_specific_values) how internal administrative structure is tagged
