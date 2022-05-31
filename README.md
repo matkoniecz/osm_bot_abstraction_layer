@@ -145,7 +145,7 @@ for id in range(3158344, 3158710):
 	print("----")
 	if text in ["tf"]:
 		try:
-			osm_bot_abstraction_layer.close_note(id, "Bot goes brrrrrrr. Spam cleanup.")
+			osm_bot_abstraction_layer.close_note(id, "Bot goes brrrrrrr. Spam cleanup.", 'bot_account')
 		except osmapi.ApiError as e:
 			# nicer exception requested in https://github.com/metaodi/osmapi/issues/135
 			if "was closed at" in str(e):

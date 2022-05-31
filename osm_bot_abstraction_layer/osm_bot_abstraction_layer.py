@@ -61,8 +61,8 @@ def get_data(id, type):
         return None
     assert(False)
 
-def close_note(noteId, comment):
-    api = get_api('bot_account')
+def close_note(noteId, comment, api_code):
+    api = get_api(api_code)
     api.NoteClose(noteId, comment)
 
 def update_element(api, type, data):
