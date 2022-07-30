@@ -118,7 +118,7 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             raise e
         except requests.exceptions.ReadTimeout as e:
             time_now = time.time()
-            time_used_for_query_in_s = time_of_query_start - time_now
+            time_used_for_query_in_s = time_now - time_of_query_start
             failure_explanation = "timeout (after " + str(time_used_for_query_in_s) + ", timeout passed to query was " + str(timeout) + " - if it is None then it defaulted to some value)"
             show_retry_number(retry_count)
             sleep_before_retry(failure_explanation, api_url)
