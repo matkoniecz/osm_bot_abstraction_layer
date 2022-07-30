@@ -55,7 +55,8 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
         print()
         print()
     try:
-      changeset.ChangesetClose()
+      if changeset != None:
+        changeset.ChangesetClose()
     except osmapi.ApiError as e:
       if is_exception_about_already_closed_changeset(e):
         pass
