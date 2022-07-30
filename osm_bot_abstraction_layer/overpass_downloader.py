@@ -36,8 +36,9 @@ def get_response_from_overpass_server(query, timeout, user_agent):
     #print("sleeping before download")
     #sleep(20)
     time_of_query_start = None
-    retry_count = 0
+    retry_count = -1
     while True:
+        retry_count += 1
         try:
             # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
             faster_server ="https://lz4.overpass-api.de/api/interpreter"
@@ -132,7 +133,6 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             show_retry_number(retry_count)
             sleep_before_retry("urllib3.exceptions.ProtocolError", api_url)
             continue
-        retry_count += 1
     print("overpass query failed!")
 
 def parse_overpass_query_to_get_timeout(query):
