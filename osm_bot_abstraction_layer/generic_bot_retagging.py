@@ -89,9 +89,8 @@ def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_functi
     if old == data['tag']:
         # may be not editable in case of lags in Overpass API database
         # or concurrent edits 
-        print("Element has new version no longer eligible for an edit!")
-        print("Probably Overpass returned outdated data! There is a concurrent edit!")
-        raise RuntimeError
+        error = "Element has new version - no longer eligible for an edit! \n Probably Overpass returned outdated data! There is a concurrent edit!\n\nNote also database lag - see https://wiki.openstreetmap.org/wiki/Overpass_API#Limitations"
+        raise RuntimeError(error)
     print()
     human_verification_mode.smart_print_tag_dictionary(data['tag'])
     return data
