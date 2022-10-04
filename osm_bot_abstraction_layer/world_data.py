@@ -1,17 +1,19 @@
 import osm_bot_abstraction_layer.overpass_downloader as overpass_downloader
 from osm_iterator.osm_iterator import Data
     
-class NameCollector( object ):
-    def __init__( self ):
-        self.names = []
+class DataCollector( object ):
+    def __init__( self, collected_keys ):
+        self.data = []
+        self.collected_keys = collected_keys
 
     def __call__( self, element ):
-      name = element.get_tag_value("name")
-      if name != None:
-        self.names.append(name)
+      collected = {}
+      for key in self.collected_keys:
+        collected[key] = element.get_tag_value(key)
+      self.data.append(collected)
 
-    def collected_names (self):
-      return self.names
+    def collected_data (self):
+      return self.data
 
 def list_of_area_divisions_query(iso_tag, area_iso_code, admin_level_of_split):
     return """[out:xml][timeout:3600];
@@ -22,21 +24,23 @@ def list_of_area_divisions_query(iso_tag, area_iso_code, admin_level_of_split):
   );
   out tags;"""
 
-def list_of_area_divisions(area_iso_code, admin_level_of_split, temporary_storage_file):
-    """returns list with names of subdivisions of area with specific iso code
-    (for example PL for Poland), at specified aministrative level"""
+def list_of_area_divisions_data(area_iso_code, admin_level_of_split, collected, temporary_storage_file):
+    """returns data about subdivisions of area with specific iso code
+     (for example PL for Poland), at specified aministrative level
+    returns list with dictionaries with set of tags for each of subdivisions
+   """
     for iso_tag in ["ISO3166-1", "ISO3166-1:alpha2", "ISO3166-2"]:
       internal_division_query = list_of_area_divisions_query(iso_tag, area_iso_code, admin_level_of_split)
       overpass_downloader.download_overpass_query(internal_division_query, temporary_storage_file)
       osm = Data(temporary_storage_file)
-      names = NameCollector()
-      osm.iterate_over_data(names)
-      if names.collected_names() != []:
-        return names.collected_names()
+      data_collector = DataCollector(collected)
+      osm.iterate_over_data(data_collector)
+      if data_collector.data != []:
+        return data_collector.data
     raise area_iso_code + " not found"
 
 def countries_of_a_world(temporary_storage_file):
-    """returns names of counties
+    """returns names of countries
     Note that it includes for example
     - miniareas with extreme autonomy
       - Falklands/Faroe Islands https://www.openstreetmap.org/relation/2185374 https://www.openstreetmap.org/relation/52939

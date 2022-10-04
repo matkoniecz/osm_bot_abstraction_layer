@@ -160,10 +160,10 @@ See [docs at OSM Wiki](https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadmini
 
 ```
 import osm_bot_abstraction_layer.world_data as world_data
-print(world_data.list_of_area_divisions('IR', 4, '/tmp/boundary_data.osm'))
+print(world_data.list_of_area_division_data('IR', 4, ["name", "wikidata"], '/tmp/boundary_data.osm'))
 ```
 
-Returns array of names (from `name` tag, so should contain local ones).
+Returns list of dicts with names (from `name` tag, so should contain local ones) and wikidata codes.
 
 # Further documentation
 

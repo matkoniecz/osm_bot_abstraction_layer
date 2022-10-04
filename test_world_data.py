@@ -3,7 +3,7 @@ import osm_bot_abstraction_layer.world_data as world_data
 
 class Tests(unittest.TestCase):
     def test_voivodeship_count_in_poland(self):
-        data = world_data.list_of_area_divisions("PL", 4, "/tmp/test_file_PL_4.osm")
+        data = world_data.list_of_area_divisions_data("PL", 4, "name", "/tmp/test_file_PL_4.osm")
         #print(data)
         #print(len(data))
 
