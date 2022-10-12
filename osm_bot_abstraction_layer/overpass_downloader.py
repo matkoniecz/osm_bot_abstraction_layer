@@ -80,17 +80,6 @@ def get_response_from_overpass_server(query, timeout, user_agent):
                 print("response length:", response_length)
                 # very long indicates that data was returned, some may be some massive that parsing would be outrageously expensive
                 if response_length < 10_000:
-                    """"
-                    print("==================================================================")
-                    print("================RESPONSE==========================================")
-                    print(response.content.decode('utf-8'))
-                    print("==================================================================")
-                    print("================REMARK============================================")
-                    print(parsed.find('remark'))
-                    print("==================================================================")
-                    print("================NOT EXISTING=======================================")
-                    print(parsed.find('remarad0ddadsjjdasjadadsjdahadhadk'))
-                    """
                     parsed = lxml.etree.fromstring(response.content) # yes, without .decode('utf-8')
                     if parsed.find('remark') != None:
                         raise Exception('timeout in query or other failure!' + query)
