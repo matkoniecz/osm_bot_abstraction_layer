@@ -130,7 +130,7 @@ def parse_overpass_query_to_get_timeout(query):
     return int(query)
 
 def single_query_run(api_url, query, timeout, user_agent, extra_info=None):
-    print("downloading " + query)
+    print("single_query_run: downloading " + query)
     if timeout == None:
         print("Timeout in osm_bot_abstraction_layer.overpass_downloader.single_query_run was not specified! Trying to parse the query text to obtain it")
         timeout = parse_overpass_query_to_get_timeout(query)
