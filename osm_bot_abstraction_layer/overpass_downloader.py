@@ -146,7 +146,6 @@ def single_query_run(api_url, query, timeout, user_agent, extra_info=None):
         print(timeout)
         print()
         print()
-        print()
     else:
         print("timeout specified to be ", timeout)
     print("download is now started, with timeout", timeout, "at", datetime.now())
