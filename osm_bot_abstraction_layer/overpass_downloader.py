@@ -26,12 +26,6 @@ def sleep_before_retry(error_summary, api_url):
     print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
-def show_retry_number(retry_count):
-    if retry_count>0:
-        print("retry number " + str(retry_count))
-    else:
-        print("the first attempt")
-
 def get_response_from_overpass_server(query, timeout, user_agent):
     #print("sleeping before download")
     #sleep(20)
@@ -51,7 +45,6 @@ def get_response_from_overpass_server(query, timeout, user_agent):
                 response = single_query_run(api_url, query, timeout, user_agent, "retry number " + str(retry_count))
             else:
                 response = single_query_run(api_url, query, timeout, user_agent, "the first attempt")
-            show_retry_number(retry_count)
             # response that may be still a failure such as timeout, see https://github.com/drolbr/Overpass-API/issues/577
             # following response should be treated as a failure
             """
