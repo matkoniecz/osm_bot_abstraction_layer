@@ -120,7 +120,6 @@ def parse_overpass_query_to_get_timeout(query):
         print("no timeout in query so also no timeout config")
         return
     query = query[query.find("timeout"):]
-    #print("snipped query:", query)
     # now it should be reduced to something like:
     # timeout:1000];
     if ":" not in query:
@@ -128,13 +127,11 @@ def parse_overpass_query_to_get_timeout(query):
     query = query.split(":")[1]
     # now it should be reduced to something like:
     # 1000];
-    #print("snipped query:", query)
     if "]" not in query:
         return
     query = query.split("]")[0]
     # now it should be reduced to something like:
     # 1000
-    #print("snipped query:", query)
     print("timeout:", int(query))
     return int(query)
 
