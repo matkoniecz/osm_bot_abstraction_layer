@@ -30,6 +30,9 @@ def list_of_area_divisions_data(area_iso_code, admin_level_of_split, collected, 
     returns list with dictionaries with set of tags for each of subdivisions
    """
     for iso_tag in ["ISO3166-1", "ISO3166-1:alpha2", "ISO3166-2"]:
+      if "-" in area_iso_code and iso_tag in ["ISO3166-1", "ISO3166-1:alpha2"]:
+        print("skipping", iso_tag, "as it is impossible to find correct match with such code")
+        continue
       internal_division_query = list_of_area_divisions_query(iso_tag, area_iso_code, admin_level_of_split)
       overpass_downloader.download_overpass_query(internal_division_query, temporary_storage_file)
       osm = Data(temporary_storage_file)
