@@ -29,7 +29,8 @@ def list_of_area_divisions_data(area_iso_code, admin_level_of_split, collected, 
      (for example PL for Poland), at specified aministrative level
     returns list with dictionaries with set of tags for each of subdivisions
    """
-    for iso_tag in ["ISO3166-1", "ISO3166-1:alpha2", "ISO3166-2"]:
+    keys_checked = ["ISO3166-1", "ISO3166-1:alpha2", "ISO3166-2"]
+    for iso_tag in keys_checked:
       if "-" in area_iso_code and iso_tag in ["ISO3166-1", "ISO3166-1:alpha2"]:
         print("skipping", iso_tag, "as it is impossible to find correct match with such code")
         continue
@@ -40,7 +41,7 @@ def list_of_area_divisions_data(area_iso_code, admin_level_of_split, collected, 
       osm.iterate_over_data(data_collector)
       if data_collector.data != []:
         return data_collector.data
-    raise area_iso_code + " not found"
+    raise Exception(area_iso_code + " not found, checked " + str(keys_checked) + " or it has no" + str(admin_level_of_split) + "boundary level - see https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative")
 
 def countries_of_a_world(temporary_storage_file):
     """returns names of countries
