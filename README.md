@@ -119,6 +119,8 @@ main()
 ```
 ## Downloading data
 
+### Using Overpass
+
 ```python
 from osm_bot_abstraction_layer.overpass_downloader import download_overpass_query
 
@@ -132,6 +134,56 @@ out body;
 out skel qt;
 """
 download_overpass_query(vienna_download, '/tmp/vienna.osm')
+```
+
+### Using OSM Editing API
+
+Create `secret.json` file with
+
+```
+
+{
+	"bot_account": {
+		"username": "OSM user name",
+		"password": "password in plaintext"
+	}
+}
+```
+
+```
+import osm_bot_abstraction_layer.osm_bot_abstraction_layer as osm_bot_abstraction_layer
+import json
+
+id = 1
+type = "node"
+returned = osm_bot_abstraction_layer.get_data(id, type)
+json.dumps(returned, default=str, indent=3)
+```
+
+it will give output like
+
+```
+{
+   "id": 1,
+   "visible": true,
+   "version": 33,
+   "changeset": 124176968,
+   "timestamp": "2022-07-28 09:47:39",
+   "user": "owene",
+   "uid": 29598,
+   "lat": 42.7957187,
+   "lon": 13.5690032,
+   "tag": {
+      "communication:microwave": "yes",
+      "communication:radio": "fm",
+      "description": "Radio Subasio",
+      "frequency": "105.5 MHz",
+      "man_made": "mast",
+      "name": "Monte Piselli - San Giacomo",
+      "tower:construction": "lattice",
+      "tower:type": "communication"
+   }
+}
 ```
 
 ## Handling note spam
