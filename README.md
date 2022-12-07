@@ -48,7 +48,7 @@ And yes, it means that some automated edits that would save time and make perfec
 
 Create `secret.json` file with content like this:
 
-```
+```json
 {
 	"bot_account": {
 		"username": "Your OSM username for a bot account",
@@ -77,7 +77,7 @@ Following is example based on a real automated edit, following [guidelines for t
      - `changeset_comment`, `discussion_url`, `osm_wiki_documentation_page` parameter values are used to apply correct changeset tags
   1. Running this code resulted in two edits: [#64628901](https://www.openstreetmap.org/changeset/64628901) and [#64628951](https://www.openstreetmap.org/changeset/64628951)
 
-```
+```python
 from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
 
 def edit_element(tags):
@@ -115,7 +115,7 @@ main()
 ```
 ## Downloading data
 
-```
+```python
 from osm_bot_abstraction_layer.overpass_downloader import download_overpass_query
 
 vienna_download = """
@@ -132,7 +132,7 @@ download_overpass_query(vienna_download, '/tmp/vienna.osm')
 
 ## Handling note spam
 
-```
+```python
 from osm_bot_abstraction_layer import osm_bot_abstraction_layer
 import osmapi
 
@@ -158,7 +158,7 @@ for id in range(3158344, 3158710):
 
 See [docs at OSM Wiki](https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative#admin_level.3D.2A_Country_specific_values) how internal administrative structure is tagged
 
-```
+```python
 import osm_bot_abstraction_layer.world_data as world_data
 print(world_data.list_of_area_division_data('IR', 4, ["name", "wikidata"], '/tmp/boundary_data.osm'))
 ```
