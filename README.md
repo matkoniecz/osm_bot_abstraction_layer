@@ -30,7 +30,7 @@ This tool is for people who are at once
 - experienced OSM editors
 - following OSM rules
 
-Anyone who runs automated edits is responsible for all problems that appear, including ones caused bugs in external libraries like this one.
+Anyone who runs automated edits is responsible for all problems that appear, including ones caused by bugs in external libraries like this one.
 
 I eliminated all bugs that I noticed, after all I am using this code myself, but some are still lurking. Issue reports and pull requests are welcomed!
 
@@ -42,7 +42,7 @@ See the [Import/Guidelines](http://wiki.openstreetmap.org/wiki/Import/Guidelines
 
 Note that automated edits violating rules mentioned above are routinely undone. Undiscussed automatic edits may be reverted by anybody, without any consultation.
 
-And yes, it means that some automated edits that would save time and make perfect sense were rejected and should not be made. It is still preferable over unrestricted automateed edits.
+And yes, it means that some automated edits that would save time and make perfect sense were rejected and should not be made. It is still preferable over unrestricted automated edits.
 
 # Configuration
 
