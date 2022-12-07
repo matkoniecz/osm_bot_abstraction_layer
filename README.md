@@ -6,13 +6,17 @@ For example, automated edit may change many objects across large area. In that c
 
 # Installation
 
-`pip install osm-bot-abstraction-layer --user`
+```
+pip install osm-bot-abstraction-layer --user
+```
 
 [![PyPI version](https://badge.fury.io/py/osm-bot-abstraction-layer.svg)](https://badge.fury.io/py/osm-bot-abstraction-layer)
 
 # Testing
 
-* `python3 -m unittest`
+```
+python3 -m unittest
+```
 
 # Contributing
 
