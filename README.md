@@ -70,11 +70,11 @@ Following is example based on a real automated edit, following [guidelines for t
   1. In addition [Page documenting the automated edit was created at OSM wiki](https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/moving_%27name:botanical%27%3D%27Platanus_%C3%97_hispanica%27_to_species%3D%27Platanus_%C3%97_hispanica%27_for_natural%3Dtree_in_Poland).
   1. OSM community accepted the edit.
   1. Following code was created using `run_simple_retagging_task` component. Running this script will result in:
-  	- downloading OSM data using Overpass Turbo as specified in `objects_to_consider_query` parameter
-  	- iterate over all and objects, ignoring ones where function passed as parameter `is_element_editable_checker_function` returns false
-  	- for all other `edit_element_function` is applied
-  	- changes are automatically split in multiple changesets (if necessary) to avoid too large bounding boxes or too many objects in one edit
-  	- `changeset_comment`, `discussion_url`, `osm_wiki_documentation_page` parameter values are used to apply correct changeset tags
+     - downloading OSM data using Overpass Turbo as specified in `objects_to_consider_query` parameter
+     - iterate over all and objects, ignoring ones where function passed as parameter `is_element_editable_checker_function` returns false
+     - for all other `edit_element_function` is applied
+     - changes are automatically split in multiple changesets (if necessary) to avoid too large bounding boxes or too many objects in one edit
+     - `changeset_comment`, `discussion_url`, `osm_wiki_documentation_page` parameter values are used to apply correct changeset tags
   1. Running this code resulted in two edits: [#64628901](https://www.openstreetmap.org/changeset/64628901) and [#64628951](https://www.openstreetmap.org/changeset/64628951)
 
 ```
