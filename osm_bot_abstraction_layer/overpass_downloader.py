@@ -142,14 +142,15 @@ def single_query_run(api_url, query, timeout, user_agent, extra_info=None):
         print()
     else:
         print("timeout specified to be ", timeout)
-    print("download is now started, with timeout", timeout, "at", datetime.now())
+    time = datetime.now()
+    print("download is now started, with timeout", timeout, "at", time)
     response = requests.post(
         api_url,
         data={'data': query},
         timeout=timeout,
         headers={'User-Agent': user_agent}
     )
-    print("download completed with", response.status_code, "http code")
+    print("download completed with", response.status_code, "http code at", datetime.now(), "after", str(datetime.now()-time) )
     if extra_info != None:
         print(extra_info)
     return response
