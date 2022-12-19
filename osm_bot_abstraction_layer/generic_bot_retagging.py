@@ -51,7 +51,8 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
                         print("error! Paused for review. Press enter to continue.")
                         input()
                 except Exception as e:
-                    print("some other exception happened")
+                    print("some other exception happened in process_osm_elements_package", e)
+                    raise e
         print()
         print()
     try:

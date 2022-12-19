@@ -96,6 +96,10 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             print(e)
             sleep_before_retry("requests.exceptions.ChunkedEncodingError", api_url)
             continue
+        # for example
+        # ConnectionResetError(104, 'Connection reset by peer')
+        # not sure is it happening on poor connection or explicit request by server
+        # to slow down, in either case waiting a bit is a good idea
         except urllib3.exceptions.ProtocolError as e:
             print(e)
             sleep_before_retry("urllib3.exceptions.ProtocolError", api_url)
