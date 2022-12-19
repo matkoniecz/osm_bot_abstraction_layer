@@ -6,13 +6,17 @@ For example, automated edit may change many objects across large area. In that c
 
 # Installation
 
-`pip install osm-bot-abstraction-layer --user`
+```
+pip install osm-bot-abstraction-layer --user
+```
 
 [![PyPI version](https://badge.fury.io/py/osm-bot-abstraction-layer.svg)](https://badge.fury.io/py/osm-bot-abstraction-layer)
 
 # Testing
 
-* `python3 -m unittest`
+```
+python3 -m unittest
+```
 
 # Contributing
 
@@ -30,7 +34,7 @@ This tool is for people who are at once
 - experienced OSM editors
 - following OSM rules
 
-Anyone who runs automated edits is responsible for all problems that appear, including ones caused bugs in external libraries like this one.
+Anyone who runs automated edits is responsible for all problems that appear, including ones caused by bugs in external libraries like this one.
 
 I eliminated all bugs that I noticed, after all I am using this code myself, but some are still lurking. Issue reports and pull requests are welcomed!
 
@@ -42,13 +46,13 @@ See the [Import/Guidelines](http://wiki.openstreetmap.org/wiki/Import/Guidelines
 
 Note that automated edits violating rules mentioned above are routinely undone. Undiscussed automatic edits may be reverted by anybody, without any consultation.
 
-And yes, it means that some automated edits that would save time and make perfect sense were rejected and should not be made. It is still preferable over unrestricted automateed edits.
+And yes, it means that some automated edits that would save time and make perfect sense were rejected and should not be made. It is still preferable over unrestricted automated edits.
 
 # Configuration
 
 Create `secret.json` file with content like this:
 
-```
+```json
 {
 	"bot_account": {
 		"username": "Your OSM username for a bot account",
@@ -70,14 +74,14 @@ Following is example based on a real automated edit, following [guidelines for t
   1. In addition [Page documenting the automated edit was created at OSM wiki](https://wiki.openstreetmap.org/wiki/Mechanical_Edits/Mateusz_Konieczny_-_bot_account/moving_%27name:botanical%27%3D%27Platanus_%C3%97_hispanica%27_to_species%3D%27Platanus_%C3%97_hispanica%27_for_natural%3Dtree_in_Poland).
   1. OSM community accepted the edit.
   1. Following code was created using `run_simple_retagging_task` component. Running this script will result in:
-  	- downloading OSM data using Overpass Turbo as specified in `objects_to_consider_query` parameter
-  	- iterate over all and objects, ignoring ones where function passed as parameter `is_element_editable_checker_function` returns false
-  	- for all other `edit_element_function` is applied
-  	- changes are automatically split in multiple changesets (if necessary) to avoid too large bounding boxes or too many objects in one edit
-  	- `changeset_comment`, `discussion_url`, `osm_wiki_documentation_page` parameter values are used to apply correct changeset tags
+     - downloading OSM data using Overpass Turbo as specified in `objects_to_consider_query` parameter
+     - iterate over all and objects, ignoring ones where function passed as parameter `is_element_editable_checker_function` returns false
+     - for all other `edit_element_function` is applied
+     - changes are automatically split in multiple changesets (if necessary) to avoid too large bounding boxes or too many objects in one edit
+     - `changeset_comment`, `discussion_url`, `osm_wiki_documentation_page` parameter values are used to apply correct changeset tags
   1. Running this code resulted in two edits: [#64628901](https://www.openstreetmap.org/changeset/64628901) and [#64628951](https://www.openstreetmap.org/changeset/64628951)
 
-```
+```python
 from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
 
 def edit_element(tags):
@@ -115,7 +119,7 @@ main()
 ```
 ## Downloading data
 
-```
+```python
 from osm_bot_abstraction_layer.overpass_downloader import download_overpass_query
 
 vienna_download = """
@@ -132,7 +136,7 @@ download_overpass_query(vienna_download, '/tmp/vienna.osm')
 
 ## Handling note spam
 
-```
+```python
 from osm_bot_abstraction_layer import osm_bot_abstraction_layer
 import osmapi
 
@@ -158,7 +162,7 @@ for id in range(3158344, 3158710):
 
 See [docs at OSM Wiki](https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative#admin_level.3D.2A_Country_specific_values) how internal administrative structure is tagged
 
-```
+```python
 import osm_bot_abstraction_layer.world_data as world_data
 print(world_data.list_of_area_division_data('IR', 4, ["name", "wikidata"], '/tmp/boundary_data.osm'))
 ```
