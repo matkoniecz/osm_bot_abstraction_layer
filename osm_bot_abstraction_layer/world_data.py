@@ -43,8 +43,10 @@ def list_of_area_divisions_data(area_iso_code, admin_level_of_split, collected, 
         return data_collector.data
     raise Exception(area_iso_code + " not found, checked " + str(keys_checked) + " or it has no" + str(admin_level_of_split) + "boundary level - see https://wiki.openstreetmap.org/wiki/Tag:boundary%3Dadministrative")
 
-def countries_of_a_world(temporary_storage_file):
-    """returns names of countries
+def countries_of_a_world(collected, temporary_storage_file):
+    """returns data specified in collected of countries
+    returns dictionary with keys of specified tags
+
     Note that it includes for example
     - miniareas with extreme autonomy
       - Falklands/Faroe Islands https://www.openstreetmap.org/relation/2185374 https://www.openstreetmap.org/relation/52939
@@ -52,14 +54,14 @@ def countries_of_a_world(temporary_storage_file):
       - Taiwan/Western Sahara
     - tagging mistakes
 
-    coordinate with tag_analysis_ruby/tag_analysis.rb project
+    see also tag_analysis_ruby/tag_analysis.rb project
     """
-    query = '[out:xml];relation["admin_level"="2"][boundary=administrative][type!=multilinestring];out tags;'
+    query = '[out:xml][timeout:1000];relation["admin_level"="2"][boundary=administrative][type!=multilinestring];out tags;'
     overpass_downloader.download_overpass_query(query, temporary_storage_file)
     osm = Data(temporary_storage_file)
-    names = NameCollector()
-    osm.iterate_over_data(names)
-    if names.collected_names() != []:
-      return names.collected_names()
+    data_collector = DataCollector(collected)
+    osm.iterate_over_data(data_collector)
+    if data_collector.data != []:
+      return data_collector.data
     else:
       raise
