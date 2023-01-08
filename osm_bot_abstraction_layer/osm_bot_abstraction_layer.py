@@ -170,3 +170,35 @@ def prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisit
         elif prerequisites[key] != data['tag'][key]:
             return("failed " + key + " prerequisite for " + osm_object_url)
     return None
+
+def get_all_nodes_of_an_object(osm_object_url):
+    element_type = osm_object_url.split("/")[3]
+    id = osm_object_url.split("/")[4]
+    object_data = get_data(id, element_type)
+    if element_type != "way" and element_type != "node" and element_type != "relation":
+        error = "unexpected type " + str(element_type)
+        print(error)
+        raise ValueError(error)
+    if element_type == "relation":
+        for member in object_data["member"]:
+            if member['type'] == 'way':
+                way_url = "https://www.openstreetmap.org/way/" + str(member['ref'])
+                way_data = get_data(member['ref'], 'way')
+                print("recursive calling from " + osm_object_url + " to " + way_url)
+                #pprint.pprint(data)
+                for entry in get_all_nodes_of_an_object(way_url):
+                    yield entry
+            elif member['type'] == 'node':
+                yield member['ref']
+            elif member['type'] == 'relation':
+                error = "for now recursive relations are not supported (handling cycles would be necessary)"
+                print(error)
+                raise ValueError(error)
+            #pprint.pprint(member['type'])
+            #pprint.pprint(member['ref'])
+    if element_type == "node":
+        print(object_data)
+        yield object_data["id"]
+    if element_type == "way":
+        for entry in object_data["nd"]:
+            yield entry
