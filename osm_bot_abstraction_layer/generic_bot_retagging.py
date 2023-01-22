@@ -151,7 +151,10 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
         print("no elements found for editing among", checked_element_count, "checked items, skipping!")
         return
     show_planned_edits(packages, edit_element_function)
-    print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
-    if human_verification_mode.is_human_confirming(link=None) == False:
-        return
-    run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function)
+    if is_in_manual_mode:
+        print(str(len(list_of_elements)) + " objects will be split into " + str(len(packages)) + " edits.")
+    else:
+        print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
+        if human_verification_mode.is_human_confirming(link=None) == False:
+            return
+    run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
