@@ -5,6 +5,7 @@ from osm_bot_abstraction_layer.split_into_packages import Package
 from osm_iterator.osm_iterator import Data
 import time
 import osmapi
+import webbrowser
 
 def splitter_generator(edit_element):
     def splitter_generated(element):
@@ -34,6 +35,7 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
     changeset = None
     for element in package.list:
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
+        webbrowser.open(element.get_history_link(), new=2)
         if is_edit_allowed(is_in_manual_mode, element.get_id_edit_link()):
             retry_remaining_attempts = 5
             while retry_remaining_attempts > 0:
