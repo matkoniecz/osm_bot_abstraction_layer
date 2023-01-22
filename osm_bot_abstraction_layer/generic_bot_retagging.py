@@ -31,9 +31,31 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     builder.create_changeset(api)
     return api
 
-def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
+def has_nearby_notes(osm_link_to_object):
+    for node in osm_bot_abstraction_layer.get_all_nodes_of_an_object(osm_link_to_object):
+        data = osm_bot_abstraction_layer.get_data(node, "node")
+        lat = data["lat"]
+        lon = data["lon"]
+        min_lat = lat - 0.1
+        max_lat = lat + 0.1
+        min_lon = lon - 0.1
+        max_lon = lon + 0.1
+        notes = osm_bot_abstraction_layer.get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=1)
+        print(notes)
+        print(len(notes))
+        if len(notes) > 0:
+            print("https://www.openstreetmap.org/note/" + notes[0]["id"])
+            return True
+    return False
+
+def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes):
     changeset = None
     for element in package.list:
+
+        if skip_on_nearby_notes:
+            if has_nearby_notes(element.get_link()):
+                continue
+
         data = modify_data_locally_and_show_changes(element.get_link(), edit_element_function)
         webbrowser.open(element.get_history_link(), new=2)
         if is_edit_allowed(is_in_manual_mode, element.get_id_edit_link()):
@@ -123,18 +145,18 @@ def show_planned_edits(packages, edit_element_function):
                     print("#* added_:", key,"=", after[key])
             print()
 
-def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function):
+def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes):
     for package in packages:
         for element in package.list:
             print(element.get_link())
-        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function)
+        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
         print()
         print()
 
 def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to_consider_query,
     objects_to_consider_query_storage_file, is_in_manual_mode,
     changeset_comment, discussion_url, osm_wiki_documentation_page,
-    edit_element_function):
+    edit_element_function, skip_on_nearby_notes=False):
     overpass_downloader.download_overpass_query(objects_to_consider_query, objects_to_consider_query_storage_file)
 
     global list_of_elements

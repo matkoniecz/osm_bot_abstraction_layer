@@ -61,6 +61,29 @@ def get_data(id, type):
         return None
     assert(False)
 
+def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_of_days_before_closed_note_is_hidden=0):
+    # https://osmapi.metaodi.ch/osmapi/OsmApi.html#OsmApi.NotesGet
+    # https://wiki.openstreetmap.org/wiki/API_v0.6#Retrieving_notes_data_by_bounding_box:_GET_/api/0.6/notes
+    # number_of_days_before_closed_note_is_hidden:
+    # A value of 0 means only open notes are returned. A value of -1 means all notes are returned. 
+    if limit < 1 or limit > 10_000:
+        raise Exception("A value of between 1 and 10000 is valid")
+    api = get_api('bot_account')
+    # https://osmapi.metaodi.ch/osmapi/OsmApi.html#OsmApi.NotesGet
+    print("NotesGet(min_lon " + str(min_lon) + " min_lat: " + str(min_lat) + " max_lon: " +  str(max_lon) + " max_lat: " + str(max_lat) + " limit" + str(limit) + " number_of_days_before_closed_note_is_hidden: " + str(number_of_days_before_closed_note_is_hidden) + ")")
+    print("import osmapi")
+    print("NotesGet(" + str(min_lon) + ", " + str(min_lat) + ", " +  str(max_lon) + ", " + str(max_lat) + ", limit=" + str(limit) + ", closed=" + str(number_of_days_before_closed_note_is_hidden) + ")")
+    uri = (
+            "https://api.openstreetmap.org/api/0.6/notes?bbox=%f,%f,%f,%f&limit=%d&closed=%d"
+            % (min_lon, min_lat, max_lon, max_lat, limit, number_of_days_before_closed_note_is_hidden)
+        )
+    print(uri)
+    try:
+        return api.NotesGet(min_lon, min_lat, max_lon, max_lat, limit=limit, closed=number_of_days_before_closed_note_is_hidden)
+    except osmapi.XmlResponseInvalidError:
+        # https://github.com/metaodi/osmapi/issues/137
+        return []
+
 def close_note(noteId, comment, api_code):
     api = get_api(api_code)
     api.NoteClose(noteId, comment)
