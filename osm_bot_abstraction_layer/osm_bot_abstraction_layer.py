@@ -214,9 +214,10 @@ def get_all_nodes_of_an_object(osm_object_url):
             elif member['type'] == 'node':
                 yield member['ref']
             elif member['type'] == 'relation':
-                error = "for now recursive relations are not supported (handling cycles would be necessary)"
+                error = "for now not all relations are supported (handling cycles would be necessary)"
                 print(error)
-                raise ValueError(error)
+                for node in get_all_nodes_of_an_object("https://www.openstreetmap.org/relation/" + str(member['ref'])):
+                    yield node
             #pprint.pprint(member['type'])
             #pprint.pprint(member['ref'])
     if element_type == "node":
