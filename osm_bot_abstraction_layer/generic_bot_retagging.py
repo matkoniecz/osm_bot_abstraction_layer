@@ -6,6 +6,7 @@ from osm_iterator.osm_iterator import Data
 import time
 import osmapi
 import webbrowser
+import hashlib
 
 def splitter_generator(edit_element):
     def splitter_generated(element):
@@ -155,9 +156,13 @@ def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_
         print()
 
 def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to_consider_query,
-    objects_to_consider_query_storage_file, is_in_manual_mode,
+    cache_folder_filepath, is_in_manual_mode,
     changeset_comment, discussion_url, osm_wiki_documentation_page,
     edit_element_function, skip_on_nearby_notes=False):
+    hashed = hashlib.sha256(objects_to_consider_query.encode('utf-8')).hexdigest()
+    if cache_folder_filepath[-1] == "/":
+        raise Exception("provide folder path without trailing /")
+    objects_to_consider_query_storage_file = cache_folder_filepath + '/downloaded_data_' + hashed + '.osm'
     overpass_downloader.download_overpass_query(objects_to_consider_query, objects_to_consider_query_storage_file)
 
     global list_of_elements
