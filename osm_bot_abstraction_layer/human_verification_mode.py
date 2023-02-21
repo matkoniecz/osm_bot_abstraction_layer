@@ -175,6 +175,8 @@ def is_good_main_tag(key, value):
         return True
     if key == "highway" and value in road_types():
         return True
+    if key == "highway" and value in path_types():
+        return True
     if key == "building" and value in expected_building_values():
         return True
     if key == "building:part" and value == "yes":
@@ -334,11 +336,17 @@ def road_types():
     return ["motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link",
 		"secondary", "secondary_link", "tertiary", "tertiary_link",
 		"unclassified", "residential", "living_street", "pedestrian",
-        "service", "track", "road"]
+        "service", "track", "bridleway", "busway", "road"]
+
+def path_types():
+    return ["path", "footway", "cycleway"]
 
 def is_lit_tag_expected(tags):
     if tags.get('highway') in road_types():
         return True
+    if tags.get('highway') in path_types():
+        return True
+    return False
 
 def is_always_named_object(tags):
     if is_settlement(tags):
@@ -374,19 +382,20 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if is_expected_name_tag(key, value, tags):
         return True
-    if tags.get('highway') in road_types():
+    if tags.get('highway') in road_types() or tags.get('highway') in path_types():
         if key == "surface":
             if value in (unpaved_road_surfaces() + paved_road_surfaces()):
                 return True
+        if key == "bridge" and value in ["yes", "viaduct", "no"]:
+            return True
+        if key == "tunnel" and value in ["yes", "no"]:
+            return True
+    if tags.get('highway') in road_types():
         if key == "oneway" and value == "yes":
             return True
         if key == "lanes" and value == "2":
             return True
-        if tags.get("oneway") == "yes" and tags.get("highway") != "motorway":
-            return True
-        if key == "bridge" and value in ["yes", "viaduct", "no"]:
-            return True
-        if key == "tunnel" and value in ["yes", "no"]:
+        if tags.get("oneway") == "yes":
             return True
     if key == "construction":
         if tags.get("building") == "construction":
@@ -394,7 +403,7 @@ def is_expected_tag(key, value, tags, special_expected):
                 if value != "construction":
                     return True
         if tags.get("highway") == "construction":
-            if value in road_types():
+            if value in road_types() or value in path_types():
                 if value != "construction":
                     return True
     if is_lit_tag_expected(tags):
