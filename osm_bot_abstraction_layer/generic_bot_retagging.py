@@ -37,10 +37,10 @@ def has_nearby_notes(osm_link_to_object):
         data = osm_bot_abstraction_layer.get_data(node, "node")
         lat = data["lat"]
         lon = data["lon"]
-        min_lat = lat - 0.05
-        max_lat = lat + 0.05
-        min_lon = lon - 0.05
-        max_lon = lon + 0.05
+        min_lat = lat - 0.01
+        max_lat = lat + 0.01
+        min_lon = lon - 0.01
+        max_lon = lon + 0.01
         notes = osm_bot_abstraction_layer.get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=1)
         print(notes)
         print(len(notes))
