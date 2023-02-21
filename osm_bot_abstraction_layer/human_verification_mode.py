@@ -91,7 +91,7 @@ def is_indoor_poi(tags):
         return True
     if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change"]:
         return True
-    if tags.get("tourism") in ["museum"]:
+    if tags.get("tourism") in ["museum", "gallery"]:
         return True
     if tags.get('office') in valid_office_values():
         return True
