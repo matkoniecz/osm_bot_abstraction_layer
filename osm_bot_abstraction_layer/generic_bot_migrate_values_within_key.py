@@ -24,11 +24,14 @@ def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath
     )
 
 def get_query(editing_on_key, replacement_dictionary):
+    backslash = "\\"
     query = ""
     query += "[out:xml][timeout:1800];\n"
     query += "(\n"
     for from_value, to_value in replacement_dictionary.items():
-        query += "  nwr['" + editing_on_key + "'='" + from_value + "'];\n"
+        escaped_key = editing_on_key.replace(backslash, backslash+backslash)
+        escaped_value = from_value.replace(backslash, backslash+backslash)
+        query += "  nwr['" + escaped_key + "'='" + escaped_value + "'];\n"
     query += ");\n"
     query += "out body;\n"
     query += ">;\n"
