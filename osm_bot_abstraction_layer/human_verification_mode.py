@@ -425,6 +425,9 @@ def is_expected_tag(key, value, tags, special_expected):
     if is_outdoor_rentable_sleeping_place(tags):
         if is_valid_address_tag(key, value, tags):
             return True
+    if "building" in tags:
+        if is_valid_address_tag(key, value, tags):
+            return True
     if is_food_place(tags):
         if is_tag_expected_for_food_place(key, value, tags):
             return True
