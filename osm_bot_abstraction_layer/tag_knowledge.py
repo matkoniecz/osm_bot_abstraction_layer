@@ -313,6 +313,9 @@ def is_acceptable_source_tag(key, value, tags):
             return True
     return False
 
+def road_surfaces():
+    return unpaved_road_surfaces() + paved_road_surfaces()
+
 def unpaved_road_surfaces():
     return ["unpaved","compacted","gravel","fine_gravel","pebblestone","grass_paver",
         "ground","earth","dirt","grass","sand","mud","ice","salt","snow","woodchips"]
@@ -374,7 +377,7 @@ def is_expected_tag(key, value, tags, special_expected):
         return True
     if tags.get('highway') in road_types() or tags.get('highway') in path_types():
         if key == "surface":
-            if value in (unpaved_road_surfaces() + paved_road_surfaces()):
+            if value in road_surfaces():
                 return True
         if key == "bridge" and value in ["yes", "viaduct", "no"]:
             return True
