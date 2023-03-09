@@ -1,5 +1,6 @@
 import webbrowser
 import osm_bot_abstraction_layer.tag_knowledge as tag_knowledge
+from termcolor import colored
 
 def is_human_confirming(link):
     if link != None:

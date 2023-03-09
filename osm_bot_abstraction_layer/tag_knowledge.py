@@ -1,4 +1,3 @@
-from termcolor import colored
 import re
 
 def typical_main_keys():
