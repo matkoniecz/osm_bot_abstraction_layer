@@ -12,25 +12,28 @@ def list_of_address_tags():
             'phone', 'contact:phone', 'addr:country', 'addr:suburb',
             'addr:neighbourhood', 'addr:district', 'contact:fax']
 
+def valid_shop_values():
+    return [
+            # list from https://github.com/gravitystorm/openstreetmap-carto/blob/master/project.mml#L1485
+            'supermarket', 'bag', 'bakery', 'beauty', 'bed', 'books',
+            'butcher', 'clothes', 'computer', 'confectionery', 'fashion',
+            'convenience', 'department_store', 'doityourself', 'hardware',
+            'fishmonger', 'florist', 'garden_centre', 'hairdresser', 'hifi',
+            'ice_cream', 'car', 'car_repair', 'bicycle', 'mall', 'pet',
+            'photo', 'photo_studio', 'photography', 'seafood', 'shoes',
+            'alcohol', 'gift', 'furniture', 'kiosk', 'mobile_phone',
+            'motorcycle', 'musical_instrument', 'newsagent', 'optician',
+            'jewelry', 'jewellery', 'electronics', 'chemist', 'toys',
+            'travel_agency', 'car_parts', 'greengrocer', 'farm', 'stationery',
+            'laundry', 'dry_cleaning', 'beverages', 'perfumery', 'cosmetics',
+            'variety_store', 'wine', 'outdoor', 'copyshop', 'sports', 'deli',
+            'tobacco', 'art', 'tea', 'coffee', 'tyres', 'pastry', 'chocolate',
+            'music', 'medical_supply', 'dairy', 'video_games'
+        
+        ]
+
 def shop_tag_listing():
-    # list from https://github.com/gravitystorm/openstreetmap-carto/blob/master/project.mml#L1485
-    return {'shop': ['supermarket', 'bag', 'bakery', 'beauty', 'bed',
-                'books', 'butcher', 'clothes', 'computer', 'confectionery',
-                'fashion', 'convenience', 'department_store',
-                'doityourself', 'hardware', 'fishmonger', 'florist',
-                'garden_centre', 'hairdresser', 'hifi', 'ice_cream',
-                'car', 'car_repair', 'bicycle', 'mall', 'pet',
-                'photo', 'photo_studio', 'photography', 'seafood',
-                'shoes', 'alcohol', 'gift', 'furniture', 'kiosk',
-                'mobile_phone', 'motorcycle', 'musical_instrument',
-                'newsagent', 'optician', 'jewelry', 'jewellery',
-                'electronics', 'chemist', 'toys', 'travel_agency',
-                'car_parts', 'greengrocer', 'farm', 'stationery',
-                'laundry', 'dry_cleaning', 'beverages', 'perfumery',
-                'cosmetics', 'variety_store', 'wine', 'outdoor',
-                'copyshop', 'sports', 'deli', 'tobacco', 'art',
-                'tea', 'coffee', 'tyres', 'pastry', 'chocolate',
-                'music', 'medical_supply', 'dairy', 'video_games']}
+    return {'shop': valid_shop_values()}
 
 def is_shop(tags):
     if is_pharmacy(tags):
