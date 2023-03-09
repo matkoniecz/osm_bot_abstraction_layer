@@ -1,6 +1,11 @@
 from termcolor import colored
 import re
 
+def typical_main_keys():
+    return ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
+            "craft", 'emergency', "man_made", "traffic_calming", "barrier",
+            "advertising"]
+
 def list_of_address_tags():
     return ['addr:city', 'addr:town', 'addr:place', 'addr:street',
             'addr:housenumber', 'addr:postcode', 'addr:unit', 'addr:state',
