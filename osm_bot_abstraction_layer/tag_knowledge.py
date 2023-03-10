@@ -75,7 +75,14 @@ def valid_shop_values():
             "groundskeeping", "wool", "shopping_centre", "wigs", "ski",
             "military_surplus", "hvac", "nuts", "truck", "garden_furniture",
             "brewing_supplies", "psychic", "insurance", "truck_repair",
-            "hookah",
+            "power_tools", "souvenir", "golf", "pest_control", "ship_chandler",
+            "scooter", "surf", "equestrian", "snack", "trailer", "tractor",
+            "plant_hire", "medical", "piercing", "tools", "canoe_hire", "skate",
+            "junk_yard", "motorsports", "bicycle_repair", "new_age", "hookah",
+            "mobility_scooter", "dentures", "boat_repair", "bbq",
+            "garden_machinery", "business_machines", "3d_printing",
+            "mobile_home", "wellness", "maps", "free_flying", "golf_cart",
+            "window_tinting", "boat_parts", "stairs", "jetski",
         ]
 
 def shop_tag_listing():
