@@ -1,9 +1,18 @@
 import re
 
 def typical_main_keys():
-    return ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
+    base = ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
             "craft", 'emergency', "man_made", "traffic_calming", "barrier",
             "advertising"]
+    prefixes = ["", "construction:", "emergency:", "disused:", "abandoned:",
+                "ruins:", "demolished:", "removed:", "razed:",  "destroyed:",
+                "was:", "former:", "closed:"]
+    # planned:, proposed:, historic: are invalid and should be avoided
+    returned = []
+    for prefix in prefixes:
+        for basic in base:
+            returned.append(prefix + basic)
+    return returned
 
 def list_of_address_tags():
     return ['addr:city', 'addr:town', 'addr:place', 'addr:street',

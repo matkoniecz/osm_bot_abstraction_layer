@@ -20,5 +20,8 @@ class Tests(unittest.TestCase):
         tags = {"highway": "tertiary", "bridge": "yes", "lit": "yes"}
         self.assertEqual(True, tag_knowledge.is_expected_tag("lit", "yes", tags, {}))
 
+    def test_main_tags_can_be_prefixed_tags(self):
+        self.assertEqual(True, 'disused:amenity' in tag_knowledge.typical_main_keys())
+
 if __name__ == '__main__':
     unittest.main()
