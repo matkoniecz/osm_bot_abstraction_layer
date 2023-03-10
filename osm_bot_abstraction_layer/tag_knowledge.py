@@ -27,8 +27,46 @@ def valid_shop_values():
             'laundry', 'dry_cleaning', 'beverages', 'perfumery', 'cosmetics',
             'variety_store', 'wine', 'outdoor', 'copyshop', 'sports', 'deli',
             'tobacco', 'art', 'tea', 'coffee', 'tyres', 'pastry', 'chocolate',
-            'music', 'medical_supply', 'dairy', 'video_games'
+            'music', 'medical_supply', 'dairy', 'video_games',
         
+            # https://taginfo.openstreetmap.org/taginfo/apidoc#api_4_tag_wiki_pages
+            # reports that it is
+            # * used more than 1000 times (last update on 2023-03-09)
+            # * not shop=vacant / shop=no
+            # * documented on wiki with one of following statuses:
+            # - in use
+            # - de facto
+            # - approved
+            # * has description on wiki
+            # list generated with
+            # https://gitlab.com/matkoniecz/osm-automation/-/blob/master/detect_unhandled_invalid_shop_values.py
+            "tailor", "funeral_directors", "storage_rental", "trade", "massage",
+            "interior_decoration", "outpost", "ticket", "houseware", "general",
+            "paint", "pawnbroker", "charity", "bookmaker", "tattoo",
+            "second_hand", "kitchen", "fabric", "wholesale", "lottery",
+            "antiques", "boutique", "gas", "craft", "agrarian", "e-cigarette",
+            "hearing_aids", "money_lender", "baby_goods", "appliance",
+            "electrical", "carpet", "motorcycle_repair", "cheese",
+            "health_food", "pet_grooming", "grocery", "fishing", "locksmith",
+            "nutrition_supplements", "bathroom_furnishing", "estate_agent",
+            "curtain", "video", "watches", "rental", "fashion_accessories",
+            "erotic", "sewing", "cannabis", "herbalist", "frame", "frozen_food",
+            "lighting", "party", "tiles", "religion", "doors", "shoe_repair",
+            "food", "flooring", "water", "leather", "telecommunication",
+            "hairdresser_supply", "weapons", "swimming_pool", "radiotechnics",
+            "country_store", "boat", "glaziery", "fireplace", "games", "repair",
+            "fuel", "window_blind", "scuba_diving", "caravan", "printing",
+            "pottery", "spices", "pyrotechnics", "tool_hire",
+
+            # as above but has less than 1000 uses (last update on 2023-03-09)
+            "collector", "vacuum_cleaner", "building_materials", "hunting",
+            "printer_ink", "household_linen", "security", "model", "camera",
+            "candles", "pasta", "water_sports", "honey", "motorcycle_parts",
+            "anime", "energy", "rice", "trophy", "haberdashery",
+            "groundskeeping", "wool", "shopping_centre", "wigs", "ski",
+            "military_surplus", "hvac", "nuts", "truck", "garden_furniture",
+            "brewing_supplies", "psychic", "insurance", "truck_repair",
+            "hookah",
         ]
 
 def shop_tag_listing():
