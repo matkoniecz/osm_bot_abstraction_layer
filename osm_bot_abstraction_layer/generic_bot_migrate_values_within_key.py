@@ -9,16 +9,16 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
         return tags
     return edit_element
 
-def show_what_will_be_edited(replacement_dictionary):
+def show_what_will_be_edited(key, replacement_dictionary):
     for replaced_value, new_value in replacement_dictionary.items():
-        print(key(), "=", replaced_value, "→", key(), "=", new_value)
+        print(key, "=", replaced_value, "→", key, "=", new_value)
 
     for replaced_value, new_value in replacement_dictionary.items():
-        print("* {{tag|", key(), "|", replaced_value, "}} → {{tag", key(), "|", new_value, "}}")
+        print("* {{tag|", key, "|", replaced_value, "}} → {{tag|", key, "|", new_value, "}}")
 
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
-    show_what_will_be_edited(replacement_dictionary)
+    show_what_will_be_edited(editing_on_key, replacement_dictionary)
     edit_element_function = edit_element_factory(editing_on_key, replacement_dictionary)
     query = get_query(editing_on_key, replacement_dictionary)
     run_simple_retagging_task(
