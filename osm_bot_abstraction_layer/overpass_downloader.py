@@ -34,10 +34,11 @@ def get_response_from_overpass_server(query, timeout, user_agent):
     while True:
         retry_count += 1
         try:
-            # see https://github.com/westnordost/StreetComplete/blob/6740a0b03996b929f9cf74ddb0e6afac7e3fc48e/app/src/main/res/xml/preferences.xml#L99
-            faster_server ="https://lz4.overpass-api.de/api/interpreter"
-            alt_server = "http://z.overpass-api.de/api/interpreter"
-            api_url = random.choice([faster_server, alt_server])
+            # https://wiki.openstreetmap.org/wiki/Overpass_API#Public_Overpass_API_instances
+            # tried to track official documentation but failed
+            # see https://github.com/drolbr/overpass-doc/issues/16 for basically asking about this
+            # see https://github.com/drolbr/overpass-doc/pull/15 for a probing PR
+            api_url = "https://overpass-api.de/api/interpreter"
             print("using", api_url)
 
             time_of_query_start = time.time()
