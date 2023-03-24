@@ -83,6 +83,10 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             continue
         except requests.exceptions.HTTPError as e:
             print(e.response.status_code)
+            # from IRC by drolbr running main public Overpass servers:
+            # 503 tells you that the server is so busy that it will not reliably accept queries from anyone
+            # 429 tells you that your current usage in that minute is so relatively high that the server
+            # throttles you in favour of other users
             if e.response.status_code == 429 or e.response.status_code == 503:
                 sleep_before_retry(e.response.status_code + " error code (HTTPError thrown)", api_url)
                 continue
