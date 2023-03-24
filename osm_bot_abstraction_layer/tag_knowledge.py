@@ -27,7 +27,7 @@ def valid_shop_values():
     return [
             # list from https://github.com/gravitystorm/openstreetmap-carto/blob/master/project.mml#L1485
             'supermarket', 'bag', 'bakery', 'beauty', 'bed', 'books',
-            'butcher', 'clothes', 'computer', 'confectionery', 'fashion',
+            'butcher', 'clothes', 'computer', 'confectionery',
             'convenience', 'department_store', 'doityourself', 'hardware',
             'fishmonger', 'florist', 'garden_centre', 'hairdresser', 'hifi',
             'ice_cream', 'car', 'car_repair', 'bicycle', 'mall', 'pet',
@@ -88,6 +88,14 @@ def valid_shop_values():
             "window_tinting", "boat_parts", "stairs", "jetski",
         ]
 
+def valid_shop_values_but_not_entirely_supported():
+    return [
+        "jewellery", # https://wiki.openstreetmap.org/wiki/Proposed_features/Jewellery_shop
+        'fashion', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfashion
+        'fishmonger', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfishmonger
+        'printing', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dprinting
+        '3d_printing', # RTFM user
+    ]
 def shop_tag_listing():
     return {'shop': valid_shop_values()}
 
