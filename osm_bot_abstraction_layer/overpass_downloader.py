@@ -38,7 +38,8 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             # tried to track official documentation but failed
             # see https://github.com/drolbr/overpass-doc/issues/16 for basically asking about this
             # see https://github.com/drolbr/overpass-doc/pull/15 for a probing PR
-            api_url = "https://overpass-api.de/api/interpreter"
+            main_api_url = "https://overpass-api.de/api/interpreter"
+            api_url = random.choice([main_api_url])
             print("using", api_url)
 
             time_of_query_start = time.time()
