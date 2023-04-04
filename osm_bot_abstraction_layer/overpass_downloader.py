@@ -74,6 +74,16 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             # 429 and 503 indicate rate limiting
             # 504 appears to be a bug https://github.com/drolbr/Overpass-API/issues/220
             # 400 returned on syntax error
+            # TODO: repeating queries as fast as Overpass allows is fine, as long as you sleep after being hit by 429
+            # so you can follow /status and make queries more often than done now
+            # see also https://dev.overpass-api.de/overpass-doc/en/preface/commons.html
+            # drolbr (admin of main public overpass instance):
+            # "The rate limit 429 asks the client to slow down. The HTTP 503 informs the client that 
+            # there is little it can do because the server is overloaded."
+            # "See https://dev.overpass-api.de/overpass-doc/en/preface/commons.html . Maybe we should link to that page more prominently. 
+            # I'm also open to rephrase it to make it clearer that only careless people are a problem."
+            # "A very good rule of thumb is: when you have many any precautions for responding to overload then you
+            # do not cause critical overload."
             if response.status_code == 200:
                 return response.content.decode('utf-8')
             sleep_before_retry(str(response.status_code) + " error code (response received)", api_url)
