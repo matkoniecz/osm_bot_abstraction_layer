@@ -21,6 +21,8 @@ def splitter_generator(edit_element):
     return splitter_generated # returns a callback function
 
 def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page):
+    if len(changeset_comment) < 4:
+        raise Exception("changeset_comment is unreasonably short: " + changeset_comment)
     automatic_status = osm_bot_abstraction_layer.manually_reviewed_description()
     if is_in_manual_mode == False:
         automatic_status = osm_bot_abstraction_layer.fully_automated_description()
