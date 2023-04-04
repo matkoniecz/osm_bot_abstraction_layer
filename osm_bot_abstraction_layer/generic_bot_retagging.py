@@ -26,7 +26,7 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
         automatic_status = osm_bot_abstraction_layer.fully_automated_description()
     comment = changeset_comment
     source = None
-    api = osm_bot_abstraction_layer.get_correct_api(automatic_status, discussion_url)
+    api = osm_bot_abstraction_layer.get_correct_api(automatic_status, discussion_url, osm_wiki_documentation_page)
     affected_objects_description = ""
     builder = osm_bot_abstraction_layer.ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source)
     builder.create_changeset(api)

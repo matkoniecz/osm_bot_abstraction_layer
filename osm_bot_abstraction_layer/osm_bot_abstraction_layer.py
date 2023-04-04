@@ -143,7 +143,10 @@ def get_correct_api(automatic_status, discussion_url):
     if automatic_status == manually_reviewed_description():
         return get_api('human_account')
     elif automatic_status == fully_automated_description():
-        assert(discussion_url != None)
+        if discussion_url == None:
+            raise Exception("bot edits must be discussed before edit")
+        if osm_wiki_documentation_page == None:
+            raise Exception("bot edits must be documented before edit")
         return get_api('bot_account')
     else:
         assert(False)
