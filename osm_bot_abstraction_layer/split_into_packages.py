@@ -30,7 +30,7 @@ class Package:
             return False
         bbox_of_new_element = new_element.get_bbox()
         if bbox_of_new_element == None:
-            print(new_element.get_link() + " is without bbox ")
+            print(new_element.get_link() + " is without bbox according to OSM iterator")
             return False
         min_lat = min([self.bbox['min_lat'], bbox_of_new_element['min_lat']])
         max_lat = max([self.bbox['max_lat'], bbox_of_new_element['max_lat']])
