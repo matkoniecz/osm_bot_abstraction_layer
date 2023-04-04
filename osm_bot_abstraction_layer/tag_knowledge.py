@@ -6,7 +6,7 @@ def typical_main_keys():
             "advertising", "highway", "natural", "power", "historic",
             "military", "attraction", "aeroway", "railway",
             "landuse", "boundary", "building", "building:part", "landcover",
-            "waterway", "cemetery", "aerialway"]
+            "waterway", "cemetery", "aerialway", "public_transport"]
     prefixes = ["", "construction:", "emergency:", "disused:", "abandoned:",
                 "ruins:", "demolished:", "removed:", "razed:",  "destroyed:",
                 "was:", "former:", "closed:"]
