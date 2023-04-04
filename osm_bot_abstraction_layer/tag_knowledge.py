@@ -4,7 +4,7 @@ def typical_main_keys():
     base = ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
             "craft", 'emergency', "man_made", "traffic_calming", "barrier",
             "advertising", "highway", "natural", "power", "historic",
-            "military", "attraction", "aeroway", "railway", "natural",
+            "military", "attraction", "aeroway", "railway",
             "landuse", "boundary", "building", "building:part", "landcover",
             "waterway", "cemetery", "aerialway"]
     prefixes = ["", "construction:", "emergency:", "disused:", "abandoned:",
