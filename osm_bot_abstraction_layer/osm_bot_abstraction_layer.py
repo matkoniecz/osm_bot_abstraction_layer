@@ -139,7 +139,7 @@ def sleep(time_in_s):
     print("Sleeping")
     time.sleep(time_in_s)
 
-def get_correct_api(automatic_status, discussion_url):
+def get_correct_api(automatic_status, discussion_url, osm_wiki_documentation_page):
     if automatic_status == manually_reviewed_description():
         return get_api('human_account')
     elif automatic_status == fully_automated_description():
@@ -161,7 +161,7 @@ def output_full_comment_get_comment_within_limit(affected_objects_description, c
     return comment
 
 def make_edit(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, element_type, data, source, sleeping_time=60, other_changeset_tags_dict={}):
-    api = get_correct_api(automatic_status, discussion_url)
+    api = get_correct_api(automatic_status, discussion_url, osm_wiki_documentation_page)
     builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_changeset_tags_dict)
     builder.create_changeset(api)
     update_element(api, element_type, data)
