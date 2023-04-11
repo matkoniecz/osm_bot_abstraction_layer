@@ -2,6 +2,8 @@ def basic_name_keys():
     return ['name', 'loc_name', 'alt_name', 'old_name', 'reg_name']
 
 def is_name_tag(key, value):
+    if key in ['int_name']:
+        return
     if key in basic_name_keys():
         return True
     for key in name_keys():
@@ -15,6 +17,7 @@ def name_keys():
     for lang in all_iso_639_1_language_codes():
         for name_key in basic_name_keys():
             yield name_key + ":" + lang
+    yield 'int_name'
 
 def all_iso_639_1_language_codes():
     #based on https://www.loc.gov/standards/iso639-2/php/English_list.php
