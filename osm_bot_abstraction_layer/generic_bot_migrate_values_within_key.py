@@ -14,8 +14,15 @@ def show_what_will_be_edited(key, replacement_dictionary):
         print(key, "=", replaced_value, "→", key, "=", new_value)
 
     for replaced_value, new_value in replacement_dictionary.items():
-        print("* {{tag|", key, "|", replaced_value, "}} → {{tag|", key, "|", new_value, "}}")
+        print("*", tag_in_wikimedia_syntax(key, replaced_value), "→", tag_in_wikimedia_syntax(key, new_value))
 
+def tag_in_wikimedia_syntax(key, value):
+    for problem in ["[", "]", "{", "}", "|"]:
+        if problem in key or problem in value:
+            return key + "=" + value
+    if "=" in key or "=" in value:
+        return "{{tag|1=", key, "|2=", value, "}}"
+    return "{{tag|", key, "|", value, "}}"
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
     show_what_will_be_edited(editing_on_key, replacement_dictionary)
