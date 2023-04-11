@@ -1,4 +1,5 @@
 import re
+import osm_bot_abstraction_layer.language_tag_knowledge as language_tag_knowledge
 
 def typical_main_keys():
     base = ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
@@ -257,32 +258,12 @@ def check_potential_main_key(key, value, tag_list):
         return True
     return False
 
-def all_iso_639_1_language_codes():
-    #based on https://www.loc.gov/standards/iso639-2/php/English_list.php
-    return ['ab', 'aa', 'af', 'ak', 'sq', 'am', 'ar', 'an', 'hy', 'as', 'av',
-            'ae', 'ay', 'az', 'bm', 'ba', 'eu', 'be', 'bn', 'bh', 'bi', 'nb',
-            'bs', 'br', 'bg', 'my', 'es', 'ca', 'km', 'ch', 'ce', 'ny', 'ny',
-            'zh', 'za', 'cu', 'cu', 'cv', 'kw', 'co', 'cr', 'hr', 'cs', 'da',
-            'dv', 'dv', 'nl', 'dz', 'en', 'eo', 'et', 'ee', 'fo', 'fj', 'fi',
-            'nl', 'fr', 'ff', 'gd', 'gl', 'lg', 'ka', 'de', 'ki', 'el', 'kl',
-            'gn', 'gu', 'ht', 'ht', 'ha', 'he', 'hz', 'hi', 'ho', 'hu', 'is',
-            'io', 'ig', 'id', 'ia', 'ie', 'iu', 'ik', 'ga', 'it', 'ja', 'jv',
-            'kl', 'kn', 'kr', 'ks', 'kk', 'ki', 'rw', 'ky', 'kv', 'kg', 'ko',
-            'kj', 'ku', 'kj', 'ky', 'lo', 'la', 'lv', 'lb', 'li', 'li', 'li',
-            'ln', 'lt', 'lu', 'lb', 'mk', 'mg', 'ms', 'ml', 'dv', 'mt', 'gv',
-            'mi', 'mr', 'mh', 'ro', 'ro', 'mn', 'na', 'nv', 'nv', 'nd', 'nr',
-            'ng', 'ne', 'nd', 'se', 'no', 'nb', 'nn', 'ii', 'ny', 'nn', 'ie',
-            'oc', 'oj', 'cu', 'cu', 'cu', 'or', 'om', 'os', 'os', 'pi', 'pa',
-            'ps', 'fa', 'pl', 'pt', 'pa', 'ps', 'qu', 'ro', 'rm', 'rn', 'ru',
-            'sm', 'sg', 'sa', 'sc', 'gd', 'sr', 'sn', 'ii', 'sd', 'si', 'si',
-            'sk', 'sl', 'so', 'st', 'nr', 'es', 'su', 'sw', 'ss', 'sv', 'tl',
-            'ty', 'tg', 'ta', 'tt', 'te', 'th', 'bo', 'ti', 'to', 'ts', 'tn',
-            'tr', 'tk', 'tw', 'ug', 'uk', 'ur', 'ug', 'uz', 'ca', 've', 'vi',
-            'vo', 'wa', 'cy', 'fy', 'wo', 'xh', 'yi', 'yo', 'za', 'zu']
+def name_keys():
+    return language_tag_knowledge.name_tags()
 
-def name_tags():
-    return ['name', 'loc_name', 'alt_name', 'old_name', 'reg_name']
-
+def basic_name_keys():
+    return language_tag_knowledge.basic_name_tags()
+    
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
             'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards',
@@ -424,13 +405,7 @@ def is_frequently_named_object(tags):
     return False
 
 def is_name_tag(key, value):
-    if key in name_tags():
-        return True
-    for lang in all_iso_639_1_language_codes():
-        for name_tag in name_tags():
-            if name_tag + ":" + lang == key:
-                return True
-    return False
+    return language_tag_knowledge.is_name_tag(key, value)
 
 def is_expected_name_tag(key, value, tags):
     if is_always_named_object(tags) or is_frequently_named_object(tags):
@@ -552,7 +527,7 @@ def is_expected_tag(key, value, tags, special_expected):
                    "genus", "genus:wikidata", "genus:wikipedia",
                    "taxon", "taxon:wikidata", "taxon:wikipedia"]:
             return True
-        for language_code in all_iso_639_1_language_codes():
+        for language_code in language_tag_knowledge.all_iso_639_1_language_codes():
             if key == "species:" + language_code:
                 return True
     if tags and tags.get("natural") == "tree":
