@@ -74,7 +74,7 @@ def valid_shop_values():
             "collector", "vacuum_cleaner", "building_materials", "hunting",
             "printer_ink", "household_linen", "security", "model", "camera",
             "candles", "pasta", "water_sports", "honey", "motorcycle_parts",
-            "anime", "energy", "rice", "trophy", "haberdashery",
+            "anime", "energy", "rice", "trophy", "haberdashery", "catalogue",
             "groundskeeping", "wool", "shopping_centre", "wigs", "ski",
             "military_surplus", "hvac", "nuts", "truck", "garden_furniture",
             "brewing_supplies", "psychic", "insurance", "truck_repair",
