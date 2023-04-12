@@ -2,6 +2,8 @@ from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging
 from osm_bot_abstraction_layer.utils import tag_in_wikimedia_syntax
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
+    if(len(replacement_dictionary) == 0):
+        return
     show_what_will_be_edited(editing_on_key, replacement_dictionary)
     query = """
 [out:xml][timeout:1800];
