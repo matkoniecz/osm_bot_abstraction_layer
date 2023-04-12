@@ -404,12 +404,12 @@ def is_frequently_named_object(tags):
         return True
     return False
 
-def is_name_tag(key, value):
-    return language_tag_knowledge.is_name_tag(key, value)
+def is_name_key(key):
+    return language_tag_knowledge.is_name_key(key)
 
 def is_expected_name_tag(key, value, tags):
     if is_always_named_object(tags) or is_frequently_named_object(tags):
-        if is_name_tag(key, value):
+        if is_name_key(key):
             return True
     return False
 
