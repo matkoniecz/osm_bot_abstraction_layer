@@ -21,7 +21,7 @@ def tag_in_wikimedia_syntax(key, value):
         if problem in key or problem in value:
             return key + "=" + value
     if "=" in key or "=" in value:
-        return "{{tag|1=" + key + "|2=", value + "}}"
+        return "{{tag|1=" + key + "|2=" + value + "}}"
     return "{{tag|" + key + "|" + value + "}}"
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
