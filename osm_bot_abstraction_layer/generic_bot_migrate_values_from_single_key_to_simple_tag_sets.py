@@ -1,6 +1,8 @@
 from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
+from osm_bot_abstraction_layer.utils import tag_in_wikimedia_syntax
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
+    show_what_will_be_edited(editing_on_key, replacement_dictionary)
     query = """
 [out:xml][timeout:1800];
 (
@@ -22,6 +24,19 @@ out skel qt;
         osm_wiki_documentation_page=osm_wiki_documentation_page,
         edit_element_function=edit_element_factory(editing_on_key, replacement_dictionary),
     )
+
+def show_what_will_be_edited(key, replacement_dictionary):
+    for replaced_value, new_values_dictionary in replacement_dictionary.items():
+        new_content = ""
+        for new_key, new_value in new_values_dictionary.items():
+            new_content += new_key + " = " + new_value + " "
+        print(key, "=", replaced_value, "→", new_content)
+
+    for replaced_value, new_values_dictionary in replacement_dictionary.items():
+        new_content = ""
+        for new_key, new_value in new_values_dictionary.items():
+            new_content += tag_in_wikimedia_syntax(new_key, new_value) + " "
+        print("*", tag_in_wikimedia_syntax(key, replaced_value), "→", new_content)
 
 def edit_element_factory(editing_on_key, replacement_dictionary):
     def edit_element(tags):
