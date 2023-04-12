@@ -2,6 +2,9 @@ def basic_name_keys():
     return ['name', 'loc_name', 'alt_name', 'old_name', 'reg_name']
 
 def is_name_tag(key, value):
+    return is_name_key(key)
+
+def is_name_key(key):
     if key in ['int_name']:
         return
     if key in basic_name_keys():
