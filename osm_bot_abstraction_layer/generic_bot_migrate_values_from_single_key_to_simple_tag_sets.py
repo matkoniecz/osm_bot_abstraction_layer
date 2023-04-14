@@ -53,7 +53,7 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
                         # that can be changed
                         continue
                     if tags.get(key) != value:
-                        print("conflict")
+                        print("conflict between requested", key, "=", value, " and already present", key, "=", tags.get(key))
                         return tags
             tags.pop(editing_on_key)
             for key, value in case.items():
