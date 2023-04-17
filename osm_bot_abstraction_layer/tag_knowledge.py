@@ -97,6 +97,7 @@ def valid_shop_values_but_not_entirely_supported():
         'printing', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dprinting
         '3d_printing', # RTFM user
     ]
+
 def shop_tag_listing():
     return {'shop': valid_shop_values()}
 
