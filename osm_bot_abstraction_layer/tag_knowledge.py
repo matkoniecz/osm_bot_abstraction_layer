@@ -93,6 +93,7 @@ def valid_shop_values_but_not_entirely_supported():
     return [
         "jewellery", # https://wiki.openstreetmap.org/wiki/Proposed_features/Jewellery_shop
         'fashion', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfashion
+        'boutique', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dboutique - In many places this tag is widely, but wrongly used to tag shops unrelated to clothing as in French speaking areas "boutique" is commonly part of a shop name. 
         'fishmonger', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfishmonger
         'printing', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dprinting
         '3d_printing', # RTFM user
