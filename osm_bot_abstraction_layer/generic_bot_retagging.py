@@ -210,15 +210,21 @@ def check_value_list_before_bot_edit_proposal(key, value_list):
         #elif usage_count[old] <= 3:
         #    print(old, "used just", usage_count[old], "times")
     threshold = total_usage * 4.0 / len(value_list)
+    high_use_ones_header_shown = False
     for index, old in enumerate(value_list):
         if old not in usage_count:
             some_migrated_values_are_not_used_at_all = True
         elif usage_count[old] > threshold:
-            print(key, "=", old, "with", usage_count[old], "uses is among tags with highest use, among ones that will be retagged")
+            if high_use_ones_header_shown == False:
+                print("tags with highest use, among ones that will be retagged")
+                high_use_ones_header_shown = True
+            print(key, "=", old, "with", usage_count[old], "uses")
             threshold_position = int(len(value_list)/8)
             if index > threshold_position:
                 print("and hiding in tail of a list, at position", index, "(was expected before " + str(threshold_position) + ")")
                 some_popular_migrated_values_are_not_listed_near_start = True
+    if high_use_ones_header_shown == False:
+        print("no tag is used noticeable more often than others listed here")
     if some_migrated_values_are_not_used_at_all:
         raise Exception("some_migrated_values_are_not_used_at_all")
     if some_popular_migrated_values_are_not_listed_near_start:
