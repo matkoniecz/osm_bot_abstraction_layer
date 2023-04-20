@@ -7,6 +7,7 @@ import time
 import osmapi
 import webbrowser
 import hashlib
+import taginfo
 
 def splitter_generator(edit_element):
     def splitter_generated(element):
@@ -188,3 +189,37 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
         if human_verification_mode.is_human_confirming(link=None) == False:
             return
     run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
+
+def check_value_list_before_bot_edit_proposal(key, value_list):
+    """
+    will complain about proposing to migrate unused keys
+    will complain when high use ones are not listed near beginning
+    """
+    some_migrated_values_are_not_used_at_all = False
+    some_popular_migrated_values_are_not_listed_near_start = False
+    usage_count = {}
+    for entry in taginfo.query.values_of_key_with_data(key):
+        usage_count[entry['value']] = entry['count']
+    total_usage = 0
+    for old in value_list:
+        if old not in usage_count:
+            print(old, "has no use at all")
+            some_migrated_values_are_not_used_at_all = True
+        else:
+            total_usage += usage_count[old]
+        #elif usage_count[old] <= 3:
+        #    print(old, "used just", usage_count[old], "times")
+    threshold = total_usage * 4.0 / len(value_list)
+    for index, old in enumerate(value_list):
+        if old not in usage_count:
+            some_migrated_values_are_not_used_at_all = True
+        elif usage_count[old] > threshold:
+            print(key, "=", old, "with", usage_count[old], "uses is among tags with highest use, among ones that will be retagged")
+            threshold_position = int(len(value_list)/8)
+            if index > threshold_position:
+                print("and hiding in tail of a list, at position", index, "(was expected before " + str(threshold_position) + ")")
+                some_popular_migrated_values_are_not_listed_near_start = True
+    if some_migrated_values_are_not_used_at_all:
+        raise Exception("some_migrated_values_are_not_used_at_all")
+    if some_popular_migrated_values_are_not_listed_near_start:
+        raise Exception("some values with high use are not listed at beginning of the list")
