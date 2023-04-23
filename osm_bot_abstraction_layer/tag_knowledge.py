@@ -57,7 +57,7 @@ def valid_shop_values():
             "interior_decoration", "outpost", "ticket", "houseware", "general",
             "paint", "pawnbroker", "charity", "bookmaker", "tattoo",
             "second_hand", "kitchen", "fabric", "wholesale", "lottery",
-            "antiques", "boutique", "gas", "craft", "agrarian", "e-cigarette",
+            "antiques", "gas", "craft", "agrarian", "e-cigarette",
             "hearing_aids", "money_lender", "baby_goods", "appliance",
             "electrical", "carpet", "motorcycle_repair", "cheese",
             "health_food", "pet_grooming", "grocery", "fishing", "locksmith",
