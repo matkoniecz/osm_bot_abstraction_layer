@@ -83,10 +83,10 @@ def valid_shop_values():
             "scooter", "surf", "equestrian", "snack", "trailer", "tractor",
             "plant_hire", "medical", "piercing", "tools", "canoe_hire", "skate",
             "junk_yard", "motorsports", "bicycle_repair", "new_age", "hookah",
-            "mobility_scooter", "dentures", "boat_repair", "bbq",
+            "mobility_scooter", "dentures", "boat_repair", "bbq", "gold_buyer",
             "garden_machinery", "business_machines", "3d_printing",
             "mobile_home", "wellness", "maps", "free_flying", "golf_cart",
-            "window_tinting", "boat_parts", "stairs", "jetski",
+            "window_tinting", "boat_parts", "stairs", "jetski", "kitchenware",
         ]
 
 def valid_shop_values_but_not_entirely_supported():
