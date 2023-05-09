@@ -140,8 +140,7 @@ download_overpass_query(vienna_download, '/tmp/vienna.osm')
 
 Create `secret.json` file with
 
-```
-
+```json
 {
 	"bot_account": {
 		"username": "OSM user name",
@@ -150,7 +149,7 @@ Create `secret.json` file with
 }
 ```
 
-```
+```python
 import osm_bot_abstraction_layer.osm_bot_abstraction_layer as osm_bot_abstraction_layer
 import json
 
@@ -162,7 +161,7 @@ json.dumps(returned, default=str, indent=3)
 
 it will give output like
 
-```
+```json
 {
    "id": 1,
    "visible": true,
