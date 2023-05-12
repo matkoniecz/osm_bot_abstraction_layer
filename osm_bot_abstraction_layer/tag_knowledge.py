@@ -373,6 +373,19 @@ def is_acceptable_source_tag(key, value, tags):
             return True
     return False
 
+def additional_indoor_surface():
+    return [
+        # corridors
+        "carpet", # documented at https://wiki.openstreetmap.org/wiki/Tag:surface%3Dcarpet
+        "linoleum", # documented at https://wiki.openstreetmap.org/wiki/Tag:surface%3Dlinoleum
+
+        # sport surfaces
+        "decoturf", # documented at https://wiki.openstreetmap.org/wiki/Tag:surface%3Ddecoturf
+        "tartan",
+        "artificial_turf",
+    ]
+
+
 def road_surfaces():
     return unpaved_road_surfaces() + paved_road_surfaces()
 
@@ -383,7 +396,9 @@ def unpaved_road_surfaces():
 def paved_road_surfaces():
     return ["paved", "asphalt", "cobblestone", "cobblestone:flattened", "sett",
 			"concrete", "concrete:lanes", "concrete:plates", "paving_stones",
-            "metal", "wood", "unhewn_cobblestone"]
+            "metal", "wood", "unhewn_cobblestone",
+            "chipseal", # documented https://wiki.openstreetmap.org/wiki/Tag:surface%3Dchipseal
+            ]
 
 def road_types():
     return ["motorway", "motorway_link", "trunk", "trunk_link", "primary", "primary_link",
