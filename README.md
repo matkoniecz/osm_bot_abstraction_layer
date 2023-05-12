@@ -107,7 +107,7 @@ out body;
 >;
 out skel qt;
 """,
-        objects_to_consider_query_storage_file='/media/mateusz/5bfa9dfc-ed86-4d19-ac36-78df1060707c/OSM-cache/overpass/tags_for_retagging_descriptive_atm.osm',
+        cache_folder_filepath='/media/mateusz/5bfa9dfc-ed86-4d19-ac36-78df1060707c/OSM-cache',
         is_in_manual_mode=False,
         changeset_comment='usuwanie nazw opisowych z bankomatów (name="bankomat" i name="Bankomat")',
         discussion_url='https://forum.openstreetmap.org/viewtopic.php?id=66038',
