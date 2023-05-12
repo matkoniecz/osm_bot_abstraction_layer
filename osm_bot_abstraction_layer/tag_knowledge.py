@@ -108,6 +108,10 @@ def is_shop(tags):
         return True
     return is_any_matching_with_tag_listing(tags, shop_tag_listing())
 
+def valid_barrier_values():
+    # https://wiki.openstreetmap.org/wiki/Key:barrier?uselang=en#Values
+    linear = ['cable_barrier', 'city_wall', 'ditch', 'fence', 'guard_rail']
+
 def is_tag_expected_for_recycling_place(key, value, tags):
     expected_tags = {
         # https://taginfo.openstreetmap.org/search?q=recycling%3A
