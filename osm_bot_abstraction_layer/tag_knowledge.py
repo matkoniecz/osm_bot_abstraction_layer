@@ -84,13 +84,14 @@ def valid_shop_values():
             "plant_hire", "medical", "piercing", "tools", "canoe_hire", "skate",
             "junk_yard", "motorsports", "bicycle_repair", "new_age", "hookah",
             "mobility_scooter", "dentures", "boat_repair", "bbq", "gold_buyer",
-            "garden_machinery", "business_machines", "3d_printing",
+            "garden_machinery", "business_machines",
             "mobile_home", "wellness", "maps", "free_flying", "golf_cart",
             "window_tinting", "boat_parts", "stairs", "jetski", "kitchenware",
-        ]
+        ] + valid_shop_values_but_not_entirely_supported()
 
 def valid_shop_values_but_not_entirely_supported():
     return [
+        "mobile_equipment", # https://wiki.openstreetmap.org/wiki/Talk:Tag:shop%3Dmobile_equipment
         "jewellery", # https://wiki.openstreetmap.org/wiki/Proposed_features/Jewellery_shop
         'fashion', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfashion
         'boutique', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dboutique - In many places this tag is widely, but wrongly used to tag shops unrelated to clothing as in French speaking areas "boutique" is commonly part of a shop name. 
