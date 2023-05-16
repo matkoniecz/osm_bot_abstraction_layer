@@ -385,13 +385,15 @@ def additional_indoor_surface():
         "artificial_turf",
     ]
 
+def playground_surfaces():
+    return ["carpet", "tartan", "artificial_turf", "ground", "earth", "dirt", "grass", "sand", "woodchips"]
 
 def road_surfaces():
     return unpaved_road_surfaces() + paved_road_surfaces()
 
 def unpaved_road_surfaces():
-    return ["unpaved","compacted","gravel","fine_gravel","pebblestone","grass_paver",
-        "ground","earth","dirt","grass","sand","mud","ice","salt","snow","woodchips"]
+    return ["unpaved", "compacted", "gravel", "fine_gravel", "pebblestone", "grass_paver",
+        "ground", "earth", "dirt", "grass", "sand", "mud", "ice", "salt", "snow", "woodchips"]
 
 def paved_road_surfaces():
     return ["paved", "asphalt", "cobblestone", "cobblestone:flattened", "sett",
@@ -452,6 +454,10 @@ def is_expected_tag(key, value, tags, special_expected):
             return True
         if key == "tunnel" and value in ["yes", "no"]:
             return True
+    if tags.get("leisure") == "playground":
+        if key == "surface":
+            if value in playground_surfaces():
+                return True
     if tags.get('highway') in road_types():
         if key == "oneway" and value == "yes":
             return True
