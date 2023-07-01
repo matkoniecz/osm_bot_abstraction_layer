@@ -197,7 +197,9 @@ def prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisit
             return("failed " + key + " prerequisite for " + osm_object_url)
     return None
 
-def get_all_nodes_of_an_object(osm_object_url):
+def get_all_nodes_of_an_object(osm_object_url, already_processed_objects=[]):
+    # already_processed_relations exists to prevent infinite loops on cycles
+    # it also helps to avoid repeated processing
     element_type = osm_object_url.split("/")[3]
     id = osm_object_url.split("/")[4]
     object_data = get_data(id, element_type)
@@ -209,18 +211,30 @@ def get_all_nodes_of_an_object(osm_object_url):
         for member in object_data["member"]:
             if member['type'] == 'way':
                 way_url = "https://www.openstreetmap.org/way/" + str(member['ref'])
-                way_data = get_data(member['ref'], 'way')
-                print("recursive calling from " + osm_object_url + " to " + way_url)
-                #pprint.pprint(data)
-                for entry in get_all_nodes_of_an_object(way_url):
-                    yield entry
+                if way_url not in already_processed_objects:
+                    already_processed_objects.append(way_url)
+                    way_data = get_data(member['ref'], 'way')
+                    print("recursive calling from " + osm_object_url + " to " + way_url)
+                    #pprint.pprint(data)
+                    for entry in get_all_nodes_of_an_object(way_url):
+                        yield entry
             elif member['type'] == 'node':
-                yield member['ref']
+                node_url = "https://www.openstreetmap.org/node/" + str(member['ref'])
+                if node_url not in already_processed_objects:
+                    already_processed_objects.append(node_url)
+                    yield member['ref']
             elif member['type'] == 'relation':
-                error = "for now not all relations are supported (handling cycles would be necessary)"
-                print(error)
-                for node in get_all_nodes_of_an_object("https://www.openstreetmap.org/relation/" + str(member['ref'])):
-                    yield node
+                link = "https://www.openstreetmap.org/relation/" + str(member['ref'])
+                if link not in already_processed_objects:
+                    already_processed_objects.append(link)
+                    # TODO better to avoid recursion, this can also result in repeated checks
+                    # relation contains relation A and B
+                    # A contains way C
+                    # B contains way C
+                    # way C will be checked twice
+                    print("recursively calling", link, "to check", osm_object_url)
+                    for node in get_all_nodes_of_an_object(link, already_processed_objects):
+                        yield node
             #pprint.pprint(member['type'])
             #pprint.pprint(member['ref'])
     if element_type == "node":
