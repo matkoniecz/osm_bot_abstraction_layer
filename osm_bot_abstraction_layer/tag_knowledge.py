@@ -113,7 +113,28 @@ def is_shop(tags):
 
 def valid_barrier_values():
     # https://wiki.openstreetmap.org/wiki/Key:barrier?uselang=en#Values
-    linear = ['cable_barrier', 'city_wall', 'ditch', 'fence', 'guard_rail']
+    return [
+        # over 1000 uses on 2023-07-19
+        # * documented on wiki with one of following statuses:
+        # - in use
+        # - de facto
+        # - approved
+        # * has description on wiki
+        "fence", "gate", "wall", "hedge", "kerb", "bollard", "lift_gate",
+        "retaining_wall", "block", "yes", "guard_rail", "cycle_barrier",
+        "stile", "entrance", "swing_gate", "cattle_grid", "ditch",
+        "toll_booth", "city_wall", "kissing_gate", "chain",
+        "jersey_barrier", "height_restrictor", "sliding_gate", "turnstile",
+        "handrail", "log", "border_control", "avalanche_protection",
+        "wicket_gate", "sally_port", "hampshire_gate", "debris", "planter",
+        "rope", "full-height_turnstile", "bump_gate", "berm",
+        "cable_barrier", "tank_trap", "motorcycle_barrier",
+
+        # as above but has less than 1000 uses (last update on 2023-07-19)
+        "bus_trap", "spikes", "sump_buster", "horse_stile", "barrier_board",
+        "step", "bar", "coupure", "tyres", "horse_jump", "sliding_beam",
+        "barricade", "steeplechase_jump", "lych_gate", "wedge", "haha",
+    ]
 
 def is_tag_expected_for_recycling_place(key, value, tags):
     expected_tags = {
