@@ -39,6 +39,7 @@ def get_query(editing_on_key, replacement_dictionary):
     for from_value, to_value in replacement_dictionary.items():
         escaped_key = editing_on_key.replace(backslash, backslash+backslash)
         escaped_value = from_value.replace(backslash, backslash+backslash)
+        escaped_value = escaped_value.replace("'", backslash+"'")
         query += "  nwr['" + escaped_key + "'='" + escaped_value + "'];\n"
     query += ");\n"
     query += "out body;\n"
