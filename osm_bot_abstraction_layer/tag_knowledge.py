@@ -44,7 +44,7 @@ def valid_shop_values():
         
             # https://taginfo.openstreetmap.org/taginfo/apidoc#api_4_tag_wiki_pages
             # reports that it is
-            # * used more than 1000 times (last update on 2023-03-09)
+            # * used more than 1000 times
             # * not shop=vacant / shop=no
             # * documented on wiki with one of following statuses:
             # - in use
@@ -71,7 +71,7 @@ def valid_shop_values():
             "fuel", "window_blind", "scuba_diving", "caravan", "printing",
             "pottery", "spices", "pyrotechnics", "tool_hire",
 
-            # as above but has less than 1000 uses (last update on 2023-03-09)
+            # as above but has less than 1000 uses
             "collector", "vacuum_cleaner", "building_materials", "hunting",
             "printer_ink", "household_linen", "security", "model", "camera",
             "candles", "pasta", "water_sports", "honey", "motorcycle_parts",
