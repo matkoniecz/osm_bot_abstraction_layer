@@ -38,20 +38,19 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     builder.create_changeset(api)
     return api
 
-def has_nearby_notes(osm_link_to_object):
-    for node in osm_bot_abstraction_layer.get_all_nodes_of_an_object(osm_link_to_object):
-        data = osm_bot_abstraction_layer.get_data(node, "node")
+def has_nearby_notes(osm_link_to_object, scan_area_in_degrees=0.015):
+    for data in osm_bot_abstraction_layer.get_all_nodes_data_of_an_object(osm_link_to_object):
         lat = data["lat"]
         lon = data["lon"]
-        min_lat = lat - 0.01
-        max_lat = lat + 0.01
-        min_lon = lon - 0.01
-        max_lon = lon + 0.01
+        min_lat = lat - scan_area_in_degrees/2
+        max_lat = lat + scan_area_in_degrees/2
+        min_lon = lon - scan_area_in_degrees/2
+        max_lon = lon + scan_area_in_degrees/2
         notes = osm_bot_abstraction_layer.get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=1)
-        print(notes)
-        print(len(notes))
+        #print(notes)
+        #print(len(notes))
         if len(notes) > 0:
-            print("https://www.openstreetmap.org/note/" + notes[0]["id"])
+            #print("https://www.openstreetmap.org/note/" + notes[0]["id"])
             return True
     return False
 
@@ -191,7 +190,7 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
         print(str(len(list_of_elements)) + " objects will be split into " + str(len(packages)) + " edits.")
     else:
         print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
-        if human_verification_mode.is_human_confirming(link=None) == False:
+        if human_verification_mode.is_human_confirming_without_browser_check() == False:
             return
     run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
 

@@ -45,6 +45,11 @@ class ChangesetBuilder:
             print(e.status_code)
             raise
 
+def get_data_based_on_object_link(osm_object_url):
+    id = osm_object_url.split("/")[4]
+    element_type = osm_object_url.split("/")[3]
+    return get_data(id, element_type)
+
 def get_data(id, type):
     print("downloading https://www.openstreetmap.org/" + type + "/" + str(id))
     api = get_api('bot_account')
@@ -170,9 +175,7 @@ def make_edit(affected_objects_description, comment, automatic_status, discussio
         sleep(sleeping_time)
 
 def get_and_verify_data(osm_object_url, prerequisites, prerequisite_failure_callback=None):
-    element_type = osm_object_url.split("/")[3]
-    id = osm_object_url.split("/")[4]
-    data = get_data(id, element_type)
+    data = get_data_based_on_object_link(osm_object_url)
     if data == None:
         return None
     failure = prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisite_failure_callback)
@@ -197,12 +200,29 @@ def prerequisite_failure_reason(osm_object_url, prerequisites, data, prerequisit
             return("failed " + key + " prerequisite for " + osm_object_url)
     return None
 
+
+def get_all_nodes_data_of_an_object(osm_object_url):
+    element_type = osm_object_url.split("/")[3]
+    if element_type == "node":
+        id = osm_object_url.split("/")[4]
+        object_data = get_data(id, element_type)
+        yield object_data
+    else:
+        for node in get_all_nodes_of_an_object(osm_object_url):
+            data = get_data(node, "node")
+            yield data
+
 def get_all_nodes_of_an_object(osm_object_url, already_processed_objects=[]):
     # already_processed_relations exists to prevent infinite loops on cycles
     # it also helps to avoid repeated processing
+    # yields node data objects
+    # something like:
+    # {'id': 5214821816, 'visible': True, 'version': 4, 'changeset': 53745824, 'timestamp': datetime.datetime(2017, 11, 13, 16, 51, 48), 'user': 'skinny413', 'uid': 6885560, 'lat': 4.5768531, 'lon': -74.1038395, 'tag': {'addr:housenumber': '12G-24', 'addr:street': 'Calle 27 Sur'}}
     element_type = osm_object_url.split("/")[3]
     id = osm_object_url.split("/")[4]
     object_data = get_data(id, element_type)
+    if object_data == None:
+        raise Exception("got None while fetching data for " + osm_object_url)
     if element_type != "way" and element_type != "node" and element_type != "relation":
         error = "unexpected type " + str(element_type)
         print(error)
@@ -238,7 +258,7 @@ def get_all_nodes_of_an_object(osm_object_url, already_processed_objects=[]):
             #pprint.pprint(member['type'])
             #pprint.pprint(member['ref'])
     if element_type == "node":
-        print(object_data)
+        #print(object_data)
         yield object_data["id"]
     if element_type == "way":
         for entry in object_data["nd"]:
