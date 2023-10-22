@@ -87,6 +87,9 @@ def valid_shop_values():
             "garden_machinery", "business_machines",
             "mobile_home", "wellness", "maps", "free_flying", "golf_cart",
             "window_tinting", "boat_parts", "stairs", "jetski", "kitchenware",
+            "windows", "knives", "gun", "eggs", "safety_equipment", 
+            'leatherworking', # would prefer leatherworking_supplies...
+
         ] + valid_shop_values_but_not_entirely_supported()
 
 def valid_shop_values_but_not_entirely_supported():
