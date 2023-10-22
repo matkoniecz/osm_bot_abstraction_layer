@@ -11,6 +11,7 @@ import taginfo
 
 def splitter_generator(edit_element):
     def splitter_generated(element):
+        global urls_of_handled_elements
         global list_of_elements
         global checked_element_count
         checked_element_count += 1
@@ -18,7 +19,9 @@ def splitter_generator(edit_element):
         tag_dictionary = element.get_tag_dictionary()
         old = dict(tag_dictionary)
         if old != edit_element(tag_dictionary):
-            list_of_elements.append(element)
+            if element.get_link() not in urls_of_handled_elements:
+                list_of_elements.append(element)
+                urls_of_handled_elements.append(element.get_link())
     return splitter_generated # returns a callback function
 
 def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page):
@@ -170,7 +173,9 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
 
     global list_of_elements
     global checked_element_count
+    global urls_of_handled_elements
     list_of_elements = []
+    urls_of_handled_elements = []
     checked_element_count = 0
 
     osm = Data(objects_to_consider_query_storage_file)
