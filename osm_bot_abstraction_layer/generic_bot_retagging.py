@@ -196,7 +196,7 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
 
 def check_value_list_before_bot_edit_proposal(key, value_list):
     """
-    will complain about proposing to migrate unused keys
+    will complain about proposing to migrate unused values
     will complain when high use ones are not listed near beginning
     """
     some_migrated_values_are_not_used_at_all = False
