@@ -9,15 +9,25 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
         return tags
     return edit_element
 
-def show_what_will_be_edited(key, replacement_dictionary):
+def list_what_will_be_edited(key, replacement_dictionary):
+    returned = ""
+    # markdown
     for replaced_value, new_value in replacement_dictionary.items():
-        print(key, "=", replaced_value, "→", key, "=", new_value)
+        returned += '`' + key + " = " + replaced_value + "` → `" + key + " = " + new_value + "`\n"
+    returned += "\n\n"
 
+    # text
     for replaced_value, new_value in replacement_dictionary.items():
-        print("*", tag_in_wikimedia_syntax(key, replaced_value), "→", tag_in_wikimedia_syntax(key, new_value))
+        returned += key + " = " + replaced_value + " → " + key + " = " + new_value + "\n"
+    returned += "\n\n"
+
+    # wiki
+    for replaced_value, new_value in replacement_dictionary.items():
+        returned += "* " + tag_in_wikimedia_syntax(key, replaced_value) + " → " + tag_in_wikimedia_syntax(key, new_value) + "\n"
+    return returned
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
-    show_what_will_be_edited(editing_on_key, replacement_dictionary)
+    print(list_what_will_be_edited(editing_on_key, replacement_dictionary))
     edit_element_function = edit_element_factory(editing_on_key, replacement_dictionary)
     query = get_query(editing_on_key, replacement_dictionary)
     run_simple_retagging_task(
