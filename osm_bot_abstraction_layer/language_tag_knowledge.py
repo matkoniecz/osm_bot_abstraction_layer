@@ -3,7 +3,7 @@ def basic_name_keys():
 
 def is_name_key(key):
     if key in ['int_name']:
-        return
+        return True
     if key in basic_name_keys():
         return True
     for key in name_keys():
