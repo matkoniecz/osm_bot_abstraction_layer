@@ -225,7 +225,8 @@ def check_value_list_before_bot_edit_proposal(key, value_list):
             print(key, "=", old, "with", usage_count[old], "uses")
             threshold_position = int(len(value_list)/8)
             if index > threshold_position:
-                print("and hiding in tail of a list, at position", index, "(was expected before " + str(threshold_position) + ")")
+                print("and", old, "is hiding in tail of a list, at position", index, "(was expected before " + str(threshold_position) + ")")
+                print()
                 some_popular_migrated_values_are_not_listed_near_start = True
     if high_use_ones_header_shown == False:
         print("no tag is used noticeable more often than others listed here")
