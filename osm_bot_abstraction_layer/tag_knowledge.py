@@ -22,7 +22,13 @@ def list_of_address_tags():
     return ['addr:city', 'addr:town', 'addr:place', 'addr:street',
             'addr:housenumber', 'addr:postcode', 'addr:unit', 'addr:state',
             'phone', 'contact:phone', 'addr:country', 'addr:suburb',
-            'addr:neighbourhood', 'addr:district', 'contact:fax']
+            'addr:county', 'addr:district', 'addr:community',
+            'addr:subcounty', 'addr:village', 'addr:parish',
+            'addr:district', 'addr:settlement', 'addr:zone',
+            'addr:clan', 'addr:ward',
+            'addr:block', 'addr:full',
+            'addr:neighbourhood', 'addr:district',
+            'addr:subcamp']
 
 def valid_shop_values():
     return [
