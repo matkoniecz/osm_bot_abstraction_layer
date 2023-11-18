@@ -8,6 +8,18 @@ import osmapi
 import webbrowser
 import hashlib
 import taginfo
+import inspect
+
+def edit_elements_general(edit_element_function, tag_dictionary, osm_link_to_object):
+    argument_count = len(inspect.getfullargspec(edit_element_function).args)
+    if argument_count == 1:
+        # only tags
+        return edit_element_function(tag_dictionary)
+    elif argument_count == 2:
+        # pass also URL for more advanced checking
+        return edit_element_function(tag_dictionary, osm_link_to_object)
+    else:
+        raise Exception("supposed to be impossible, why neither 1 nor 2 parameters are passed?")
 
 def splitter_generator(edit_element):
     def splitter_generated(element):
@@ -15,10 +27,9 @@ def splitter_generator(edit_element):
         global list_of_elements
         global checked_element_count
         checked_element_count += 1
-
         tag_dictionary = element.get_tag_dictionary()
         old = dict(tag_dictionary)
-        if old != edit_element(tag_dictionary):
+        if old != edit_elements_general(edit_element, element.get_tag_dictionary(), element.get_link()):
             if element.get_link() not in urls_of_handled_elements:
                 list_of_elements.append(element)
                 urls_of_handled_elements.append(element.get_link())
@@ -117,7 +128,7 @@ def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_functi
     human_verification_mode.smart_print_tag_dictionary(data['tag'])
 
     old = dict(data['tag'])
-    data['tag'] = edit_element_function(data['tag'])
+    data['tag'] = edit_elements_general(edit_element_function, data['tag'], osm_link_to_object)
     if old == data['tag']:
         # may be not editable in case of lags in Overpass API database
         # or concurrent edits 
@@ -137,7 +148,7 @@ def show_planned_edits(packages, edit_element_function):
         for element in package.list:
             print("#", element.get_link())
             before = element.get_tag_dictionary()
-            after = edit_element_function(element.get_tag_dictionary())
+            after = edit_elements_general(edit_element_function, element.get_tag_dictionary(), element.get_link())
             if after == None:
                 raise ValueError("edit_element_function returned None, it must return dictionary representing tags")
             for key in before.keys():
