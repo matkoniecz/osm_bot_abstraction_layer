@@ -6,8 +6,9 @@ def is_name_key(key):
         return True
     if key in basic_name_keys():
         return True
-    for key in name_keys():
-        return True
+    for name_key in name_keys():
+        if key == name_key:
+            return True
     return False
 
 def name_keys():
