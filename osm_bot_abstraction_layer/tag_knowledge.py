@@ -97,6 +97,7 @@ def valid_shop_values():
             'leatherworking', # would prefer leatherworking_supplies...
             "weighing_scales", "smartshop", "sauna", "mobile_phone_accessories",
             "esoteric", "hydroponics", 'christmas',
+            "beekeeping", "promotional_products", "calendar", 'video_restore',
         ] + valid_shop_values_but_not_entirely_supported()
 
 def valid_shop_values_but_not_entirely_supported():
