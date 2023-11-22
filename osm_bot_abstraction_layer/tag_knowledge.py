@@ -82,10 +82,10 @@ def valid_shop_values():
             "printer_ink", "household_linen", "security", "model", "camera",
             "candles", "pasta", "water_sports", "honey", "motorcycle_parts",
             "anime", "energy", "rice", "trophy", "haberdashery", "catalogue",
-            "groundskeeping", "wool", "shopping_centre", "wigs", "ski", "atv",
+            "groundskeeping", "wool", "shopping_centre", "wigs", "atv",
             "military_surplus", "hvac", "nuts", "truck", "garden_furniture",
             "brewing_supplies", "psychic", "insurance", "truck_repair", "shed",
-            "power_tools", "souvenir", "golf", "pest_control", "ship_chandler",
+            "power_tools", "souvenir", "pest_control", "ship_chandler",
             "scooter", "surf", "equestrian", "snack", "trailer", "tractor",
             "plant_hire", "medical", "piercing", "tools", "canoe_hire", "skate",
             "junk_yard", "motorsports", "bicycle_repair", "new_age", "hookah",
@@ -110,6 +110,8 @@ def valid_shop_values_but_not_entirely_supported():
         '3d_printing', # RTFM user
         'peanut_butter', # having separate value for every top-level food seems a dubious idea
         'fan', # does not sell actual fans, quite unfortunately named TODO: can we deprecate it?
+        'golf', # https://community.openstreetmap.org/t/do-we-need-shop-ski-and-shop-golf/106249
+        'ski', # https://community.openstreetmap.org/t/do-we-need-shop-ski-and-shop-golf/106249
     ]
 
 def shop_tag_listing():
