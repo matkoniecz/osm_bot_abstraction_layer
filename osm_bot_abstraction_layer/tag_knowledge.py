@@ -90,12 +90,13 @@ def valid_shop_values():
             "plant_hire", "medical", "piercing", "tools", "canoe_hire", "skate",
             "junk_yard", "motorsports", "bicycle_repair", "new_age", "hookah",
             "mobility_scooter", "dentures", "boat_repair", "bbq", "gold_buyer",
-            "garden_machinery", "business_machines",
+            "garden_machinery", "business_machines", 'water_filter',
             "mobile_home", "wellness", "maps", "free_flying", "golf_cart",
             "window_tinting", "boat_parts", "stairs", "jetski", "kitchenware",
-            "windows", "knives", "gun", "eggs", "safety_equipment", 
+            "windows", "knives", "gun", "eggs", "safety_equipment", "rope",
             'leatherworking', # would prefer leatherworking_supplies...
-
+            "weighing_scales", "smartshop", "sauna", "mobile_phone_accessories",
+            "esoteric", "hydroponics", 'christmas',
         ] + valid_shop_values_but_not_entirely_supported()
 
 def valid_shop_values_but_not_entirely_supported():
@@ -107,6 +108,8 @@ def valid_shop_values_but_not_entirely_supported():
         'fishmonger', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfishmonger
         'printing', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dprinting
         '3d_printing', # RTFM user
+        'peanut_butter', # having separate value for every top-level food seems a dubious idea
+        'fan', # does not sell actual fans, quite unfortunately named TODO: can we deprecate it?
     ]
 
 def shop_tag_listing():
