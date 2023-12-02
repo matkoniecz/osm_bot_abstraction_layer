@@ -98,6 +98,7 @@ def valid_shop_values():
             "weighing_scales", "smartshop", "sauna", "mobile_phone_accessories",
             "esoteric", "hydroponics", 'christmas',
             "beekeeping", "promotional_products", "calendar", 'video_restore',
+            "headshop", "growshop", "magic", "doormat", "gaming_machines",
         ] + valid_shop_values_but_not_entirely_supported()
 
 def valid_shop_values_but_not_entirely_supported():
