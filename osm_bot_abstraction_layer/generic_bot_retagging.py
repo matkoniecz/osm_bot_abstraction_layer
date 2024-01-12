@@ -200,9 +200,12 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     if is_in_manual_mode:
         print(str(len(list_of_elements)) + " objects will be split into " + str(len(packages)) + " edits.")
     else:
-        print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
-        if human_verification_mode.is_human_confirming_without_browser_check() == False:
-            return
+        if len(list_of_elements) < 100:
+            print(str(len(list_of_elements)) + " objects will be split into " + str(len(packages)) + " edits.")
+        else:
+            print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
+            if human_verification_mode.is_human_confirming_without_browser_check() == False:
+                return
     run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
 
 def check_value_list_before_bot_edit_proposal(key, value_list):
