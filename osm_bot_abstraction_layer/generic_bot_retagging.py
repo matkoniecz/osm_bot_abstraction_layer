@@ -141,7 +141,7 @@ def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_functi
 def sleep_after_edit(is_in_manual_mode):
     if is_in_manual_mode:
         return
-    time.sleep(60)
+    time.sleep(10)
 
 def show_planned_edits(packages, edit_element_function):
     for package in packages:
