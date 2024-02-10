@@ -22,7 +22,7 @@ def character_limit_of_description():
 class ChangesetBuilder:
     def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict = {}):
         self.changeset_description = other_tags_dict
-        self.changeset_description['automatic'] = automatic_status
+        self.changeset_description['mechanical'] = automatic_status
         if automatic_status == fully_automated_description():
             if osm_wiki_documentation_page == None or discussion_url == None:
                 raise "missing links to the automatic edit documentation!"
