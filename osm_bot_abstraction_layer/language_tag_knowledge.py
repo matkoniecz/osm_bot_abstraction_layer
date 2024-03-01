@@ -4,14 +4,14 @@ def basic_name_keys():
 def is_name_key(key):
     if key in ['int_name']:
         return True
-    if key in basic_name_keys():
-        return True
     for name_key in name_keys():
         if key == name_key:
             return True
     return False
 
 def name_keys():
+    for name_key in basic_name_keys():
+        yield name_key
     for lang in all_iso_639_1_language_codes():
         for name_key in basic_name_keys():
             yield name_key + ":" + lang

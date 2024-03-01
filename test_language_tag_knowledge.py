@@ -13,5 +13,11 @@ class Tests(unittest.TestCase):
         self.assertEqual(True, language_tag_knowledge.is_name_key("alt_name:pl"))
         self.assertEqual(True, language_tag_knowledge.is_name_key("loc_name:pl"))
 
+    def test_recognizing_basic_language_tags(self):
+        self.assertEqual(True, language_tag_knowledge.is_name_key("name"))
+
+    def test_listing_basic_language_tags(self):
+        self.assertEqual(True, "name" in language_tag_knowledge.name_keys())
+
 if __name__ == '__main__':
     unittest.main()
