@@ -9,6 +9,8 @@ def tag_in_wikimedia_syntax(key, value):
         return "'" + key + "' = " + value + " (note presence of spaces!)"
     if " " in value:
         return key + " = '" + value + "' (note presence of spaces!)"
+    if "\n" in value:
+        return key + " = '" + value + "' (note presence of newline(s)!)"
     for problem in ["[", "]", "{", "}", "|"]:
         if problem in key or problem in value:
             return key + "=" + value
