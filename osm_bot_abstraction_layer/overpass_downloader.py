@@ -65,7 +65,7 @@ def get_response_from_overpass_server(query, timeout, user_agent):
                 response_length = len(response.content.decode('utf-8'))
                 print("response length:", response_length)
                 # very long indicates that data was returned, some may be some massive that parsing would be outrageously expensive
-                if response_length < 10_000:
+                if response_length < 10_000 and "[out:json]" not in query and "[out:csv]" not in query:
                     parsed = lxml.etree.fromstring(response.content) # yes, without .decode('utf-8')
                     if parsed.find('remark') != None:
                         raise Exception('timeout in query or other failure!' + query)
