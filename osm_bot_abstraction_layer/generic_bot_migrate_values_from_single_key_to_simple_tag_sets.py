@@ -2,6 +2,11 @@ from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging
 from osm_bot_abstraction_layer.utils import tag_in_wikimedia_syntax
 
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
+    """
+    example:
+    editing_on_key = "shop"
+    replacement_dictionary = {'coal': {'shop': 'fuel', 'fuel': 'coal'}}
+    """
     if(len(replacement_dictionary) == 0):
         return
     show_what_will_be_edited(editing_on_key, replacement_dictionary)
@@ -46,14 +51,17 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
             case = replacement_dictionary[tags.get(editing_on_key)]
             print(case)
             for key, value in case.items():
-                print(key, "=", value)
-                print(tags.get(key))
+                value_being_changed = tags.get(key)
+                print("new tag:", key, "=", value)
+                print("current tag for this key:", key, "=", value_being_changed)
                 if key in tags:
+                    # if it is empty we can just set a new value and this is not a problem
                     if key == editing_on_key:
-                        # that can be changed
+                        # we can edit key explicitly being edited
+                        # we still want to skip possibly unexpected changes
                         continue
-                    if tags.get(key) != value:
-                        print("conflict between requested", key, "=", value, " and already present", key, "=", tags.get(key))
+                    if value_being_changed != value:
+                        print("conflict between requested", key, "=", value, " and already present", key, "=", value_being_changed)
                         return tags
             tags.pop(editing_on_key)
             for key, value in case.items():
