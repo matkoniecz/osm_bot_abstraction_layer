@@ -1,3 +1,8 @@
+import datetime
+
+def parse_typical_osm_timestamp_format(timestamp_string):
+    return datetime.datetime.strptime(timestamp_string, typical_osm_timestamp_format())
+
 def typical_osm_timestamp_format():
     # in Overpass and in OSM Editing API timestamps
     return "%Y-%m-%dT%H:%M:%SZ"
