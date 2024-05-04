@@ -49,21 +49,62 @@ def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wi
     builder.create_changeset(api)
     return api
 
-def has_nearby_notes(osm_link_to_object, scan_area_in_degrees=0.015):
+def get_nearby_notes(osm_link_to_object, scan_area_in_degrees=0.015):
+    min_lat = None
+    max_lat = None
+    min_lon = None
+    max_lon = None
     for data in osm_bot_abstraction_layer.get_all_nodes_data_of_an_object(osm_link_to_object):
         lat = data["lat"]
         lon = data["lon"]
-        min_lat = lat - scan_area_in_degrees/2
-        max_lat = lat + scan_area_in_degrees/2
-        min_lon = lon - scan_area_in_degrees/2
-        max_lon = lon + scan_area_in_degrees/2
-        notes = osm_bot_abstraction_layer.get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=1)
-        #print(notes)
-        #print(len(notes))
-        if len(notes) > 0:
-            #print("https://www.openstreetmap.org/note/" + notes[0]["id"])
-            return True
+        if min_lat == None:
+            min_lat = lat
+            max_lat = lat
+            min_lon = lon
+            max_lon = lon
+        if min_lat > lat:
+            min_lat = lat
+        if max_lat < lat:
+            max_lat = lat
+        if min_lon > lon:
+            min_lon = lon
+        if max_lon < lon:
+            max_lon = lon
+    min_lat = lat - scan_area_in_degrees/2
+    max_lat = lat + scan_area_in_degrees/2
+    min_lon = lon - scan_area_in_degrees/2
+    max_lon = lon + scan_area_in_degrees/2
+    notes = osm_bot_abstraction_layer.get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=1)
+    return notes
+    #print(notes)
+    #print(len(notes))
+
+def has_nearby_notes(osm_link_to_object, scan_area_in_degrees=0.015):
+    notes = get_nearby_notes(osm_link_to_object, scan_area_in_degrees)
+    if len(notes) > 0:
+        #print("https://www.openstreetmap.org/note/" + notes[0]["id"])
+        return True
     return False
+
+def note_creation_block_reason(lat, lon):
+    # returns text description if local community requested to not produce tool-assisted notes
+    # returns None if no known obstacle exists
+
+    if lon > -77 and lon < 66 and lat < -17:
+        return "Within Chile bbox, skipping for now"
+
+    for case in [
+        {'lat': 50.8499578, 'lon': 5.6928988, 'why': 'https://www.openstreetmap.org/note/3954921'},
+        {'lat': 49.6642813, 'lon': -125.0078080, 'why': "skipped due to https://www.openstreetmap.org/note/3868197"}
+    ]:
+        if lat > case["lat"] - 0.01 and lat < case["lat"] + 0.01:
+            if lon > case["lon"] - 0.01 and lon < case["lon"] + 0.01:
+                print(case["why"])
+                return
+    if lon > 36.776733 and lon < 38.833923:
+        if lat > 55.277551 and lat < 56.275386:
+            return "Within Moscow bbox, skipping for now - see https://www.openstreetmap.org/note/3866541"
+    return None
 
 def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes):
     changeset = None
