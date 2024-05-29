@@ -39,10 +39,9 @@ class ChangesetBuilder:
         print("opening changeset", json.dumps(self.changeset_description, sort_keys=True, indent=4))
         try:
             api.ChangesetCreate(self.changeset_description)
-        except osmapi.OsmApi.ApiError as e:
+        except osmapi.ApiError as e:
             print(e.payload)
             print(e.reason)
-            print(e.status_code)
             raise
 
 def get_data_based_on_object_link(osm_object_url):
