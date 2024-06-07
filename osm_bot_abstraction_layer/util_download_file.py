@@ -2,6 +2,8 @@ import os
 
 def download_file_if_not_present_already(download_url, directory, filename):
     filepath = directory + filename
+    if directory[-1] != "/":
+        filepath = directory + "/" + filename
     if os.path.isdir(directory) == False:
         print(directory, "is not directory!")
         raise Exception(directory + " is not directory!")
