@@ -205,7 +205,7 @@ def is_indoor_poi(tags):
         return True
     if is_doctor(tags):
         return True
-    if is_food_place(tags):
+    if is_food_or_alcohol_place(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
@@ -262,9 +262,9 @@ def is_taggable_with_taxon(tags):
     return False
 
 def food_place_tag_listing():
-    return {'amenity': ["cafe", "fast_food", "restaurant", "pub", "ice_cream"]}
+    return {'amenity': ["cafe", "fast_food", "restaurant", "pub", "ice_cream", "bar"]}
 
-def is_food_place(tags):
+def is_food_or_alcohol_place(tags):
     return is_any_matching_with_tag_listing(tags, food_place_tag_listing())
 
 def doctor_tag_listing():
@@ -352,7 +352,7 @@ def is_place_of_payment(tags):
         return True
     if is_fuel_station(tags):
         return True
-    if is_food_place(tags):
+    if is_food_or_alcohol_place(tags):
         return True
     if is_rentable_sleeping_place(tags):
         return True
@@ -546,7 +546,7 @@ def is_expected_tag(key, value, tags, special_expected):
     if "building" in tags:
         if is_valid_address_tag(key, value, tags):
             return True
-    if is_food_place(tags):
+    if is_food_or_alcohol_place(tags):
         if is_tag_expected_for_food_place(key, value, tags):
             return True
     if is_place_of_payment(tags):
@@ -578,7 +578,7 @@ def is_expected_tag(key, value, tags, special_expected):
         if key == 'dispensing':
             if value in ["yes", "no"]:
                 return True
-    if is_food_place(tags):
+    if is_food_or_alcohol_place(tags):
         if key in ['cuisine', 'smoking']:
             return True
     
