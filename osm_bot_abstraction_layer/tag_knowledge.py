@@ -281,7 +281,19 @@ def brandable_tag_listing():
     return {'amenity': ["atm", "motorcycle_rental"], 'office': valid_office_values()}
 
 def valid_office_values():
-    return ['insurance']
+    return ['accountant', 'advertising_agency', 'architect', 'association',
+            'chamber', 'charity', 'company', 'construction_company',
+            'consulting', 'courier', 'coworking', 'diplomatic',
+            'educational_institution', 'employment_agency', 'energy_supplier',
+            'engineer', 'estate_agent', 'financial', 'financial_advisor',
+            'forestry', 'foundation', 'geodesist', 'government',
+            'graphic_design', 'guide', 'harbour_master', 'insurance', 'it',
+            'lawyer', 'logistics', 'moving_company', 'newspaper', 'ngo',
+            'notary', 'politician', 'political_party', 'property_management',
+            'publisher', 'quango', 'religion', 'research', 'security',
+            'surveyor', 'tax_advisor', 'telecommunication', 'therapist',
+            'travel_agent', 'tutoring', 'union', 'university', 'visa',
+            'water_utility']
 
 def is_brandable(tags):
     return is_any_matching_with_tag_listing(tags, brandable_tag_listing())
