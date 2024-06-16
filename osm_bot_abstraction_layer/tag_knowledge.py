@@ -203,7 +203,7 @@ def is_fuel_station(tags):
 def is_indoor_poi(tags):
     if is_shop(tags):
         return True
-    if is_doctor(tags):
+    if is_indoor_healthcare_facility(tags):
         return True
     if is_food_or_alcohol_place(tags):
         return True
@@ -267,11 +267,14 @@ def food_place_tag_listing():
 def is_food_or_alcohol_place(tags):
     return is_any_matching_with_tag_listing(tags, food_place_tag_listing())
 
-def doctor_tag_listing():
-    return {'amenity': ["dentist", "clinic", "doctors"]}
+def indoor_healthcare_facility_tag_listing():
+    return {
+        'amenity': ["dentist", "clinic", "doctors"],
+        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre"],
+    }
 
-def is_doctor(tags):
-    return is_any_matching_with_tag_listing(tags, doctor_tag_listing())
+def is_indoor_healthcare_facility(tags):
+    return is_any_matching_with_tag_listing(tags, indoor_healthcare_facility_tag_listing())
 
 def brandable_tag_listing():
     return {'amenity': ["atm", "motorcycle_rental"], 'office': valid_office_values()}
@@ -287,7 +290,7 @@ def is_good_main_tag(key, value):
         return True
     if check_potential_main_key(key, value, shop_tag_listing()):
         return True
-    if check_potential_main_key(key, value, doctor_tag_listing()):
+    if check_potential_main_key(key, value, indoor_healthcare_facility_tag_listing()):
         return True
     if check_potential_main_key(key, value, indoor_rentable_sleeping_place_tag_listing()):
         return True
