@@ -125,6 +125,18 @@ def is_shop(tags):
         return True
     return is_any_matching_with_tag_listing(tags, shop_tag_listing())
 
+def is_shoplike(tags):
+    # selling goods or services or being final step to accessing these
+    # includes charging stations, mailboxes, atm, restaurants and pubs
+    if is_fuel_station(tags):
+        return True
+    if is_indoor_poi(tags):
+        return True
+    if is_place_of_payment(tags):
+        return True
+    tags.get("amenity") in ["post_box", "vending_machine"]
+    return False
+
 def valid_barrier_values():
     # https://wiki.openstreetmap.org/wiki/Key:barrier?uselang=en#Values
     return [
