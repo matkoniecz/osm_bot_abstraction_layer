@@ -134,7 +134,8 @@ def is_shoplike(tags):
         return True
     if is_place_of_payment(tags):
         return True
-    tags.get("amenity") in ["post_box", "vending_machine"]
+    if tags.get("amenity") in ["post_box"]:
+        return True
     return False
 
 def valid_barrier_values():
