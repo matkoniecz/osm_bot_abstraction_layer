@@ -11,7 +11,8 @@ def download_file_if_not_present_already(download_url, directory, filename):
         print(filepath, "is directory!")
         raise Exception(filepath + " is directory!")
     if os.path.isfile(filepath) != True:
-        command = 'curl "' + download_url + '" > "' + filepath + '"'
+        # -L follows redirects
+        command = 'curl -L "' + download_url + '" > "' + filepath + '"'
         print(command)
         os.system(command)
     else:
