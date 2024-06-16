@@ -61,7 +61,7 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             """
             if response.status_code == 200:
                 if "[out:json]" in query or "[out:csv]" in query:
-                    print("json and cvs format response is unhandled - do you really need json or csv? See https://overpass-turbo.eu/s/1mjM for an example of a silently failing query")
+                    print("json and cvs format response is unhandled - do you really need json or csv? See https://overpass-turbo.eu/s/1mjM for an example of a silently failing query") #TODO: put also link to this community thread
                 response_length = len(response.content.decode('utf-8'))
                 print("response length:", response_length)
                 # very long indicates that data was returned, some may be some massive that parsing would be outrageously expensive
