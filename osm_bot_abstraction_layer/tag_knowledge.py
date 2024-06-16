@@ -236,7 +236,7 @@ def is_outdoor_rentable_sleeping_place(tags):
     return False
 
 def indoor_rentable_sleeping_place_tag_listing():
-    return {'tourism': ["hotel", "motel", "chalet", "guest_house", "apartment", "alpine_hut"]}
+    return {'tourism': ["hotel", "hostel", "motel", "chalet", "guest_house", "apartment", "alpine_hut"]}
 
 def outdoor_rentable_sleeping_place_tag_listing():
     return {'tourism': ["camp_site", "caravan_site"]}
