@@ -372,7 +372,7 @@ def is_place_of_payment(tags):
         return True
     if is_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["post_office"]:
+    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding"]:
         return True
     return False
 
