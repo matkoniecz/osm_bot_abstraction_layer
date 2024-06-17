@@ -134,7 +134,7 @@ def is_shoplike(tags):
         return True
     if is_place_of_payment(tags):
         return True
-    if tags.get("amenity") in ["post_box"]:
+    if tags.get("amenity") in ["post_box", "parcel_locker"]:
         return True
     return False
 
@@ -206,11 +206,13 @@ def is_indoor_poi(tags):
         return True
     if is_indoor_healthcare_facility(tags):
         return True
-    if is_food_or_alcohol_place(tags):
+    if is_food_place(tags):
+        return True
+    if is_alcohol_place(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change"]:
+    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility"]:
         return True
     if tags.get("tourism") in ["museum", "gallery"]:
         return True
@@ -236,7 +238,7 @@ def is_outdoor_rentable_sleeping_place(tags):
     return False
 
 def indoor_rentable_sleeping_place_tag_listing():
-    return {'tourism': ["hotel", "hostel", "motel", "chalet", "guest_house", "apartment", "alpine_hut"]}
+    return {'tourism': ["hotel", "hostel", "motel", "chalet", "guest_house", "apartment", "alpine_hut", "wilderness_hut"]}
 
 def outdoor_rentable_sleeping_place_tag_listing():
     return {'tourism': ["camp_site", "caravan_site"]}
@@ -262,16 +264,22 @@ def is_taggable_with_taxon(tags):
         return True
     return False
 
-def food_place_tag_listing():
-    return {'amenity': ["cafe", "fast_food", "restaurant", "pub", "ice_cream", "bar"]}
+def alcohol_place_tag_listing():
+    return {'amenity': ["restaurant", "pub", "bar", "nightclub"]}
 
-def is_food_or_alcohol_place(tags):
+def food_place_tag_listing():
+    return {'amenity': ["cafe", "fast_food", "restaurant", "pub", "ice_cream"]}
+
+def is_food_place(tags):
     return is_any_matching_with_tag_listing(tags, food_place_tag_listing())
+
+def is_alcohol_place(tags):
+    return is_any_matching_with_tag_listing(tags, alcohol_place_tag_listing())
 
 def indoor_healthcare_facility_tag_listing():
     return {
         'amenity': ["dentist", "clinic", "doctors"],
-        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre"],
+        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice"],
     }
 
 def is_indoor_healthcare_facility(tags):
@@ -368,11 +376,15 @@ def is_place_of_payment(tags):
         return True
     if is_fuel_station(tags):
         return True
-    if is_food_or_alcohol_place(tags):
+    if is_food_place(tags):
+        return True
+    if is_alcohol_place(tags):
         return True
     if is_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding"]:
+    if tags.get("leisure") in ["fitness_centre"]:
+        return True
+    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre"]:
         return True
     return False
 
@@ -562,7 +574,7 @@ def is_expected_tag(key, value, tags, special_expected):
     if "building" in tags:
         if is_valid_address_tag(key, value, tags):
             return True
-    if is_food_or_alcohol_place(tags):
+    if is_food_place(tags):
         if is_tag_expected_for_food_place(key, value, tags):
             return True
     if is_place_of_payment(tags):
@@ -594,8 +606,11 @@ def is_expected_tag(key, value, tags, special_expected):
         if key == 'dispensing':
             if value in ["yes", "no"]:
                 return True
-    if is_food_or_alcohol_place(tags):
+    if is_food_place(tags):
         if key in ['cuisine', 'smoking']:
+            return True
+    if is_alcohol_place(tags):
+        if key in ['smoking']:
             return True
     
     if is_brandable(tags):
