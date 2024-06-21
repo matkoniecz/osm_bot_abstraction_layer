@@ -413,7 +413,7 @@ def is_place_of_payment(tags):
         return True
     if tags.get("waterway") in ["fuel"]:
         return True
-    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre", "car_rental", "car_wash", "money_transfer", "veterinary"]:
+    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre", "car_rental", "car_wash", "money_transfer", "veterinary", 'charging_station', 'toilets', 'photo_booth']:
         return True
     return False
 
