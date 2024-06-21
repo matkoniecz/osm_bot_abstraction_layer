@@ -125,6 +125,29 @@ def is_shop(tags):
         return True
     return is_any_matching_with_tag_listing(tags, shop_tag_listing())
 
+def valid_craft_values():
+    return ['agricultural_engines', 'bag_repair', 'basket_maker',
+        'blacksmith', 'boatbuilder', 'bookbinder', 'builder', 'cabinet_maker',
+        'candlemaker', 'car_painter', 'carpenter', 'carpet_cleaner',
+        'carpet_layer', 'caterer', 'chimney_sweeper', 'cleaning', 'clockmaker',
+        'confectionery', 'cooper', 'dental_technician', 'door_construction',
+        'dressmaker', 'electrician', 'electronics_repair', 'elevator',
+        'embroiderer', 'engraver', 'fence_maker', 'floorer', 'gardener',
+        'glassblower', 'glaziery', 'goldsmith', 'grinding_mill', 'handicraft',
+        'hvac', 'insulation', 'interior_decorator', 'interior_work',
+        'jeweller', 'joiner', 'key_cutter', 'laboratory', 'lapidary',
+        'leather', 'locksmith', 'luthier', 'metal_construction', 'mint',
+        'musical_instrument', 'oil_mill', 'optician', 'organ_builder',
+        'painter', 'paperhanger', 'parquet_layer', 'paver', 'pest_control',
+        'photographer', 'photographic_laboratory', 'photovoltaic',
+        'piano_tuner', 'plasterer', 'plumber', 'pottery', 'printer',
+        'printmaker', 'restoration', 'rigger', 'roofer', 'saddler',
+        'sailmaker', 'sawmill', 'scaffolder', 'sculptor', 'shoemaker',
+        'signmaker', 'stand_builder', 'stonemason', 'stove_fitter',
+        'sun_protection', 'tailor', 'tatami', 'tiler', 'tinsmith',
+        'toolmaker', 'turner', 'upholsterer', 'watchmaker', 'winery',
+        'water_well_drilling', 'weaver', 'welder', 'window_construction']
+
 def is_shoplike(tags):
     # selling goods or services or being final step to accessing these
     # includes charging stations, mailboxes, atm, restaurants and pubs
@@ -135,6 +158,8 @@ def is_shoplike(tags):
     if is_place_of_payment(tags):
         return True
     if tags.get("amenity") in ["post_box", "parcel_locker"]:
+        return True
+    if tags.get("craft") in valid_craft_values():
         return True
     return False
 
@@ -212,7 +237,9 @@ def is_indoor_poi(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility"]:
+    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary"]:
+        return True
+    if tags.get("leisure") in ["bowling_alley"]:
         return True
     if tags.get("tourism") in ["museum", "gallery"]:
         return True
@@ -265,7 +292,7 @@ def is_taggable_with_taxon(tags):
     return False
 
 def alcohol_place_tag_listing():
-    return {'amenity': ["restaurant", "pub", "bar", "nightclub"]}
+    return {'amenity': ["restaurant", "pub", "bar", "nightclub", "biergarten"]}
 
 def food_place_tag_listing():
     return {'amenity': ["cafe", "fast_food", "restaurant", "pub", "ice_cream"]}
@@ -279,7 +306,7 @@ def is_alcohol_place(tags):
 def indoor_healthcare_facility_tag_listing():
     return {
         'amenity': ["dentist", "clinic", "doctors"],
-        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice"],
+        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice", 'sample_collection', 'dialysis', 'physiotherapist', 'counselling', 'rehabilitation'],
     }
 
 def is_indoor_healthcare_facility(tags):
@@ -382,9 +409,11 @@ def is_place_of_payment(tags):
         return True
     if is_rentable_sleeping_place(tags):
         return True
-    if tags.get("leisure") in ["fitness_centre"]:
+    if tags.get("leisure") in ["fitness_centre", "water_park", "bowling_alley"]:
         return True
-    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre"]:
+    if tags.get("waterway") in ["fuel"]:
+        return True
+    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre", "car_rental", "car_wash", "money_transfer", "veterinary"]:
         return True
     return False
 
