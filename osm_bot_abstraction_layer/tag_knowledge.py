@@ -306,7 +306,7 @@ def is_alcohol_place(tags):
 def indoor_healthcare_facility_tag_listing():
     return {
         'amenity': ["dentist", "clinic", "doctors"],
-        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice", 'sample_collection', 'dialysis', 'physiotherapist', 'counselling', 'rehabilitation'],
+        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice", 'sample_collection', 'dialysis', 'physiotherapist', 'counselling', 'rehabilitation', 'occupational_therapist'],
     }
 
 def is_indoor_healthcare_facility(tags):
@@ -328,7 +328,7 @@ def valid_office_values():
             'publisher', 'quango', 'religion', 'research', 'security',
             'surveyor', 'tax_advisor', 'telecommunication', 'therapist',
             'travel_agent', 'tutoring', 'union', 'university', 'visa',
-            'water_utility']
+            'water_utility', 'healthcare']
 
 def is_brandable(tags):
     return is_any_matching_with_tag_listing(tags, brandable_tag_listing())
@@ -414,6 +414,8 @@ def is_place_of_payment(tags):
     if tags.get("waterway") in ["fuel"]:
         return True
     if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre", "car_rental", "car_wash", "money_transfer", "veterinary", 'charging_station', 'toilets', 'photo_booth']:
+        return True
+    if tags.get("healthcare") in ["alternative"]:
         return True
     return False
 
