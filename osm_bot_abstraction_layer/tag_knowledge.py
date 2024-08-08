@@ -369,11 +369,11 @@ def check_potential_main_key(key, value, tag_list):
     return False
 
 def name_keys():
-    return language_tag_knowledge.name_tags()
+    return language_tag_knowledge.name_keys()
 
 def basic_name_keys():
-    return language_tag_knowledge.basic_name_tags()
-    
+    return language_tag_knowledge.basic_name_keys()
+
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
             'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards',
