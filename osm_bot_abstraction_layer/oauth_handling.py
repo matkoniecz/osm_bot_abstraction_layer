@@ -24,8 +24,8 @@ client_secret = os.getenv("OSM_OAUTH_CLIENT_SECRET")
 # special value for redirect_uri for non-web applications
 redirect_uri = "urn:ietf:wg:oauth:2.0:oob"
 
-authorization_base_url = "https://master.apis.dev.openstreetmap.org/oauth2/authorize"
-token_url = "https://master.apis.dev.openstreetmap.org/oauth2/token"
+authorization_base_url = "https://api.openstreetmap.org/oauth2/authorize"
+token_url = "https://api.openstreetmap.org/oauth2/token"
 scope = ["write_api", "write_notes"]
 
 
@@ -94,7 +94,7 @@ def save_and_get_access_token(client_id, client_secret, redirect_uri, scope):
 
 def make_osm_change(oauth_session):
     api = osmapi.OsmApi(
-        api="https://api06.dev.openstreetmap.org", session=oauth_session
+        api="https://api.openstreetmap.org", session=oauth_session
     )
     with api.Changeset({"comment": "My first test"}) as changeset_id:
         print(f"Part of Changeset {changeset_id}")
