@@ -1,5 +1,5 @@
 def basic_name_keys():
-    return ['name', 'loc_name', 'alt_name', 'old_name', 'reg_name']
+    return ['name', 'loc_name', 'alt_name', 'short_name', 'official_name', 'old_name', 'reg_name']
 
 def is_name_key(key):
     if key in ['int_name']:
