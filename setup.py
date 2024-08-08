@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/matkoniecz/osm_bot_abstraction_layer",
     packages=setuptools.find_packages(),
     install_requires = [
-        'osmapi>=1.0.2, <2.0',
+        'osmapi>=4.2.0, <5.0',
         'termcolor>=1.1.0, <2.0',
         'requests>=2.22.0, <3.0',
         'osm_iterator>=1.5.0, <2.0',
