@@ -374,6 +374,51 @@ def name_keys():
 def basic_name_keys():
     return language_tag_knowledge.basic_name_keys()
 
+def is_freeform_key(key):
+    # keys where even inexperienced mappers is likely to use a new value, which would be valid
+    # for example name or inscription are good central examples
+    # also cases where it is less likely like lanes (maybe this should get separate classification function?
+    # after all, basically all valid lane values are used already)
+    # does not include buildings which have no closed value set but new mapper is
+    # not going to use a new valid value - inventing new valid value is more tag crafting effort
+    if key in name_keys():
+        return True
+    if key in list_of_address_tags():
+        return True
+    # TODO: why list_of_address_tags but name_keys? (tag vs key, list vs no prefix)
+    if key in ["name", "int_name", "ref",
+        "addr:flats", "addr:housenumber", "addr:street", "addr:place", "addr:block_number", "addr:streetnumber",
+        "addr:conscriptionnumber", "addr:housename",
+        "building:levels", "roof:levels", "level",
+        "collection_times", "opening_hours", "opening_date", "check_date",
+        "fire_hydrant:diameter", "maxheight", "width", "cycleway:width",
+        "maxspeed", "maxspeed:advisory", "maxstay",
+        "maxweight", "maxweightrating", "maxaxleload", "maxbogieweight",
+        "capacity", "step_count",
+        "lanes", "lanes:forward", "lanes:backward", "lanes:both_ways",
+        "turn:lanes:both_ways", "turn:lanes", "turn:lanes:forward", "turn:lanes:backward",
+        "operator",
+        "brand",
+
+        # survey markers
+        "check_date",
+
+        'capacity:seats', 'capacity:hgv',
+        "website", "url", "email", "image", "wikimedia_commons",
+        'website:menu',
+        'contact:facebook', 'facebook', 'fax',
+        'start_date',
+        'contact:twitter', 'twitter', 'contact:instagram', 'instagram', 'contact:yelp', 'yelp',
+        'contact:tripadvisor', 'tripadvisor',
+    ]:
+        return True
+    for suffix in [":note", ":conditional", ":wikidata", ":wikipedia"]:
+        if key.endswith(suffix):
+            return True
+    for prefix in ["lanes:", "source:", "opening_hours:"]: # "name:" covered by name tag check above
+        if key.startswith(prefix):
+            return True
+
 def payment_tags():
     return ['payment:visa', 'payment:mastercard', 'payment:girocard', 'payment:coins',
             'payment:maestro', 'payment:notes', 'payment:v_pay', 'payment:debit_cards',
