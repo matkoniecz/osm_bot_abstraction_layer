@@ -2,6 +2,8 @@
 import osmapi
 import time
 import json
+import osm_bot_abstraction_layer.oauth_handling
+from requests_oauthlib import OAuth2Session
 
 def fully_automated_description():
     return "yes"
@@ -14,7 +16,15 @@ def get_api(account_type):
         data = json.load(f)
         username = data[account_type]['username']
         password = data[account_type]['password']
-        return osmapi.OsmApi(username = username, password = password)
+        if 'script_client_id' not in data[account_type] or 'script_secret' not in data[account_type]:
+            raise Exception("create application at https://www.openstreetmap.org/oauth2/applications, add script_client_id and script_secret as fields in secret.json")
+        client_id = data[account_type]['script_client_id']
+        client_secret = data[account_type]['script_secret']
+        if 'token' not in data[account_type]:
+            token = osm_bot_abstraction_layer.oauth_handling.get_token(client_id, client_secret)
+            print(json.dumps(token))
+            raise Exception("add token to secret.json in token field")
+        return osmapi.OsmApi(session=OAuth2Session(client_id, token=data[account_type]['token']))
 
 def character_limit_of_description():
     return 255
