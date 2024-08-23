@@ -2,9 +2,9 @@ import re
 import osm_bot_abstraction_layer.language_tag_knowledge as language_tag_knowledge
 
 def typical_lifecycle_prefixes_for_past():
-    return ["", "construction:", "disused:", "abandoned:",
-                "ruins:", "demolished:", "removed:", "razed:",  "destroyed:",
-                "was:", "former:", "closed:"]
+    return ["construction:", "disused:", "abandoned:",
+            "ruins:", "demolished:", "removed:", "razed:",  "destroyed:",
+            "was:", "former:", "closed:"]
     # planned:, proposed:, historic: are invalid and should be avoided
 
 def typical_main_keys():
@@ -15,7 +15,7 @@ def typical_main_keys():
             "landuse", "boundary", "building", "building:part", "landcover",
             "waterway", "cemetery", "aerialway", "public_transport"]
     returned = []
-    for prefix in typical_lifecycle_prefixes_for_past():
+    for prefix in typical_lifecycle_prefixes_for_past() + [""]:
         for basic in base:
             returned.append(prefix + basic)
     return returned
