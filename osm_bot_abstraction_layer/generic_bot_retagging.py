@@ -165,6 +165,10 @@ def is_edit_allowed(is_in_manual_mode, link):
 def modify_data_locally_and_show_changes(osm_link_to_object, edit_element_function):
     prerequisites = {}
     data = osm_bot_abstraction_layer.get_and_verify_data(osm_link_to_object, prerequisites)
+    if data == None:
+        print("tried to get data for <" + osm_link_to_object + "> and failed")
+        raise Exception("tried to get data for <" + osm_link_to_object + "> and failed")
+        return
 
     human_verification_mode.smart_print_tag_dictionary(data['tag'])
 
