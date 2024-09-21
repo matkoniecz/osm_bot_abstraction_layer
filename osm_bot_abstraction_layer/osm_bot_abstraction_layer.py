@@ -132,6 +132,9 @@ def update_element(api, type, data):
         if type == 'relation':
             return api.RelationUpdate(data)
         assert False, str(type) + " type as not recognised"
+    except osmapi.errors.ElementDeletedApiError as e:
+        print("reported as deleted: https://www.openstreetmap.org/" + type + "/" + str(id))
+        raise e
     except osmapi.ApiError as e:
         print(e)
         raise e
