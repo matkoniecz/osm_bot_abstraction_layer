@@ -17,7 +17,7 @@ def get_query(current_key):
     return """
 [out:xml][timeout:1800];
 (
-  nwr[""" + current_key + """=yes];
+  nwr['""" + current_key + """'=yes];
 );
 out body;
 >;
