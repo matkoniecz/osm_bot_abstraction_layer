@@ -60,7 +60,7 @@ def valid_shop_values():
             # - approved
             # * has description on wiki
             # list generated with
-            # https://gitlab.com/matkoniecz/osm-automation/-/blob/master/detect_unhandled_invalid_shop_values.py
+            # https://codeberg.org/matkoniecz/OpenStreetMap_cleanup_scripts/src/branch/master/note_processing/detect_unhandled_invalid_shop_values.py
             "tailor", "funeral_directors", "storage_rental", "trade", "massage",
             "interior_decoration", "outpost", "ticket", "houseware", "general",
             "paint", "pawnbroker", "charity", "bookmaker", "tattoo",
