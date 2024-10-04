@@ -218,6 +218,17 @@ print(world_data.list_of_area_division_data('IR', 4, ["name", "wikidata"], '/tmp
 
 Returns list of dicts with names (from `name` tag, so should contain local ones) and wikidata codes.
 
+## Download file
+
+```python
+import osm_bot_abstraction_layer.util_download_file
+
+directory = '/tmp/'
+filename = 'planet-latest.osm.pbf.torrent'
+url = 'https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf.torrent'
+osm_bot_abstraction_layer.util_download_file.download_file_if_not_present_already(url, directory, filename)
+```
+
 # Further documentation
 
 Documentation is currently mostly missing - please, open an issue if it would be useful for you (pull requests are also welcomed).
