@@ -160,9 +160,13 @@ def is_shoplike(tags):
         return True
     if is_place_of_payment(tags):
         return True
-    if tags.get("amenity") in ["post_box", "parcel_locker"]:
+    if tags.get("amenity") in ["post_box", "parcel_locker", "music_venue",
+        "food_sharing", # shoplike in sense you can get food there I guess?
+    ]:
         return True
     if tags.get("craft") in valid_craft_values():
+        return True
+    if tags.get("man_made") in ['charge_point']:
         return True
     return False
 
@@ -240,7 +244,7 @@ def is_indoor_poi(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary"]:
+    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary", "prep_school", "conference_centre"]:
         return True
     if tags.get("leisure") in ["bowling_alley"]:
         return True
