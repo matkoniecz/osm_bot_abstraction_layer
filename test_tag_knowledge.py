@@ -23,5 +23,13 @@ class Tests(unittest.TestCase):
     def test_main_tags_can_be_prefixed_tags(self):
         self.assertEqual(True, 'disused:amenity' in tag_knowledge.typical_main_keys())
 
+    def test_road_is_not_shoplike(self):
+        tags = {"highway": "tertiary"}
+        self.assertEqual(False, tag_knowledge.is_shoplike(tags))
+
+    def test_supermarket_is_shoplike(self):
+        tags = {"shop": "supermarket"}
+        self.assertEqual(True, tag_knowledge.is_shoplike(tags))
+
 if __name__ == '__main__':
     unittest.main()
