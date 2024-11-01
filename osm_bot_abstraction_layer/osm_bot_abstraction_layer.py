@@ -80,7 +80,7 @@ def get_data(id, type):
         return get_data(id, type)
     except osmapi.errors.ApiError as e:
         # proper exception type requested in https://github.com/metaodi/osmapi/issues/176
-        if "RemoteDisconnected('Remote end closed connection without response')" in str(e)
+        if "RemoteDisconnected('Remote end closed connection without response')" in str(e):
             print("was trying to get", link, "data, got RemoteDisconnected('Remote end closed connection without response')! Will wait and retry")
             time.sleep(60)
             return get_data(id, type)
@@ -112,14 +112,11 @@ def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_o
         return get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit, number_of_days_before_closed_note_is_hidden)
     except osmapi.errors.ApiError as e:
         # proper exception type requested in https://github.com/metaodi/osmapi/issues/176
-        if "RemoteDisconnected('Remote end closed connection without response')" in str(e)
+        if "RemoteDisconnected('Remote end closed connection without response')" in str(e):
             print("was trying to get", link, "data, got RemoteDisconnected('Remote end closed connection without response')! Will wait and retry")
             time.sleep(60)
             return get_data(id, type)
         raise
-    except osmapi.XmlResponseInvalidError:
-        # https://github.com/metaodi/osmapi/issues/137
-        return []
 
 def close_note(noteId, comment, api_code):
     api = get_api(api_code)
