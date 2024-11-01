@@ -229,6 +229,15 @@ url = 'https://planet.openstreetmap.org/pbf/planet-latest.osm.pbf.torrent'
 osm_bot_abstraction_layer.util_download_file.download_file_if_not_present_already(url, directory, filename)
 ```
 
+## List valid `shop=` values
+
+```python
+import osm_bot_abstraction_layer.tag_knowledge as tag_knowledge
+
+for value in tag_knowledge.valid_shop_values():
+  print(shop, "=", value)
+```
+
 # Further documentation
 
 Documentation is currently mostly missing - please, open an issue if it would be useful for you (pull requests are also welcomed).
