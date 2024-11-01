@@ -70,10 +70,10 @@ def get_nearby_notes(osm_link_to_object, scan_area_in_degrees=0.015):
             min_lon = lon
         if max_lon < lon:
             max_lon = lon
-    min_lat = lat - scan_area_in_degrees/2
-    max_lat = lat + scan_area_in_degrees/2
-    min_lon = lon - scan_area_in_degrees/2
-    max_lon = lon + scan_area_in_degrees/2
+    min_lat -= scan_area_in_degrees/2
+    max_lat += scan_area_in_degrees/2
+    min_lon -= scan_area_in_degrees/2
+    max_lon += scan_area_in_degrees/2
     notes = osm_bot_abstraction_layer.get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=1)
     return notes
     #print(notes)
