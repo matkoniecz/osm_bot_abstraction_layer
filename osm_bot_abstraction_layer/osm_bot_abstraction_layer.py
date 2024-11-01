@@ -60,7 +60,8 @@ def get_data_based_on_object_link(osm_object_url):
     return get_data(id, element_type)
 
 def get_data(id, type):
-    print("downloading https://www.openstreetmap.org/" + type + "/" + str(id))
+    link = "https://www.openstreetmap.org/" + type + "/" + str(id)
+    print("downloading", link)
     api = get_api('bot_account')
     try:
         if type == 'node':
@@ -73,6 +74,10 @@ def get_data(id, type):
             return api.NoteGet(id)
     except osmapi.ElementDeletedApiError:
         return None
+    except osmapi.errors.TimeoutApiError:
+        print("was trying to get", link, "data, got osmapi.errors.TimeoutApiError! Will wait and retry")
+        time.sleep(60)
+        return get_data(id, type)
     assert(False)
 
 def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_of_days_before_closed_note_is_hidden=0):
@@ -94,6 +99,10 @@ def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_o
     #print(uri)
     try:
         return api.NotesGet(min_lon, min_lat, max_lon, max_lat, limit=limit, closed=number_of_days_before_closed_note_is_hidden)
+    except osmapi.errors.TimeoutApiError:
+        print("was trying to get notes data, got osmapi.errors.TimeoutApiError! Will wait and retry")
+        time.sleep(60)
+        return get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit, number_of_days_before_closed_note_is_hidden)
     except osmapi.XmlResponseInvalidError:
         # https://github.com/metaodi/osmapi/issues/137
         return []
