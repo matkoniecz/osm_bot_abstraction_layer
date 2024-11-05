@@ -113,7 +113,7 @@ def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_o
     except osmapi.errors.ApiError as e:
         # proper exception type requested in https://github.com/metaodi/osmapi/issues/176
         if "RemoteDisconnected('Remote end closed connection without response')" in str(e):
-            print("was trying to get", link, "data, got RemoteDisconnected('Remote end closed connection without response')! Will wait and retry")
+            print("was trying to get note data, got RemoteDisconnected('Remote end closed connection without response')! Will wait and retry")
             time.sleep(60)
             return get_data(id, type)
         raise
