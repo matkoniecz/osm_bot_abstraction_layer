@@ -13,7 +13,7 @@ def typical_main_keys():
             "advertising", "highway", "natural", "power", "historic",
             "military", "attraction", "aeroway", "railway",
             "landuse", "boundary", "building", "building:part", "landcover",
-            "waterway", "cemetery", "aerialway", "public_transport"]
+            "waterway", "cemetery", "aerialway", "public_transport", "telecom"]
     returned = []
     for prefix in typical_lifecycle_prefixes_for_past() + [""]:
         for basic in base:
