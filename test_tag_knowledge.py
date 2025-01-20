@@ -25,6 +25,8 @@ class Tests(unittest.TestCase):
 
     def test_main_tags_list_amenity_before_demolished_amenity(self):
         self.assertEqual(True, tag_knowledge.typical_main_keys().index("amenity") < tag_knowledge.typical_main_keys().index("demolished:amenity"))
+        for prefix in tag_knowledge.typical_lifecycle_prefixes_for_past():
+            self.assertEqual(True, tag_knowledge.typical_main_keys().index("amenity") < tag_knowledge.typical_main_keys().index(prefix + "amenity"))
 
     def test_road_is_not_shoplike(self):
         tags = {"highway": "tertiary"}
