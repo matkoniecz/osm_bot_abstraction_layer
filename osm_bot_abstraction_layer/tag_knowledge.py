@@ -15,7 +15,7 @@ def typical_main_keys():
             "landuse", "boundary", "building", "building:part", "landcover",
             "waterway", "cemetery", "aerialway", "public_transport", "telecom"]
     returned = []
-    for prefix in typical_lifecycle_prefixes_for_past() + [""]:
+    for prefix in [""] +typical_lifecycle_prefixes_for_past():
         for basic in base:
             returned.append(prefix + basic)
     return returned
