@@ -7,16 +7,18 @@ def typical_lifecycle_prefixes_for_past():
             "was:", "former:", "closed:"]
     # planned:, proposed:, historic: are invalid and should be avoided
 
-def typical_main_keys():
-    base = ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
+def typical_unprefixed_main_keys():
+    return ["amenity", "tourism", "shop", "leisure", "office", "healthcare",
             "craft", 'emergency', "man_made", "traffic_calming", "barrier",
             "advertising", "highway", "natural", "power", "historic",
             "military", "attraction", "aeroway", "railway",
             "landuse", "boundary", "building", "building:part", "landcover",
             "waterway", "cemetery", "aerialway", "public_transport", "telecom"]
+
+def typical_main_keys():
     returned = []
     for prefix in [""] +typical_lifecycle_prefixes_for_past():
-        for basic in base:
+        for basic in typical_unprefixed_main_keys():
             returned.append(prefix + basic)
     return returned
 
