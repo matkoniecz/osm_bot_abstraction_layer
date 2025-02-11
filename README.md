@@ -138,6 +138,8 @@ download_overpass_query(vienna_download, '/tmp/vienna.osm')
 
 If I need to iterate over such file I typically use https://github.com/matkoniecz/osm_iterator
 
+For looking at bounding boxes I typically use http://bboxfinder.com - for example see [`48.10,16.26,48.26,16.51`](http://bboxfinder.com/#48.10,16.26,48.26,16.51)
+
 ### Using OSM Editing API
 
 Create `secret.json` file with
