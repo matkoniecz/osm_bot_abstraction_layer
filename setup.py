@@ -17,6 +17,7 @@ setuptools.setup(
         'osmapi>=4.2.0, <5.0',
         'termcolor>=1.1.0, <2.0',
         'requests>=2.22.0, <3.0',
+        'requests-oauthlib>=2.0.0, <3.0',
         'osm_iterator>=1.5.0, <2.0',
         'tqdm>4.47.0, <5.0',
         'lxml>=3.5.0',
