@@ -1,11 +1,7 @@
 rm dist -rf
 python3 setup.py sdist bdist_wheel
 cd dist
-pip3 uninstall osm_bot_abstraction_layer -y
-pip3 install --user *.whl
-python3.10 -m pip uninstall osm_bot_abstraction_layer -y
-python3.10 -m pip install --user *.whl
-# pip3.10: command not found
+/home/mateusz/Documents/install_moje/shared_python_virtual_environment/bin/python ../../python_package_reinstaller/reinstaller.py osm_bot_abstraction_layer # yes, it relies on code on my computer - let me know if anyone else wants to run this script
 cd ..
-python3 -m unittest
+/home/mateusz/Documents/install_moje/shared_python_virtual_environment/bin/python -m unittest
 # twine upload dist/* # to upload to PyPi
