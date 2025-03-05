@@ -18,17 +18,29 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
 
 def list_what_will_be_edited(key, replacement_dictionary):
     returned = ""
-    # markdown
+    returned += list_what_will_be_edited_in_markdown(key, replacement_dictionary)
+    returned += "\n\n"
+
+    returned += list_what_will_be_edited_in_unformatted_text(key, replacement_dictionary)
+    returned += "\n\n"
+
+    returned += list_what_will_be_edited_in_wikicode(key, replacement_dictionary)
+    return returned
+
+def list_what_will_be_edited_in_markdown(key, replacement_dictionary):
+    returned = ""
     for replaced_value, new_value in replacement_dictionary.items():
         returned += '`' + key + " = " + replaced_value + "` → `" + key + " = " + new_value + "`\n"
-    returned += "\n\n"
+    return returned
 
-    # text
+def list_what_will_be_edited_in_unformatted_text(key, replacement_dictionary):
+    returned = ""
     for replaced_value, new_value in replacement_dictionary.items():
         returned += key + " = " + replaced_value + " → " + key + " = " + new_value + "\n"
-    returned += "\n\n"
+    return returned
 
-    # wiki
+def list_what_will_be_edited_in_wikicode(key, replacement_dictionary):
+    returned = ""
     for replaced_value, new_value in replacement_dictionary.items():
         returned += "* " + tag_in_wikimedia_syntax(key, replaced_value) + " → " + tag_in_wikimedia_syntax(key, new_value) + "\n"
     return returned
