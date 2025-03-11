@@ -207,6 +207,9 @@ def output_full_comment_get_comment_within_limit(affected_objects_description, c
 
 def make_edit(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, element_type, data, source, sleeping_time=60, other_changeset_tags_dict={}):
     api = get_correct_api(automatic_status, discussion_url, osm_wiki_documentation_page)
+    make_edit_with_specified_api(api, affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, element_type, data, source, sleeping_time, other_changeset_tags_dict)
+
+def make_edit_with_specified_api(api, affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, element_type, data, source, sleeping_time=60, other_changeset_tags_dict={}):
     builder = ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_changeset_tags_dict)
     builder.create_changeset(api)
     update_element(api, element_type, data)
