@@ -27,10 +27,21 @@ def list_what_will_be_edited(key, replacement_dictionary):
     returned += list_what_will_be_edited_in_wikicode(key, replacement_dictionary)
     return returned
 
+def format_markdown(text):
+    if "`" in text:
+        return text.replace("`", "\`") 
+        # no idea why escaping ` inside `block` fails
+        # but it failed, see https://community.openstreetmap.org/t/bot-proposal-values-cleanup-for-roof-shape/127937
+    return "`" + text + "`"
+
+
 def list_what_will_be_edited_in_markdown(key, replacement_dictionary):
     returned = ""
     for replaced_value, new_value in replacement_dictionary.items():
-        returned += '`' + key + " = " + replaced_value + "` → `" + key + " = " + new_value + "`\n"
+        from_text = format_markdown(key + " = " + replaced_value)
+        to_text = format_markdown(key + " = " + new_value)
+
+        returned += from_text + " → " + to_text + "\n"
     return returned
 
 def list_what_will_be_edited_in_unformatted_text(key, replacement_dictionary):
