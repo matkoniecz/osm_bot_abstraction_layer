@@ -89,6 +89,10 @@ def get_data(id, type):
             time.sleep(60)
             return get_data(id, type)
         raise
+    except osmapi.errors.ConnectionApiError as e:
+        print(e)
+        time.sleep(60)
+        return get_data(id, type)
     assert(False)
 
 def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_of_days_before_closed_note_is_hidden=0):
