@@ -18,11 +18,11 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
 
 def list_what_will_be_edited(key, replacement_dictionary):
     returned = ""
-    returned += list_what_will_be_edited_in_markdown(key, replacement_dictionary)
-    returned += "\n\n"
+    #returned += list_what_will_be_edited_in_markdown(key, replacement_dictionary)
+    #returned += "\n\n"
 
-    returned += list_what_will_be_edited_in_unformatted_text(key, replacement_dictionary)
-    returned += "\n\n"
+    #returned += list_what_will_be_edited_in_unformatted_text(key, replacement_dictionary)
+    #returned += "\n\n"
 
     returned += list_what_will_be_edited_in_wikicode(key, replacement_dictionary)
     return returned
