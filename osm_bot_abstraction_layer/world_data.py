@@ -16,6 +16,32 @@ class DataCollector( object ):
       return self.data
 
 def list_of_area_divisions_query(iso_tag, area_iso_code, admin_level_of_split):
+    # https://community.openstreetmap.org/t/why-mecklenburg-vorpommern-is-part-of-poland-according-to-this-overpass-query-how-can-i-fix-it/129767
+    return """[out:xml][timeout:3600];
+
+area['""" + iso_tag + """'='""" + area_iso_code + """'] -> .parent_area;
+rel(pivot.parent_area) -> .parent_relation;
+
+relation
+  ["admin_level"=""" + str(admin_level_of_split) + """]
+  ["boundary"="administrative"]
+  (area.parent_area) -> .candidate_relations;
+
+(
+  way(r.candidate_relations);
+  -
+  way(r.parent_relation);
+) -> .filtered_ways;
+
+way.filtered_ways(area.parent_area) -> .filtered_ways;
+
+relation
+  (bw.filtered_ways)
+  ["admin_level"=""" + str(admin_level_of_split) + """]
+  ["boundary"="administrative"]
+  (area.parent_area);
+
+out geom;"""
     return """[out:xml][timeout:3600];
   area
     ['""" + iso_tag + """'='""" + area_iso_code + """'] -> .parent_area;
