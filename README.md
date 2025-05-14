@@ -73,7 +73,7 @@ Create `secret.json` file with content like this:
 
 On first run script should instruct how to obtain token that will be added to that field.
 
-After that it should looki like that (XXXXX are placeholders):
+After that it should have following format (XXXXX are placeholders):
 
 ```json
 {
