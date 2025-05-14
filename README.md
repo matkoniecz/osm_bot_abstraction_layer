@@ -50,17 +50,44 @@ And yes, it means that some automated edits that would save time and make perfec
 
 # Configuration
 
+Sadly, we need to deal with [OAuth](https://wiki.openstreetmap.org/wiki/OAuth).
+
+Create application at https://www.openstreetmap.org/oauth2/applications (using `urn:ietf:wg:oauth:2.0:oob` as redirect URI).
+
 Create `secret.json` file with content like this:
 
 ```json
 {
 	"bot_account": {
-		"username": "Your OSM username for a bot account",
-		"password": "?6ofGZm=qr*skR?C,a,1E#k9g8:kE7"
+		"script_client_id": "replace",
+		"script_secret": "replace",
+		"username": "replace with OSM username, optional field needed only for documentation"
 	},
 	"human_account": {
-		"username": "Your OSM username for a human operated account",
-		"password": "t?\\q~,?m;2l?Dd$cKc`?n9PeSDBjj/"
+		"script_client_id": "replace",
+		"script_secret": "replace",
+		"username": "replace with OSM username, optional field needed only for documentation"
+	}
+}
+```
+
+On first run script should instruct how to obtain token that will be added to that field.
+
+After that it should looki like that (XXXXX are placeholders):
+
+```json
+{
+	"bot_account": {
+		"script_client_id": "replace",
+		"script_secret": "replace",
+		"username": "replace with OSM username, optional field needed only for documentation",
+    "token": {"access_token": "XXXXX", "token_type": "Bearer", "scope": ["write_api", "write_notes"], "created_at": XXXXX}
+	},
+	"human_account": {
+		"script_client_id": "replace",
+		"script_secret": "replace",
+		"username": "replace with OSM username, optional field needed only for documentation",
+    "token": {"access_token": "XXXXX", "token_type": "Bearer", "scope": ["write_api", "write_notes"], "created_at": XXXXX}
 	}
 }
 ```

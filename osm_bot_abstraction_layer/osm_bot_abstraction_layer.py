@@ -14,16 +14,14 @@ def manually_reviewed_description():
 def get_api(account_type):
     with open('secret.json') as f:
         data = json.load(f)
-        username = data[account_type]['username']
-        password = data[account_type]['password']
         if 'script_client_id' not in data[account_type] or 'script_secret' not in data[account_type]:
-            raise Exception("create application at https://www.openstreetmap.org/oauth2/applications, add script_client_id and script_secret as fields in secret.json")
+            raise Exception("add script_client_id and script_secret as fields in secret.json, see https://github.com/matkoniecz/osm_bot_abstraction_layer?tab=readme-ov-file#configuration for details")
         client_id = data[account_type]['script_client_id']
         client_secret = data[account_type]['script_secret']
         if 'token' not in data[account_type]:
             token = osm_bot_abstraction_layer.oauth_handling.get_token(client_id, client_secret)
             print(json.dumps(token))
-            raise Exception("add token to secret.json in token field")
+            raise Exception('add token to secret.json in token field, see https://github.com/matkoniecz/osm_bot_abstraction_layer?tab=readme-ov-file#configuration for details')
         return osmapi.OsmApi(session=OAuth2Session(client_id, token=data[account_type]['token']))
 
 def character_limit_of_description():
