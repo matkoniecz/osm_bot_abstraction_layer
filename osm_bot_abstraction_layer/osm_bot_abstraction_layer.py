@@ -29,6 +29,8 @@ def character_limit_of_description():
  
 class ChangesetBuilder:
     def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict = {}):
+        if automatic_status not in [fully_automated_description(), manually_reviewed_description()]:
+            raise "automatic status must match either description returned by fully_automated_description() or manually_reviewed_description() from osm_abstraction_layer"
         self.changeset_description = other_tags_dict
         self.changeset_description['mechanical'] = automatic_status
         if automatic_status == fully_automated_description():
