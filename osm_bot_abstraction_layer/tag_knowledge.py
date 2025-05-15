@@ -517,10 +517,18 @@ def is_tag_expected_for_building_or_building_part(key, value, tags):
         if value in ["0", "1", "2"]:
             return True
     if key == "roof:shape":
-        # https://taginfo.openstreetmap.org/keys/roof%3Ashape#values
-        if value in ["flat", "gabled", "hipped", "pyramidal", "skillion", "half-hipped"]:
+        if value in valid_roof_shape_values():
             return True
     return False
+
+def valid_roof_shape_values():
+    # https://taginfo.openstreetmap.org/keys/roof%3Ashape#values
+    # https://wiki.openstreetmap.org/wiki/Key:roof:shape#Common_values
+    return ["flat", "gabled", "hipped", "pyramidal", "skillion", "half-hipped"
+        "gabled_height_moved", "side_hipped", "side_half-hipped",
+        "hipped-and-gabled", "mansard", "gambrel",
+        "pyramidal", "crosspitched", "sawtooth", "butterfly", "cone",
+        "dome", "onion", "round"]
 
 def is_tag_expected_for_food_place(key, value, tags):
     if key in ['outdoor_seating', 'takeaway', 'delivery',
