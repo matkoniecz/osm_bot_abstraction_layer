@@ -17,7 +17,7 @@ def typical_unprefixed_main_keys():
 
 def typical_main_keys():
     returned = []
-    for prefix in [""] +typical_lifecycle_prefixes_for_past():
+    for prefix in [""] + typical_lifecycle_prefixes_for_past():
         for basic in typical_unprefixed_main_keys():
             returned.append(prefix + basic)
     return returned
