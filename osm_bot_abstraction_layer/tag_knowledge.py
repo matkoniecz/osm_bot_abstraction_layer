@@ -104,7 +104,8 @@ def valid_shop_values():
             "beekeeping", "promotional_products", "calendar", 'video_restore',
             "headshop", "growshop", "magic", "doormat", "gaming_machines",
             "spare_parts", "cleaning_supplies", "weaver",
-            "tortilla", "chandler", "condo",
+            "tortilla", "chandler", "condo", "grinding_mill",
+            "camp", "sunglasses", "wallpaper", "balloon", "baking_supplies",
         ] + valid_shop_values_but_not_entirely_supported()
 
 def valid_shop_values_but_not_entirely_supported():
