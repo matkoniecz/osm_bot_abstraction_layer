@@ -90,6 +90,8 @@ def get_data(id, type):
             time.sleep(60)
             return get_data(id, type)
         raise
+    except osmapi.errors.ElementNotFoundApiError:
+        return None
     except osmapi.errors.ConnectionApiError as e:
         print(e)
         time.sleep(60)
