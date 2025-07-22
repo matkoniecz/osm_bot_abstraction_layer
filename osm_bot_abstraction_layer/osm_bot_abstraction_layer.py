@@ -4,6 +4,7 @@ import time
 import json
 import osm_bot_abstraction_layer.oauth_handling
 from requests_oauthlib import OAuth2Session
+import requests
 
 def fully_automated_description():
     return "yes"
@@ -94,6 +95,16 @@ def get_data(id, type):
         time.sleep(60)
         return get_data(id, type)
     assert(False)
+
+def get_latest_note_id():
+    while True:
+        # https://community.openstreetmap.org/t/how-can-i-distinguish-deleted-and-not-yet-existing-notes/103690
+        try:
+            response = requests.get("https://api.openstreetmap.org/api/0.6/notes/search?from=20230911T062100Z&sort=created_at&order=newest&limit=1&format=json")
+            return int(json.loads(response.content)['features'][0]['properties']['id'])
+        except requests.exceptions.ConnectionError:
+            print("requests.exceptions.ConnectionError, will retry")
+            time.sleep(100)
 
 def get_notes_in_area(min_lon, min_lat, max_lon, max_lat, limit=10_000, number_of_days_before_closed_note_is_hidden=0):
     # https://osmapi.metaodi.ch/osmapi/OsmApi.html#OsmApi.NotesGet
