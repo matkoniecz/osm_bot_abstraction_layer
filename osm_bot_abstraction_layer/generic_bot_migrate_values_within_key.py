@@ -5,12 +5,13 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
     def edit_element(tags):
         if tags.get(editing_on_key) in replacement_dictionary:
             if tags.get(editing_on_key) in tags:
-                print("skipping as there is a cascading tagging here and we would break it")
-                print("there is")
-                print(editing_on_key, "=", tags.get(editing_on_key))
-                print(tags.get(editing_on_key), "=", tags.get(tags.get(editing_on_key)))
-                print(tags)
-                return tags
+                if tags.get(editing_on_key) != editing_on_key: # building=building can be edited
+                    print("skipping as there is a cascading tagging here and we would break it")
+                    print("there is")
+                    print(editing_on_key, "=", tags.get(editing_on_key))
+                    print(tags.get(editing_on_key), "=", tags.get(tags.get(editing_on_key)))
+                    print(tags)
+                    return tags
             tags[editing_on_key] = replacement_dictionary[tags[editing_on_key]]
             return tags
         return tags

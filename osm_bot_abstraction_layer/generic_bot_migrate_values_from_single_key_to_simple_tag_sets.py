@@ -51,12 +51,13 @@ def edit_element_factory(editing_on_key, replacement_dictionary):
             case = replacement_dictionary[tags.get(editing_on_key)]
             print(case)
             if tags.get(editing_on_key) in tags:
-                print("skipping as there is a cascading tagging here and we would break it")
-                print("there is")
-                print(editing_on_key, "=", tags.get(editing_on_key))
-                print(tags.get(editing_on_key), "=", tags.get(tags.get(editing_on_key)))
-                print(tags)
-                return tags
+                if tags.get(editing_on_key) != editing_on_key: # building=building can be edited
+                    print("skipping as there is a cascading tagging here and we would break it")
+                    print("there is")
+                    print(editing_on_key, "=", tags.get(editing_on_key))
+                    print(tags.get(editing_on_key), "=", tags.get(tags.get(editing_on_key)))
+                    print(tags)
+                    return tags
             for key, value in case.items():
                 value_being_changed = tags.get(key)
                 print("new tag:", key, "=", value)
