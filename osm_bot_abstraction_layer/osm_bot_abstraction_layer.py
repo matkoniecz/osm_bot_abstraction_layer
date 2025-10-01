@@ -6,6 +6,9 @@ import osm_bot_abstraction_layer.oauth_handling
 from requests_oauthlib import OAuth2Session
 import requests
 
+class ObjectIsNotExisting(Exception):
+   """May be returned when trying to operate on deleted ways/nodes/relations or ones that never existed"""
+
 def fully_automated_description():
     return "yes"
 
@@ -282,7 +285,7 @@ def get_all_nodes_of_an_object(osm_object_url, already_processed_objects=[]):
     id = osm_object_url.split("/")[4]
     object_data = get_data(id, element_type)
     if object_data == None:
-        raise Exception("got None while fetching data for " + osm_object_url)
+        raise ObjectIsNotExisting("got None while fetching data for " + osm_object_url)
     if element_type != "way" and element_type != "node" and element_type != "relation":
         error = "unexpected type " + str(element_type)
         print(error)
