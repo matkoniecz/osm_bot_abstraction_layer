@@ -165,6 +165,7 @@ def is_shoplike(tags):
         return True
     if tags.get("amenity") in ["post_box", "parcel_locker", "music_venue", "training",
         "food_sharing", 'canteen', # shoplike in sense you can get food there I guess?
+        "language_school", # far more than amenity=school
     ]:
         return True
     if tags.get("craft") in valid_craft_values():
@@ -247,9 +248,9 @@ def is_indoor_poi(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary", "prep_school", "conference_centre", "vehicle_inspection"]:
+    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary", "prep_school", "language_school", "conference_centre", "vehicle_inspection"]:
         return True
-    if tags.get("leisure") in ["bowling_alley", "sauna", "adult_gaming_centre", "trampoline_park"]:
+    if tags.get("leisure") in ["bowling_alley", "sauna", "adult_gaming_centre", "trampoline_park", "indoor_play"]:
         return True
     if tags.get("tourism") in ["museum", "gallery"]:
         return True
@@ -316,7 +317,7 @@ def is_alcohol_place(tags):
 def indoor_healthcare_facility_tag_listing():
     return {
         'amenity': ["dentist", "clinic", "doctors"],
-        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice", 'sample_collection', 'dialysis', 'physiotherapist', 'counselling', 'rehabilitation', 'occupational_therapist', 'medical_imaging'],
+        "healthcare": ["psychotherapist", "birthing_centre", "audiologist", "optometrist", "midwife", "nurse", "vaccination_centre", "hospice", 'sample_collection', 'dialysis', 'physiotherapist', 'counselling', 'rehabilitation', 'occupational_therapist', 'medical_imaging', 'blood_donation'],
     }
 
 def is_indoor_healthcare_facility(tags):
