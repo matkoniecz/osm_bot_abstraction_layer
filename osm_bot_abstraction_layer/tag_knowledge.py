@@ -248,7 +248,7 @@ def is_indoor_poi(tags):
         return True
     if is_indoor_rentable_sleeping_place(tags):
         return True
-    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary", "prep_school", "language_school", "conference_centre", "vehicle_inspection"]:
+    if tags.get("amenity") in ["bank", "fuel", "post_office", "cinema", "bureau_de_change", "social_facility", "veterinary", "prep_school", "language_school", "conference_centre", "vehicle_inspection", "karaoke_box"]:
         return True
     if tags.get("leisure") in ["bowling_alley", "sauna", "adult_gaming_centre", "trampoline_park", "indoor_play"]:
         return True
@@ -467,11 +467,11 @@ def is_place_of_payment(tags):
         return True
     if is_rentable_sleeping_place(tags):
         return True
-    if tags.get("leisure") in ["fitness_centre", "water_park", "bowling_alley"]:
+    if tags.get("leisure") in ["fitness_centre", "water_park", "bowling_alley", "high_ropes_course"]:
         return True
     if tags.get("waterway") in ["fuel"]:
         return True
-    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre", "car_rental", "car_wash", "money_transfer", "veterinary", 'charging_station', 'toilets', 'photo_booth']:
+    if tags.get("amenity") in ["post_office", "payment_terminal", "vending_machine", "animal_boarding", "casino", "payment_centre", "car_rental", "car_wash", "money_transfer", "veterinary", 'charging_station', 'toilets', 'photo_booth', 'karaoke_box']:
         return True
     if tags.get("healthcare") in ["alternative"]:
         return True
