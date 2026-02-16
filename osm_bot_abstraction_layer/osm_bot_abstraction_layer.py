@@ -16,17 +16,24 @@ def manually_reviewed_description():
     return "no, it is a manually reviewed edit"
 
 def get_api(account_type):
-    with open('secret.json') as f:
-        data = json.load(f)
-        if 'script_client_id' not in data[account_type] or 'script_secret' not in data[account_type]:
-            raise Exception("add script_client_id and script_secret as fields in secret.json, see https://github.com/matkoniecz/osm_bot_abstraction_layer?tab=readme-ov-file#configuration for details")
-        client_id = data[account_type]['script_client_id']
-        client_secret = data[account_type]['script_secret']
-        if 'token' not in data[account_type]:
-            token = osm_bot_abstraction_layer.oauth_handling.get_token(client_id, client_secret)
-            print(json.dumps(token))
-            raise Exception('add token to secret.json in token field, see https://github.com/matkoniecz/osm_bot_abstraction_layer?tab=readme-ov-file#configuration for details')
-        return osmapi.OsmApi(session=OAuth2Session(client_id, token=data[account_type]['token']))
+    try:
+        with open('secret.json') as f:
+            data = json.load(f)
+    except json.JSONDecodeError as e:
+        raise ValueError(
+            f"File 'secret.json' invalid: JSON error at line {e.lineno}, column {e.colno}.\n"
+            f"You may check it with: python3 -m json.tool secret.json"
+        )
+       
+    if 'script_client_id' not in data[account_type] or 'script_secret' not in data[account_type]:
+       raise Exception("add script_client_id and script_secret as fields in secret.json, see https://github.com/matkoniecz/osm_bot_abstraction_layer?tab=readme-ov-file#configuration for details")
+    client_id = data[account_type]['script_client_id']
+    client_secret = data[account_type]['script_secret']
+    if 'token' not in data[account_type]:
+       token = osm_bot_abstraction_layer.oauth_handling.get_token(client_id, client_secret)
+       print(json.dumps(token))
+       raise Exception('add token to secret.json in token field, see https://github.com/matkoniecz/osm_bot_abstraction_layer?tab=readme-ov-file#configuration for details')
+    return osmapi.OsmApi(session=OAuth2Session(client_id, token=data[account_type]['token']))
 
 def character_limit_of_description():
     return 255
