@@ -74,38 +74,40 @@ def get_data(id, type):
     link = "https://www.openstreetmap.org/" + type + "/" + str(id)
     print("downloading", link)
     api = get_api('bot_account')
-    try:
-        if type == 'node':
-            return api.NodeGet(id)
-        if type == 'way':
-            return api.WayGet(id)
-        if type == 'relation':
-            return api.RelationGet(id)
-        if type == 'note':
-            return api.NoteGet(id)
-    except osmapi.ElementDeletedApiError:
-        return None
-    except osmapi.errors.TimeoutApiError:
-        print("was trying to get", link, "data, got osmapi.errors.TimeoutApiError! Will wait and retry")
-        time.sleep(60)
-        return get_data(id, type)
-    except osmapi.errors.ApiError as e:
-        # proper exception type requested in https://github.com/metaodi/osmapi/issues/176
-        if "RemoteDisconnected('Remote end closed connection without response')" in str(e):
-            print("was trying to get", link, "data, got RemoteDisconnected('Remote end closed connection without response')! Will wait and retry")
+    while True:
+        try:
+            if type == 'node':
+                return api.NodeGet(id)
+            if type == 'way':
+                return api.WayGet(id)
+            if type == 'relation':
+                return api.RelationGet(id)
+            if type == 'note':
+                return api.NoteGet(id)
+        except osmapi.ElementDeletedApiError:
+            return None
+        except osmapi.errors.TimeoutApiError:
+            print("was trying to get", link, "data, got osmapi.errors.TimeoutApiError! Will wait and retry")
             time.sleep(60)
-            return get_data(id, type)
-        if "'Connection aborted.'" in str(e):
-            print("was trying to get", link, "data, got 'Connection aborted.'! Will wait and retry")
+            continue
+        except osmapi.errors.ApiError as e:
+            # proper exception type requested in https://github.com/metaodi/osmapi/issues/176
+            if "RemoteDisconnected('Remote end closed connection without response')" in str(e):
+                print("was trying to get", link, "data, got RemoteDisconnected('Remote end closed connection without response')! Will wait and retry")
+                time.sleep(60)
+                continue
+            if "'Connection aborted.'" in str(e):
+                print("was trying to get", link, "data, got 'Connection aborted.'! Will wait and retry")
+                time.sleep(60)
+                continue
+            raise
+        except osmapi.errors.ElementNotFoundApiError:
+            return None
+        except osmapi.errors.ConnectionApiError as e:
+            print(e)
+            print("will retry")
             time.sleep(60)
-            return get_data(id, type)
-        raise
-    except osmapi.errors.ElementNotFoundApiError:
-        return None
-    except osmapi.errors.ConnectionApiError as e:
-        print(e)
-        time.sleep(60)
-        return get_data(id, type)
+            continue
     assert(False)
 
 def get_latest_note_id():
