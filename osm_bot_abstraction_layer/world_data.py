@@ -1,6 +1,7 @@
 import osm_bot_abstraction_layer.overpass_downloader as overpass_downloader
 from osm_iterator.osm_iterator import Data
-    
+import random
+
 class DataCollector( object ):
     def __init__( self, collected_keys ):
         self.data = []
