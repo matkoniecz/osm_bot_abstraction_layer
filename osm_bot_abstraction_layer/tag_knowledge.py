@@ -205,6 +205,9 @@ def valid_barrier_values():
         "barricade", "steeplechase_jump", "lych_gate", "wedge", "haha",
     ]
 
+def valid_aerialway_line_values():
+    return ["cable_car", "gondola", "mixed_lift", "chair_lift", "drag_lift", "t-bar", "j-bar", "platter", "rope_tow", "goods", "zip_line", "magic_carpet"]
+
 def is_tag_expected_for_recycling_place(key, value, tags):
     expected_tags = {
         # https://taginfo.openstreetmap.org/search?q=recycling%3A
