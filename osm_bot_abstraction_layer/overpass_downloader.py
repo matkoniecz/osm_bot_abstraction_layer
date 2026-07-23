@@ -22,7 +22,7 @@ def sleep_before_retry(error_summary, api_url):
     status_url = api_url.replace("/interpreter", "/status")
     r = requests.get(status_url)
     print(r.text)
-    sleep(100)
+    sleep(500)
     print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
@@ -71,7 +71,7 @@ def get_response_from_overpass_server(query, timeout, user_agent):
                         raise Exception('timeout in query or other failure!' + query)
 
 
-            # 429 and 503 indicate rate limiting
+            # 400 and 429 and 503 indicate rate limiting
             # 504 appears to be a bug https://github.com/drolbr/Overpass-API/issues/220
             # 400 returned on syntax error
             # TODO: repeating queries as fast as Overpass allows is fine, as long as you sleep after being hit by 429
@@ -98,7 +98,8 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             # 503 tells you that the server is so busy that it will not reliably accept queries from anyone
             # 429 tells you that your current usage in that minute is so relatively high that the server
             # throttles you in favour of other users
-            if e.response.status_code == 429 or e.response.status_code == 503:
+            # 400 is aparently new additional rate limit error code
+            if e.response.status_code == 400 or e.response.status_code == 429 or e.response.status_code == 503:
                 sleep_before_retry(e.response.status_code + " error code (HTTPError thrown)", api_url)
                 continue
             raise e

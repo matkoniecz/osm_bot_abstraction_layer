@@ -1,5 +1,6 @@
 from osm_bot_abstraction_layer.generic_bot_retagging import run_simple_retagging_task
 from osm_bot_abstraction_layer.utils import tag_in_wikimedia_syntax
+import taginfo
 
 def edit_element_factory(editing_on_key, replacement_dictionary):
     def edit_element(tags):
@@ -57,8 +58,21 @@ def list_what_will_be_edited_in_wikicode(key, replacement_dictionary):
         returned += "* " + tag_in_wikimedia_syntax(key, replaced_value) + " → " + tag_in_wikimedia_syntax(key, new_value) + "\n"
     return returned
 
+def nothing_to_edit(key, replacement_dictionary):
+    for value in replacement_dictionary:
+        if taginfo.query.count_appearances_of_tag(key, value) != 0:
+            return False
+    return True
+
 def fix_bad_values(editing_on_key, replacement_dictionary, cache_folder_filepath, is_in_manual_mode, discussion_url, osm_wiki_documentation_page):
-    print(list_what_will_be_edited(editing_on_key, replacement_dictionary))
+    print("---------------------------")
+    print(list_what_will_be_edited(editing_on_key, replacement_dictionary).strip())
+    if nothing_to_edit(editing_on_key, replacement_dictionary):
+        # done due to abyssal overpass performance
+        print("taginfo reports that none of this tags exist")
+        print("---------------------------")
+        print()
+        return
     edit_element_function = edit_element_factory(editing_on_key, replacement_dictionary)
     query = get_query(editing_on_key, replacement_dictionary)
     run_simple_retagging_task(
