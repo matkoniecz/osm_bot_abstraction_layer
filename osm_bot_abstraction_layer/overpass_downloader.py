@@ -22,7 +22,7 @@ def sleep_before_retry(error_summary, api_url):
     status_url = api_url.replace("/interpreter", "/status")
     r = requests.get(status_url)
     print(r.text)
-    sleep(500)
+    sleep(600)
     print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
