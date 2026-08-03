@@ -11,9 +11,11 @@ def sleep(time_in_s):
     for i in tqdm(range(time_in_s*10), ascii=True):
         time.sleep(0.1)
 
-def download_overpass_query(query, filepath, timeout=None, user_agent='overpass downloader for OSM bot (if it is overusing resources, please block it and contact matkoniecz@gmail.com)'):
+def download_overpass_query(query, filepath, timeout=None, user_agent='overpass downloader for OSM bot (if it is overusing resources, please block it and contact matkoniecz@gmail.com)', private_server_data=None):
+    if private_server_data == None:
+        private_server_data = []
     with open(filepath, 'w+') as file:
-        file.write(get_response_from_overpass_server(query, timeout, user_agent))
+        file.write(get_response_from_overpass_server(query, timeout, user_agent, private_server_data))
 
 def sleep_before_retry(error_summary, api_url):
     print("sleeping before retry due to", error_summary)
@@ -26,7 +28,12 @@ def sleep_before_retry(error_summary, api_url):
     print()
     print("retrying on", datetime.now().strftime("%H:%M:%S (%Y-%m-%d)"))
 
-def get_response_from_overpass_server(query, timeout, user_agent):
+def get_response_from_overpass_server(query, timeout, user_agent, private_server_data):
+    additional_urls = []
+    additional_headers_per_url = {}
+    for entry in private_server_data:
+        additional_urls.append(entry['url'])
+        additional_headers_per_url[entry['url']] = entry.get('headers', {})
     #print("sleeping before download")
     #sleep(20)
     time_of_query_start = None
@@ -39,14 +46,16 @@ def get_response_from_overpass_server(query, timeout, user_agent):
             # see https://github.com/drolbr/overpass-doc/issues/16 for basically asking about this
             # see https://github.com/drolbr/overpass-doc/pull/15 for a probing PR
             main_api_url = "https://overpass-api.de/api/interpreter"
-            api_url = random.choice([main_api_url])
+            api_url = random.choice([main_api_url] + additional_urls)
             print("using", api_url)
 
             time_of_query_start = time.time()
+            headers=additional_headers_per_url.get(api_url, {})
+            headers['User-Agent'] = user_agent
             if retry_count>0:
-                response = single_query_run(api_url, query, timeout, user_agent, "retry number " + str(retry_count))
+                response = single_query_run(api_url, query, timeout, headers, "retry number " + str(retry_count))
             else:
-                response = single_query_run(api_url, query, timeout, user_agent, "the first attempt")
+                response = single_query_run(api_url, query, timeout, headers, "the first attempt")
             # response that may be still a failure such as timeout, see https://github.com/drolbr/Overpass-API/issues/577
             # following response should be treated as a failure
             """
@@ -149,7 +158,7 @@ def parse_overpass_query_to_get_timeout(query):
     # 1000
     return int(query)
 
-def single_query_run(api_url, query, timeout, user_agent, extra_info=None):
+def single_query_run(api_url, query, timeout, headers, extra_info=None):
     print("single_query_run: downloading " + query)
     if timeout == None:
         timeout = parse_overpass_query_to_get_timeout(query)
@@ -165,7 +174,7 @@ def single_query_run(api_url, query, timeout, user_agent, extra_info=None):
         api_url,
         data={'data': query},
         timeout=timeout,
-        headers={'User-Agent': user_agent}
+        headers=headers
     )
     print("download completed with", response.status_code, "http code at", datetime.now(), "after", str(datetime.now()-time) )
     if extra_info != None:
