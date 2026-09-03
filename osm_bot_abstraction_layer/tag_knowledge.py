@@ -2,9 +2,14 @@ import re
 import osm_bot_abstraction_layer.language_tag_knowledge as language_tag_knowledge
 
 def typical_lifecycle_prefixes_for_past():
-    return ["construction:", "disused:", "abandoned:",
-            "ruins:", "demolished:", "removed:", "razed:",  "destroyed:",
-            "was:", "former:", "closed:"]
+    return ["disused:", "abandoned:",
+            "ruins:", # on rarer side https://taginfo.openstreetmap.org/search?q=ruins 
+            "closed:", # the same https://taginfo.openstreetmap.org/search?q=closed
+            "former:", # even more exotic https://taginfo.openstreetmap.org/search?q=former
+            "demolished:", "removed:", "razed:",  "destroyed:",
+            "was:", "dismantled:"]
+    # "construction:", not for past
+    # intermittent - not for past
     # planned:, proposed:, historic: are invalid and should be avoided
 
 def typical_unprefixed_main_keys():
@@ -113,10 +118,10 @@ def valid_shop_values_but_not_entirely_supported():
         "mobile_equipment", # https://wiki.openstreetmap.org/wiki/Talk:Tag:shop%3Dmobile_equipment
         "jewellery", # https://wiki.openstreetmap.org/wiki/Proposed_features/Jewellery_shop
         'fashion', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfashion
-        'boutique', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dboutique - In many places this tag is widely, but wrongly used to tag shops unrelated to clothing as in French speaking areas "boutique" is commonly part of a shop name. 
+        'boutique', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dboutique - In many places this tag is widely, but wrongly used to tag shops unrelated to clothing as in French speaking areas "boutique" is commonly part of a shop name. - now deprecated, see https://taginfo.openstreetmap.org/tags/shop=boutique
         'fishmonger', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dfishmonger
         'printing', # https://wiki.openstreetmap.org/wiki/Tag:shop%3Dprinting
-        '3d_printing', # RTFM user
+        '3d_printing', # RTFM user, see https://taginfo.openstreetmap.org/tags/shop=3d_printing#overview
         'peanut_butter', # having separate value for every top-level food seems a dubious idea
         'fan', # does not sell actual fans, quite unfortunately named TODO: can we deprecate it?
         'golf', # https://community.openstreetmap.org/t/do-we-need-shop-ski-and-shop-golf/106249
@@ -580,10 +585,11 @@ def unpaved_road_surfaces():
         "ground", "earth", "dirt", "grass", "sand", "mud", "ice", "salt", "snow", "woodchips"]
 
 def paved_road_surfaces():
-    return ["paved", "asphalt", "cobblestone", "cobblestone:flattened", "sett",
+    return ["paved", "asphalt", "cobblestone", "sett",
 			"concrete", "concrete:lanes", "concrete:plates", "paving_stones",
             "metal", "wood", "unhewn_cobblestone",
             "chipseal", # documented https://wiki.openstreetmap.org/wiki/Tag:surface%3Dchipseal
+            "cobblestone:flattened", # https://taginfo.openstreetmap.org/tags/surface=cobblestone%3Aflattened#chronology
             ]
 
 def road_types():
