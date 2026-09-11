@@ -35,17 +35,16 @@ def splitter_generator(edit_element):
                 urls_of_handled_elements.append(element.get_link())
     return splitter_generated # returns a callback function
 
-def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page):
+def build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, source=None, other_tags_dict = {}):
     if len(changeset_comment) < 4:
         raise Exception("changeset_comment is unreasonably short: " + changeset_comment)
     automatic_status = osm_bot_abstraction_layer.manually_reviewed_description()
     if is_in_manual_mode == False:
         automatic_status = osm_bot_abstraction_layer.fully_automated_description()
     comment = changeset_comment
-    source = None
     api = osm_bot_abstraction_layer.get_correct_api(automatic_status, discussion_url, osm_wiki_documentation_page)
     affected_objects_description = ""
-    builder = osm_bot_abstraction_layer.ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source)
+    builder = osm_bot_abstraction_layer.ChangesetBuilder(affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict)
     builder.create_changeset(api)
     return api
 
@@ -106,7 +105,7 @@ def note_creation_block_reason(lat, lon):
             return "Within Moscow bbox, skipping for now - see https://www.openstreetmap.org/note/3866541"
     return None
 
-def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes):
+def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes, source=None, other_tags_dict = {}):
     changeset = None
     for element in package.list:
 
@@ -123,7 +122,7 @@ def process_osm_elements_package(package, is_in_manual_mode, changeset_comment, 
                 retry_remaining_attempts -= 1
                 try:
                     if changeset == None:
-                        changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page)
+                        changeset = build_changeset(is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, source, other_tags_dict)
                     osm_bot_abstraction_layer.update_element(changeset, element.element.tag, data)
                     break # completed succesfully, no need to repeat
                 except osmapi.ApiError as e:
@@ -208,18 +207,18 @@ def show_planned_edits(packages, edit_element_function):
                     print("#* added_:", key,"=", after[key])
             print()
 
-def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes):
+def run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes, source=None, other_tags_dict = {}):
     for package in packages:
         for element in package.list:
             print(element.get_link())
-        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
+        process_osm_elements_package(package, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes, source, other_tags_dict)
         print()
         print()
 
 def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to_consider_query,
     cache_folder_filepath, is_in_manual_mode,
     changeset_comment, discussion_url, osm_wiki_documentation_page,
-    edit_element_function, skip_on_nearby_notes=False):
+    edit_element_function, skip_on_nearby_notes=False, source=None, other_tags_dict = {}):
     hashed = hashlib.sha256(objects_to_consider_query.encode('utf-8')).hexdigest()
     if cache_folder_filepath[-1] == "/":
         raise Exception("provide folder path without trailing /")
@@ -251,7 +250,7 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
             print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
             if human_verification_mode.is_human_confirming_without_browser_check() == False:
                 return
-    run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes)
+    run_actual_edits(packages, is_in_manual_mode, changeset_comment, discussion_url, osm_wiki_documentation_page, edit_element_function, skip_on_nearby_notes, source, other_tags_dict)
 
 def check_value_list_before_bot_edit_proposal(key, value_list):
     """

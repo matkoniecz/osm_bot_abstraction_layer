@@ -42,7 +42,7 @@ class ChangesetBuilder:
     def __init__(self, affected_objects_description, comment, automatic_status, discussion_url, osm_wiki_documentation_page, source, other_tags_dict = {}):
         if automatic_status not in [fully_automated_description(), manually_reviewed_description()]:
             raise "automatic status must match either description returned by fully_automated_description() or manually_reviewed_description() from osm_abstraction_layer"
-        self.changeset_description = other_tags_dict
+        self.changeset_description = {}
         self.changeset_description['mechanical'] = automatic_status
         if automatic_status == fully_automated_description():
             if osm_wiki_documentation_page == None or discussion_url == None:
@@ -55,6 +55,11 @@ class ChangesetBuilder:
         if source != None:
             self.changeset_description["source"] = source
         self.changeset_description['comment'] = output_full_comment_get_comment_within_limit(affected_objects_description, comment)
+        # allow specifing other changeset tags and overwriting hardcoded ones
+        for other_tags_key, other_tags_value in other_tags_dict.items():
+            self.changeset_description[other_tags_key] = other_tags_value
+        changeset_description_cleanup = {key: val for key, val in self.changeset_description.items() if val}
+        self.changeset_description = changeset_description_cleanup
 
     def create_changeset(self, api):
         print("opening changeset", json.dumps(self.changeset_description, sort_keys=True, indent=4))
