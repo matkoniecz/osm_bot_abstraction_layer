@@ -18,7 +18,9 @@ def typical_unprefixed_main_keys():
             "advertising", "highway", "natural", "power", "historic",
             "military", "attraction", "aeroway", "railway",
             "landuse", "boundary", "building", "building:part", "landcover",
-            "waterway", "cemetery", "aerialway", "public_transport", "telecom"]
+            "waterway", "cemetery", "aerialway", "public_transport",
+            # niche ones
+            "telecom", "orienteering"]
 
 def typical_main_keys():
     returned = []
