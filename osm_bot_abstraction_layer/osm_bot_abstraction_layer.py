@@ -218,9 +218,9 @@ def get_correct_api(automatic_status, discussion_url, osm_wiki_documentation_pag
         return get_api('human_account')
     elif automatic_status == fully_automated_description():
         if discussion_url == None:
-            raise Exception("bot edits must be discussed before edit")
+            raise Exception("bot edits must be discussed before edit, missing proper discussion_url parameter")
         if osm_wiki_documentation_page == None:
-            raise Exception("bot edits must be documented before edit")
+            raise Exception("bot edits must be documented before edit, missing proper osm_wiki_documentation_page parameter")
         return get_api('bot_account')
     else:
         assert(False)
