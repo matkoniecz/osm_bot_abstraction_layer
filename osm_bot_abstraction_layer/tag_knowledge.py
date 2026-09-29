@@ -47,12 +47,12 @@ def valid_shop_values():
             'supermarket', 'bag', 'bakery', 'beauty', 'bed', 'books',
             'butcher', 'clothes', 'computer', 'confectionery',
             'convenience', 'department_store', 'doityourself', 'hardware',
-            'fishmonger', 'florist', 'garden_centre', 'hairdresser', 'hifi',
+            'florist', 'garden_centre', 'hairdresser', 'hifi',
             'ice_cream', 'car', 'car_repair', 'bicycle', 'mall', 'pet',
             'photo', 'photo_studio', 'photography', 'seafood', 'shoes',
             'alcohol', 'gift', 'furniture', 'kiosk', 'mobile_phone',
             'motorcycle', 'musical_instrument', 'newsagent', 'optician',
-            'jewelry', 'jewellery', 'electronics', 'chemist', 'toys',
+            'jewelry', 'electronics', 'chemist', 'toys',
             'travel_agency', 'car_parts', 'greengrocer', 'farm', 'stationery',
             'laundry', 'dry_cleaning', 'beverages', 'perfumery', 'cosmetics',
             'variety_store', 'wine', 'outdoor', 'copyshop', 'sports', 'deli',
@@ -85,7 +85,7 @@ def valid_shop_values():
             "food", "flooring", "water", "leather", "telecommunication",
             "hairdresser_supply", "weapons", "swimming_pool", "radiotechnics",
             "country_store", "boat", "glaziery", "fireplace", "games", "repair",
-            "fuel", "window_blind", "scuba_diving", "caravan", "printing",
+            "fuel", "window_blind", "scuba_diving", "caravan",
             "pottery", "spices", "pyrotechnics", "tool_hire",
 
             # as above but has less than 1000 uses
