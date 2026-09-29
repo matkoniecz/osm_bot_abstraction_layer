@@ -460,7 +460,7 @@ def expected_building_values():
     'garages', 'school', 'construction', 'retail', 'greenhouse', 'barn',
     'farm_auxiliary', 'church', 'warehouse', 'service', 'cabin', 'farm',
     'civic', 'manufacture', 'static_caravan', 'university', 'office',
-    'hospital', 'house', 'bungalow', 'hangar', 'kindergarten', 'mosque',
+    'hospital', 'bungalow', 'hangar', 'kindergarten', 'mosque',
     'storage_tank', 'dormitory', 'train_station', 'stable', 'transportation',
     'transformer_tower', 'bunker', 'houseboat', 'slurry_tank', 'silo',
     'shop', 'cowshed', 'carport', 'supermarket', 'temple', 'toilets', 'kiosk',
