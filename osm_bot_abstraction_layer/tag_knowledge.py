@@ -545,7 +545,7 @@ def valid_roof_shape_values():
     return ["flat", "gabled", "hipped", "pyramidal", "skillion", "half-hipped",
         "gabled_height_moved", "side_hipped", "side_half-hipped",
         "hipped-and-gabled", "mansard", "gambrel",
-        "pyramidal", "crosspitched", "sawtooth", "butterfly", "cone",
+        "crosspitched", "sawtooth", "butterfly", "cone",
         "dome", "onion", "round"]
 
 def is_tag_expected_for_food_place(key, value, tags):
