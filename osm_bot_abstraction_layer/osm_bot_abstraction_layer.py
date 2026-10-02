@@ -46,7 +46,10 @@ class ChangesetBuilder:
         self.changeset_description['mechanical'] = automatic_status
         if automatic_status == fully_automated_description():
             if osm_wiki_documentation_page == None or discussion_url == None:
-                raise "missing links to the automatic edit documentation!"
+                raise Exception("missing links to the automatic edit documentation!")
+            if "https://wiki.openstreetmap.org" not in osm_wiki_documentation_page:
+                if "not needed" not in osm_wiki_documentation_page:
+                    raise Exception("missing proper link to the automatic edit documentation on wiki!")
             self.changeset_description['bot'] = 'yes' # recommended on https://wiki.openstreetmap.org/wiki/Automated_Edits_code_of_conduct
             self.changeset_description["discussion_before_edits"] = discussion_url
             self.changeset_description["osm_wiki_documentation_page"] = osm_wiki_documentation_page
