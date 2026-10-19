@@ -15,6 +15,9 @@ class Package:
         self.max_count = max_count
         self.max_bbox_size_in_degrees = max_bbox_size_in_degrees
 
+    def __len__(self):
+        return len(self.list)
+
     def is_too_big(self, min_lat, max_lat, min_lon, max_lon):
         if (max_lat - min_lat) > self.max_bbox_size_in_degrees:
             return True
@@ -58,4 +61,4 @@ class Package:
             packages_with_remaining_space = [e for e in packages if len(e.list) < max_count]
             packages = packages_with_remaining_space
             returned += full_packages
-        return returned + packages
+        return sorted(returned + packages, key=len, reverse=True)
