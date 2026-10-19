@@ -245,7 +245,7 @@ def run_simple_retagging_task(max_count_of_elements_in_one_changeset, objects_to
     if is_in_manual_mode:
         print(str(len(list_of_elements)) + " objects will be split into " + str(len(packages)) + " edits.")
     else:
-        if len(list_of_elements) < 100:
+        if len(list_of_elements) < 1000:
             print(str(len(list_of_elements)) + " objects will be split into " + str(len(packages)) + " edits.")
         else:
             print(str(len(list_of_elements)) + " objects split into " + str(len(packages)) + " edits. Continue? [y/n]")
